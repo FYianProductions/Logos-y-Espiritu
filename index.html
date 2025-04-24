@@ -95,6 +95,7 @@
             padding: 8px 12px;
             border-radius: var(--radius);
             transition: all 0.3s ease;
+            cursor: pointer; /* Cambiamos el cursor para indicar que es un enlace */
         }
 
         nav ul li a:hover {
@@ -105,6 +106,7 @@
         /* Sección de publicaciones */
         .post-section {
             padding: 40px 0;
+            display: block; /* Mostramos la sección de publicaciones por defecto */
         }
 
         .section-title {
@@ -137,6 +139,7 @@
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer; /* Indicamos que la tarjeta es clickable */
         }
 
         .post-card:hover {
@@ -182,10 +185,31 @@
             font-weight: 600;
             font-size: 0.9rem;
             transition: transform 0.3s ease;
+            display: none; /* Ocultamos el botón "Leer más" */
         }
 
         .read-more:hover {
             transform: scale(1.05);
+        }
+
+        /* Estilos para la sección de video */
+        .video-container {
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* Proporción 16:9 para el video */
+            position: relative;
+            margin-bottom: 20px;
+            border-radius: var(--radius);
+            overflow: hidden;
+            display: none; /* Ocultamos el video por defecto */
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
 
         /* Post individual */
@@ -195,6 +219,7 @@
             padding: 30px;
             margin-bottom: 40px;
             box-shadow: var(--shadow);
+            display: none; /* Ocultamos la vista de post individual por defecto */
         }
 
         .single-post-title {
@@ -347,6 +372,7 @@
             padding: 40px;
             margin-bottom: 40px;
             box-shadow: var(--shadow);
+            display: none; /* Ocultamos la sección "Sobre mí" por defecto */
         }
 
         .about-content {
@@ -379,6 +405,7 @@
             padding: 40px;
             margin-bottom: 40px;
             box-shadow: var(--shadow);
+            display: none; /* Ocultamos la sección de contacto por defecto */
         }
 
         .contact-form {
@@ -521,7 +548,6 @@
     </style>
 </head>
 <body>
-    <!-- Encabezado -->
     <header>
         <div class="container">
             <h1>Logos y Espíritu</h1>
@@ -529,79 +555,43 @@
         </div>
     </header>
 
-    <!-- Navegación -->
     <div class="container">
         <nav>
             <ul>
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="sobre-mi.html">Sobre mí</a></li>
-                <li><a href="publicaciones.html">Publicaciones</a></li>
-                <li><a href="contacto.html">Contacto</a></li>
-            </ul>
+                <li><a href="#" data-section="inicio">Inicio</a></li>
+                <li><a href="#" data-section="sobre-mi">Sobre mí</a></li>
+                <li><a href="#" data-section="publicaciones">Publicaciones</a></li>
+                </ul>
         </nav>
 
-        <!-- Sección de Publicaciones Recientes -->
-        <section class="post-section">
+        <section class="post-section" id="inicio">
+            <h2 class="section-title">Inicio</h2>
+            <p>Bienvenido al blog Logos y Espíritu. Aquí encontrarás reflexiones, artículos y contenido multimedia para jóvenes que buscan conectar con su espiritualidad y crecer en su fe.</p>
+        </section>
+
+        <section class="post-section" id="publicaciones">
             <h2 class="section-title">Publicaciones Recientes</h2>
-            <div class="posts-grid">
-                <!-- Publicación 1 -->
-                <article class="post-card">
-                    <img src="/api/placeholder/600/400" alt="La espiritualidad en tiempos modernos" class="post-image">
-                    <div class="post-content">
-                        <h3 class="post-title">La espiritualidad en tiempos modernos</h3>
-                        <span class="post-date">23 de abril, 2025</span>
-                        <p class="post-excerpt">¿Cómo podemos conectar con lo divino en una era digital? Exploramos formas de mantener viva la fe en un mundo acelerado.</p>
-                        <a href="post1.html" class="read-more">Leer más</a>
-                    </div>
-                </article>
-
-                <!-- Publicación 2 -->
-                <article class="post-card">
-                    <img src="/api/placeholder/600/400" alt="Ciencia y Fe: un diálogo posible" class="post-image">
-                    <div class="post-content">
-                        <h3 class="post-title">Ciencia y Fe: un diálogo posible</h3>
-                        <span class="post-date">18 de abril, 2025</span>
-                        <p class="post-excerpt">Descubre cómo la ciencia y la religión no son enemigos, sino dos caminos complementarios hacia el conocimiento.</p>
-                        <a href="post2.html" class="read-more">Leer más</a>
-                    </div>
-                </article>
-
-                <!-- Publicación 3 -->
-                <article class="post-card">
-                    <img src="/api/placeholder/600/400" alt="Meditación para principiantes" class="post-image">
-                    <div class="post-content">
-                        <h3 class="post-title">Meditación para principiantes</h3>
-                        <span class="post-date">10 de abril, 2025</span>
-                        <p class="post-excerpt">Una guía práctica para comenzar a meditar y encontrar paz interior en medio del caos cotidiano.</p>
-                        <a href="post3.html" class="read-more">Leer más</a>
-                    </div>
-                </article>
-            </div>
+            <div class="posts-grid" id="posts-grid">
+                </div>
         </section>
 
-        <!-- Vista de un post individual -->
-        <section class="single-post" style="display: none;">
-            <h1 class="single-post-title">La espiritualidad en tiempos modernos</h1>
+        <section class="post-section" id="videos" style="display: none;">
+            <h2 class="section-title">Videos Recientes</h2>
+            <div class="posts-grid" id="videos-grid">
+                </div>
+        </section>
+
+        <section class="single-post" id="single-post">
+            <h1 class="single-post-title" id="single-post-title"></h1>
             <div class="single-post-info">
-                <span class="single-post-date">23 de abril, 2025</span>
-                <span class="single-post-category">Espiritualidad</span>
+                <span class="single-post-date" id="single-post-date"></span>
+                <span class="single-post-category" id="single-post-category"></span>
             </div>
-            <div class="single-post-content">
-                <img src="/api/placeholder/800/400" alt="Joven meditando con tecnología">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, urna eu tincidunt consectetur, nisl nunc euismod nisi, eu porttitor nisl nisi eu nisi. Sed euismod, urna eu tincidunt consectetur, nisl nunc euismod nisi, eu porttitor nisl nisi eu nisi.</p>
-                <p>Proin eget tortor risus. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur aliquet quam id dui posuere blandit.</p>
-                <h2>Conectando con lo divino</h2>
-                <p>Nulla porttitor accumsan tincidunt. Curabitur aliquet quam id dui posuere blandit. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.</p>
-                <img src="/api/placeholder/800/400" alt="Comunidad joven en oración">
-                <p>Sed porttitor lectus nibh. Nulla quis lorem ut libero malesuada feugiat. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh.</p>
-                <h2>Prácticas para el día a día</h2>
-                <p>Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Donec sollicitudin molestie malesuada. Vivamus suscipit tortor eget felis porttitor volutpat.</p>
-                <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Proin eget tortor risus.</p>
-            </div>
+            <div class="single-post-content" id="single-post-content">
+                </div>
         </section>
 
-        <!-- Sección Sobre mí -->
-        <section class="about-section" style="display: none;">
+        <section class="about-section" id="sobre-mi">
             <h2 class="section-title">Sobre mí</h2>
             <div class="about-content">
                 <div class="about-image">
@@ -617,24 +607,8 @@
             </div>
         </section>
 
-        <!-- Sección Contacto -->
-<label for="email">Correo electrónico</label>
-                    <input type="email" id="email" class="form-input" required>
-                </div>
-                <div class="form-group">
-                    <label for="subject">Asunto</label>
-                    <input type="text" id="subject" class="form-input" required>
-                </div>
-                <div class="form-group">
-                    <label for="message">Mensaje</label>
-                    <textarea id="message" class="form-input" required></textarea>
-                </div>
-                <button type="submit" class="submit-btn">Enviar mensaje</button>
-            </form>
-        </section>
-    </div>
+        </div>
 
-    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -651,11 +625,10 @@
                 <div class="footer-section">
                     <h3>Enlaces Rápidos</h3>
                     <ul>
-                        <li><a href="index.html">Inicio</a></li>
-                        <li><a href="sobre-mi.html">Sobre mí</a></li>
-                        <li><a href="publicaciones.html">Publicaciones</a></li>
-                        <li><a href="contacto.html">Contacto</a></li>
-                    </ul>
+                        <li><a href="#" data-section="inicio">Inicio</a></li>
+                        <li><a href="#" data-section="sobre-mi">Sobre mí</a></li>
+                        <li><a href="#" data-section="publicaciones">Publicaciones</a></li>
+                        </ul>
                 </div>
                 <div class="footer-section">
                     <h3>Suscríbete</h3>
@@ -672,7 +645,6 @@
         </div>
     </footer>
 
-    <!-- Botón para volver arriba -->
     <a href="#" class="back-to-top" id="backToTop">
         <i class="fa fa-chevron-up"></i>
     </a>
@@ -697,12 +669,62 @@
             });
         });
 
-        // Esta función muestra cómo agregar dinámicamente una nueva publicación al blog
-        function agregarNuevaPublicacion(titulo, fecha, resumen, imagen, enlace) {
-            const postsGrid = document.querySelector('.posts-grid');
+        // Función para mostrar la sección y ocultar las demás
+        function mostrarSeccion(sectionId) {
+            const secciones = document.querySelectorAll('.post-section, .about-section, .contact-section, .single-post'); // Agregamos .single-post
+            secciones.forEach(seccion => {
+                seccion.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        // Agregamos event listeners a los enlaces de navegación
+        const navLinks = document.querySelectorAll('nav ul li a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetSection = this.getAttribute('data-section');
+                mostrarSeccion(targetSection);
+                if (targetSection === 'publicaciones') {
+                    cargarPublicaciones(); // Cargamos las publicaciones al mostrar la sección de publicaciones
+                }
+                if (targetSection === 'inicio'){
+                    cargarInicio();
+                }
+            });
+        });
+
+        // Función para cargar la página de inicio
+        function cargarInicio() {
+            const inicioSection = document.getElementById('inicio');
+            inicioSection.innerHTML = `
+                <h2 class="section-title">Inicio</h2>
+                <p>Bienvenido al blog Logos y Espíritu. Aquí encontrarás reflexiones, artículos y contenido multimedia para jóvenes que buscan conectar con su espiritualidad y crecer en su fe.</p>
+                <p>Explora nuestras <a href="#" data-section="publicaciones">publicaciones</a> más recientes o conoce más <a href="#" data-section="sobre-mi">sobre mí</a>.</p>
+            `;
+            const inicioLinks = inicioSection.querySelectorAll('a');
+            inicioLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetSection = this.getAttribute('data-section');
+                    mostrarSeccion(targetSection);
+                    if (targetSection === 'publicaciones') {
+                        cargarPublicaciones(); // Cargamos las publicaciones al mostrar la sección de publicaciones
+                    }
+                });
+            });
+        }
+
+        // Función para agregar una nueva publicación al blog
+        function agregarNuevaPublicacion(titulo, fecha, resumen, imagen, contenido) { // Agregamos el parámetro 'contenido'
+            const postsGrid = document.getElementById('posts-grid');
             
             const postCard = document.createElement('article');
             postCard.className = 'post-card';
+            postCard.setAttribute('data-post-title', titulo); // Almacenamos el título como atributo
+            postCard.setAttribute('data-post-date', fecha);
+            postCard.setAttribute('data-post-content', contenido); // Almacenamos el contenido
+            postCard.setAttribute('data-post-image', imagen);
             
             postCard.innerHTML = `
                 <img src="${imagen}" alt="${titulo}" class="post-image">
@@ -710,20 +732,91 @@
                     <h3 class="post-title">${titulo}</h3>
                     <span class="post-date">${fecha}</span>
                     <p class="post-excerpt">${resumen}</p>
-                    <a href="${enlace}" class="read-more">Leer más</a>
                 </div>
             `;
             
+            postCard.addEventListener('click', function() {
+                mostrarPostCompleto(this); // Llamamos a la función al hacer clic
+            });
+
             postsGrid.appendChild(postCard);
         }
-        agregarNuevaPublicacion(
-            'Ejemplo',
-            '23 de abril, 2025',
-            'Esto es un ejemplo',
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT86S_ZlKylXOd3eTqAW5KXxkngeiP-uUxtNA&s.jpg',
-            'enlace-al-post.html'
-        );
-        */
+
+        // Función para agregar un nuevo video al blog
+        function agregarNuevoVideo(titulo, fecha, videoId) {
+            const videosGrid = document.getElementById('videos-grid');
+
+            const videoCard = document.createElement('article');
+            videoCard.className = 'post-card';
+            videoCard.innerHTML = `
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="post-content">
+                    <h3 class="post-title">${titulo}</h3>
+                    <span class="post-date">${fecha}</span>
+                </div>
+            `;
+
+            videosGrid.appendChild(videoCard);
+        }
+
+        // Función para mostrar el post completo
+        function mostrarPostCompleto(postCard) {
+            const titulo = postCard.getAttribute('data-post-title');
+            const fecha = postCard.getAttribute('data-post-date');
+            const contenido = postCard.getAttribute('data-post-content');
+            const imagen = postCard.getAttribute('data-post-image');
+
+            const singlePostSection = document.getElementById('single-post');
+            const singlePostTitle = document.getElementById('single-post-title');
+            const singlePostDate = document.getElementById('single-post-date');
+            const singlePostContent = document.getElementById('single-post-content');
+
+            singlePostTitle.textContent = titulo;
+            singlePostDate.textContent = fecha;
+            singlePostContent.innerHTML = `<img src="${imagen}" alt="${titulo}" class="post-image" style="margin-bottom: 20px;">` + contenido; // Agregamos la imagen
+
+            mostrarSeccion('single-post'); // Mostramos la sección del post individual
+        }
+
+        // Cargar las publicaciones
+        function cargarPublicaciones() {
+            const postsGrid = document.getElementById('posts-grid');
+            postsGrid.innerHTML = ''; // Limpiamos el contenido antes de cargar las publicaciones
+            // Llamamos a la función para agregar la publicación de ejemplo
+            agregarNuevaPublicacion(
+                'Ejemplo',
+                '23 de abril, 2025',
+                'Esto es un ejemplo de una publicación en el blog.  Aquí puedes agregar un resumen del artículo. Este texto debe ser atractivo para los jóvenes lectores.',
+                'https://picsum.photos/id/237/400/300',
+                '<h2>Esto es un ejemplo de un post</h2><p>Aquí puedes agregar el contenido completo de tu artículo.  Puedes usar HTML para formatear el texto, agregar imágenes, videos, etc.</p><img src="https://picsum.photos/id/238/800/400" alt="Ejemplo de imagen en el post"><p>Puedes seguir agregando párrafos y más contenido.</p>'
+            );
+             agregarNuevaPublicacion(
+                'Ola',
+                '23 de abril, 2025',
+                'Otro.  Aquí puedes agregar un resumen del artículo. Este texto debe ser atractivo para los jóvenes lectores.',
+                'https://picsum.photos/id/237/400/300',
+                '<h2>Esto es un ejemplo de un post</h2><p>Aquí puedes agregar el contenido completo de tu artículo.  Puedes usar HTML para formatear el texto, agregar imágenes, videos, etc.</p><img src="https://picsum.photos/id/238/800/400" alt="Ejemplo de imagen en el post"><p>Puedes seguir agregando párrafos y más contenido.</p>'
+            );
+        }
+
+        // Cargar los videos
+        function cargarVideos() {
+            const videosGrid = document.getElementById('videos-grid');
+            videosGrid.innerHTML = ''; // Limpiamos el contenido antes de cargar los videos
+            agregarNuevoVideo(
+                'Video de Ejemplo',
+                '26 de abril, 2025',
+                'jAS-GKmQ_5o'
+            );
+        }
+
+        // Mostrar la sección de inicio al cargar la página
+        window.onload = function() {
+            mostrarSeccion('inicio');
+            cargarInicio(); // Cargamos el contenido de inicio
+        };
     </script>
 </body>
 </html>
