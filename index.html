@@ -16,7 +16,10 @@
             --color-dark: #2c2c2c;
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             --radius: 8px;
-            --header-bg-image: url(https://upload.wikimedia.org/wikipedia/commons/5/5b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg); /* Variable para la imagen de fondo del header */
+            --radius-nav: 50px; /* Radio para la barra de navegación */
+            --radius-logo: 15px; /* Nuevo radio para el logo */
+            /* Imagen de fondo del header (URL válida) */
+            --header-bg-image: url(https://upload.wikimedia.org/wikipedia/commons/5/5b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg);
         }
 
         /* Reset básico */
@@ -43,22 +46,19 @@
 
         /* Header */
         header {
-            /* Fallback por si la imagen no carga */
             background-color: var(--color-primary);
-            /* Imagen de fondo */
             background-image: var(--header-bg-image);
             background-size: cover;
             background-position: center;
             color: var(--color-light);
-            padding: 60px 0 30px;
+            padding: 60px 20px 30px;
             text-align: center;
             border-radius: 0 0 var(--radius) var(--radius);
             margin-bottom: 40px;
             box-shadow: var(--shadow);
-            position: relative; /* Para el gradiente superpuesto */
+            position: relative;
         }
 
-        /* Gradiente superpuesto */
         header::before {
             content: '';
             position: absolute;
@@ -66,48 +66,72 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(109, 93, 252, 0.7), rgba(255, 94, 125, 0.7)); /* Ajusta la opacidad aquí */
+            background: linear-gradient(135deg, rgba(109, 93, 252, 0.7), rgba(255, 94, 125, 0.7));
             border-radius: 0 0 var(--radius) var(--radius);
+            z-index: 0;
+        }
+
+        header h1, header p {
+            position: relative;
+            z-index: 1;
         }
 
         header h1 {
             font-size: 3rem;
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-            position: relative; /* Para que el texto esté sobre el gradiente */
-            z-index: 1;
         }
 
         header p {
-            font-size: 1.2rem;
-            max-width: 600px;
+            font-size: 1.1rem;
+            max-width: 700px;
             margin: 0 auto;
             opacity: 0.9;
-            position: relative; /* Para que el texto esté sobre el gradiente */
-            z-index: 1;
         }
+
+        /* Logo Uniminuto - Más cuadrado */
+        #logo-uniminuto {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 55px;
+            height: 50px;
+            border-radius: var(--radius-logo);
+            background-image: url(https://seeklogo.com/images/U/uniminuto-logo-ABF44A3BC4-seeklogo.com.png);
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            z-index: 2;
+            overflow: hidden;
+        }
+        #logo-uniminuto img {
+             display: none;
+         }
 
         /* Navegación */
         nav {
             background-color: var(--color-light);
-            padding: 15px 0;
-            border-radius: var(--radius);
-            margin: -20px auto 40px;
+            padding: 10px 25px;
+            border-radius: var(--radius-nav);
+            margin: -30px auto 40px;
             max-width: 90%;
             box-shadow: var(--shadow);
             position: relative;
             z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         nav ul {
             display: flex;
-            justify-content: center;
             list-style: none;
             flex-wrap: wrap;
-        }
-
-        nav ul li {
-            margin: 0 15px;
+            padding: 0;
+            margin: 0;
+            gap: 10px;
         }
 
         nav ul li a {
@@ -115,20 +139,65 @@
             text-decoration: none;
             font-weight: 600;
             font-size: 1.1rem;
-            padding: 8px 12px;
-            border-radius: var(--radius);
+            padding: 8px 15px;
+            border-radius: var(--radius-nav);
             transition: all 0.3s ease;
             cursor: pointer;
+            display: block;
         }
 
-        nav ul li a:hover {
+        nav ul li a:hover, nav ul li a.active {
             background-color: rgba(109, 93, 252, 0.1);
             color: var(--color-primary);
         }
 
-        /* Sección de publicaciones */
-        .post-section {
+        /* Contenedor de Búsqueda */
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        #search-icon {
+            cursor: pointer;
+            fill: var(--color-primary);
+            transition: fill 0.3s ease;
+            width: 24px;
+            height: 24px;
+            margin-left: 15px;
+        }
+        #search-icon:hover {
+            fill: var(--color-secondary);
+        }
+
+        #search-input {
+            width: 0;
+            padding: 8px 0;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            transition: width 0.4s ease-in-out, padding 0.4s ease-in-out, opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
+            opacity: 0;
+            visibility: hidden;
+            margin-left: 10px;
+            border-radius: var(--radius-nav);
+            background-color: var(--color-bg);
+        }
+
+        .search-container:hover #search-input,
+        #search-input:focus {
+            width: 200px;
+            padding: 8px 15px;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Secciones */
+        .content-section {
             padding: 40px 0;
+            display: none;
+        }
+        .content-section.active {
             display: block;
         }
 
@@ -137,7 +206,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 10px; /* Espacio entre título y flecha */
+            gap: 10px;
             margin-bottom: 30px;
             text-align: center;
         }
@@ -146,7 +215,7 @@
             color: var(--color-dark);
             font-size: 2rem;
             position: relative;
-            margin-bottom: 0; /* Quitar margen inferior original */
+            margin-bottom: 0;
         }
 
         .section-title::after {
@@ -159,28 +228,29 @@
             border-radius: 2px;
         }
 
-        /* Estilo para la flecha de ordenar */
+        /* Flecha de ordenar */
         #sort-arrow {
             cursor: pointer;
             transition: transform 0.3s ease;
-            width: 24px; /* Tamaño del icono */
+            width: 24px;
             height: 24px;
-            fill: var(--color-primary); /* Color de la flecha */
+            fill: var(--color-primary);
         }
+        #sort-arrow.arrow-up { transform: rotate(0deg); }
+        #sort-arrow.arrow-down { transform: rotate(180deg); }
 
-        #sort-arrow.arrow-up {
-            transform: rotate(0deg); /* Flecha hacia arriba (o estado inicial) */
-        }
-
-        #sort-arrow.arrow-down {
-            transform: rotate(180deg); /* Flecha hacia abajo */
-        }
-
-
+        /* Grid de Publicaciones */
         .posts-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 30px;
+        }
+        #no-results-message {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #777;
+            margin-top: 40px;
+            display: none;
         }
 
         .post-card {
@@ -190,58 +260,85 @@
             box-shadow: var(--shadow);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
+            display: flex;
+            flex-direction: column;
         }
-
         .post-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
         }
-
         .post-image {
             width: 100%;
             height: 200px;
             object-fit: cover;
+            object-position: top; /* *** Enfocar parte superior de la imagen *** */
+            display: block;
         }
-
         .post-content {
             padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
-
         .post-title {
             font-size: 1.4rem;
             margin-bottom: 10px;
             color: var(--color-dark);
         }
-
-        .post-date {
+        .post-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             font-size: 0.9rem;
             color: #777;
             margin-bottom: 12px;
-            display: block;
+            flex-wrap: wrap;
+            gap: 5px;
         }
-
+        .post-date {}
+        .post-category-badge {
+            background-color: rgba(255, 94, 125, 0.1);
+            color: var(--color-secondary);
+            padding: 3px 8px;
+            border-radius: 50px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
         .post-excerpt {
             margin-bottom: 15px;
             color: #555;
+            flex-grow: 1;
         }
-
-        /* Estilos para la sección de video */
-        .video-container {
-            width: 100%;
-            height: 0;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        .video-thumbnail-container {
             position: relative;
-            margin-bottom: 20px;
-            border-radius: var(--radius);
-            overflow: hidden;
+            width: 100%;
+            height: 200px;
+            background-color: #e0e0e0;
         }
-
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .video-thumbnail-container img {
             width: 100%;
             height: 100%;
+            object-fit: cover;
+            object-position: top; /* *** Enfocar parte superior de la imagen *** */
+        }
+        .play-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+        }
+        .play-icon svg {
+            fill: white;
+            width: 24px;
+            height: 24px;
         }
 
         /* Post individual */
@@ -251,27 +348,22 @@
             padding: 30px;
             margin-bottom: 40px;
             box-shadow: var(--shadow);
-            display: none; /* Oculto por defecto */
         }
-
         .single-post-title {
             font-size: 2.2rem;
             margin-bottom: 15px;
             color: var(--color-dark);
         }
-
         .single-post-info {
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
             margin-bottom: 25px;
             color: #666;
             font-size: 0.95rem;
         }
-
-        .single-post-date {
-            margin-right: 20px;
-        }
-
+        .single-post-date {}
         .single-post-category {
             background-color: rgba(109, 93, 252, 0.1);
             color: var(--color-primary);
@@ -279,19 +371,94 @@
             border-radius: 50px;
             font-weight: 600;
         }
-
         .single-post-content {
-            line-height: 1.8;
+             line-height: 1.8;
+             overflow: hidden; /* Para contener floats */
         }
-
-        .single-post-content img {
+        .single-post-content::after { /* Clearfix para floats */
+            content: "";
+            display: table;
+            clear: both;
+        }
+        .single-post-content img { /* Estilo general para imágenes en contenido */
             max-width: 100%;
+            height: auto;
             border-radius: var(--radius);
-            margin: 25px 0;
+            margin: 25px auto; /* Centrar por defecto */
+            display: block;
+            box-shadow: var(--shadow);
+        }
+        .single-post-content p { margin-bottom: 20px; }
+
+        /* Clases para formato de contenido */
+        .content-center {
+            text-align: center;
+            margin-bottom: 1.5em;
+            font-style: italic;
+            color: #555;
+        }
+        .image-right-wrap {
+            float: right;
+            margin: 0 0 15px 25px;
+            max-width: 50%;
+            height: auto;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        .image-left-wrap {
+            float: left;
+            margin: 5px 30px 15px 0; /* *** Margen derecho aumentado *** */
+            max-width: 50%;
+            height: auto;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
         }
 
-        .single-post-content p {
+        /* Media queries para imágenes flotantes */
+        @media (max-width: 600px) {
+            .image-right-wrap,
+            .image-left-wrap {
+                float: none;
+                display: block;
+                max-width: 85%;
+                margin: 20px auto;
+            }
+        }
+
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
             margin-bottom: 20px;
+            border-radius: var(--radius);
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        .submit-btn {
+            background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-top: 10px;
+            justify-self: start;
+        }
+        .submit-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(109, 93, 252, 0.3);
         }
 
         /* Footer */
@@ -302,21 +469,18 @@
             margin-top: 60px;
             border-radius: var(--radius) var(--radius) 0 0;
         }
-
         .footer-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 40px;
             margin-bottom: 40px;
         }
-
         .footer-section h3 {
             font-size: 1.4rem;
             margin-bottom: 20px;
             position: relative;
             padding-bottom: 10px;
         }
-
         .footer-section h3::after {
             content: "";
             position: absolute;
@@ -326,18 +490,26 @@
             height: 3px;
             background: var(--color-accent);
         }
-
         .footer-section p {
             margin-bottom: 15px;
             opacity: 0.8;
         }
-
+        .footer-section ul {
+             list-style: none;
+             padding: 0;
+         }
+         .footer-section ul li { margin-bottom: 10px; }
+         .footer-section ul li a {
+             color: rgba(255, 255, 255, 0.8);
+             text-decoration: none;
+             transition: color 0.3s ease;
+         }
+         .footer-section ul li a:hover { color: var(--color-accent); }
         .social-links {
             display: flex;
             gap: 15px;
             margin-top: 20px;
         }
-
         .social-links a {
             display: inline-flex;
             align-items: center;
@@ -350,16 +522,15 @@
             text-decoration: none;
             transition: all 0.3s ease;
         }
-
         .social-links a:hover {
             background-color: var(--color-accent);
             transform: translateY(-3px);
         }
-
         .social-icon {
-            font-size: 20px;
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
         }
-
         .copyright {
             text-align: center;
             padding-top: 20px;
@@ -367,6 +538,44 @@
             font-size: 0.9rem;
             opacity: 0.7;
         }
+        /* Formulario de suscripción */
+        #subscribe-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: stretch;
+        }
+         @media (min-width: 480px) {
+             #subscribe-form {
+                 flex-direction: row;
+             }
+             #subscribe-form input { flex-grow: 1; }
+         }
+         #subscribe-form input {
+             padding: 12px 15px;
+             border: 1px solid #ddd;
+             border-radius: var(--radius-nav);
+             font-size: 1rem;
+             background-color: rgba(255, 255, 255, 0.9);
+             color: var(--color-dark);
+         }
+         #subscribe-form button {
+             background: var(--color-accent);
+             color: var(--color-dark);
+             border: none;
+             padding: 12px 20px;
+             border-radius: var(--radius-nav);
+             font-size: 1rem;
+             font-weight: 600;
+             cursor: pointer;
+             transition: background-color 0.3s ease, transform 0.3s ease;
+         }
+         #subscribe-form button:hover {
+             background-color: #2ecc71;
+             transform: scale(1.03);
+         }
+         #subscribe-status { margin-top: 10px; font-size: 0.9rem; }
+
 
         /* Botón para volver arriba */
         .back-to-top {
@@ -384,266 +593,91 @@
             text-decoration: none;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             opacity: 0;
-            transition: all 0.3s ease;
-            pointer-events: none;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+            z-index: 100;
         }
-
-        .back-to-top.visible {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .back-to-top:hover {
-            transform: translateY(-5px);
-        }
-
-        /* Sobre mí */
-        .about-section {
-            background-color: var(--color-light);
-            border-radius: var(--radius);
-            padding: 40px;
-            margin-bottom: 40px;
-            box-shadow: var(--shadow);
-            display: none;
-        }
-
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 30px;
-        }
-
-        .about-image img {
-            width: 100%;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-        }
-
-        .about-text h2 {
-            margin-bottom: 20px;
-            color: var(--color-dark);
-            font-size: 2rem;
-        }
-
-        .about-text p {
-            margin-bottom: 15px;
-            line-height: 1.8;
-        }
-
-        /* Contacto */
-        .contact-section {
-            background-color: var(--color-light);
-            border-radius: var(--radius);
-            padding: 40px;
-            margin-bottom: 40px;
-            box-shadow: var(--shadow);
-            display: none;
-        }
-
-        .contact-form {
-            display: grid;
-            gap: 20px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group label {
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--color-dark);
-        }
-
-        .form-input {
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: var(--radius);
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--color-primary);
-        }
-
-        textarea.form-input {
-            min-height: 150px;
-            resize: vertical;
-        }
-
-        .submit-btn {
-            background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            margin-top: 10px;
-            justify-self: start;
-        }
-
-        .submit-btn:hover {
-            transform: scale(1.05);
-        }
+        .back-to-top.visible { opacity: 1; visibility: visible; }
+        .back-to-top:hover { transform: translateY(-5px); }
+        .back-to-top svg { width: 20px; height: 20px; fill: white; }
 
         /* Responsividad */
+        @media (max-width: 992px) {
+            .container { max-width: 960px; }
+            nav { flex-wrap: wrap; justify-content: center; gap: 15px; }
+            .search-container { order: 1; }
+        }
         @media (max-width: 768px) {
-            header h1 {
-                font-size: 2.2rem;
-            }
-
-            nav ul {
-                gap: 5px;
-            }
-
-            .about-content {
-                grid-template-columns: 1fr;
-            }
-
-            .single-post-title {
-                font-size: 1.8rem;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-            .section-title {
-                font-size: 1.8rem; /* Ajustar tamaño para móviles */
-            }
+            header h1 { font-size: 2.2rem; }
+            header p { font-size: 1rem; }
+            nav { max-width: 95%; }
+            .section-title { font-size: 1.8rem; }
+            .single-post-title { font-size: 1.8rem; }
+            .footer-content { grid-template-columns: 1fr; gap: 30px; }
+            .footer-section { text-align: center; }
+            .footer-section h3::after { margin: 0 auto; }
+            .social-links { justify-content: center; }
+            #subscribe-form { flex-direction: column; }
+            #subscribe-form button { width: 100%; }
         }
-
         @media (max-width: 480px) {
-            header {
-                padding: 40px 0 20px;
-            }
-
-            header h1 {
-                font-size: 1.8rem;
-            }
-
-            header p {
-                font-size: 1rem;
-            }
-
-            .section-title {
-                font-size: 1.6rem;
-            }
-
-            .post-title {
-                font-size: 1.2rem;
-            }
-
-            .single-post {
-                padding: 20px;
-            }
-
-            .single-post-title {
-                font-size: 1.6rem;
-            }
-             .section-title-container {
-                flex-direction: column; /* Apilar título y flecha en móviles */
-                gap: 5px;
-            }
+            header { padding: 40px 15px 20px; }
+            header h1 { font-size: 1.8rem; }
+            header p { font-size: 0.9rem; }
+            nav { padding: 10px 15px; }
+            nav ul li a { font-size: 1rem; padding: 6px 10px; }
+            .search-container:hover #search-input, #search-input:focus { width: 150px; }
+            .section-title { font-size: 1.6rem; }
+            .section-title-container { flex-direction: column; gap: 5px; }
+            .posts-grid { grid-template-columns: 1fr; }
+            .post-title { font-size: 1.2rem; }
+            .single-post { padding: 20px; }
+            .single-post-title { font-size: 1.6rem; }
+            .back-to-top { width: 45px; height: 45px; bottom: 15px; right: 15px; }
+            .back-to-top svg { width: 18px; height: 18px; }
         }
 
-        /* Iconos de FontAwesome (como SVGs inline para simplificar) */
-        .fa {
-            display: inline-block;
-            width: 1em;
-            height: 1em;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-
-        .fa-facebook {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%23ffffff' d='M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z'/%3E%3C/svg%3E");
-        }
-
-        .fa-twitter {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%23ffffff' d='M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z'/%3E%3C/svg%3E");
-        }
-
-        .fa-instagram {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath fill='%23ffffff' d='M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z'/%3E%3C/svg%3E");
-        }
-
-        .fa-youtube {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 576 512'%3E%3Cpath fill='%23ffffff' d='M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z'/%3E%3C/svg%3E");
-        }
-
-        .fa-chevron-up {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath fill='%23ffffff' d='M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z'/%3E%3C/svg%3E");
-        }
-
-        /* Estilos para el logo de Uniminuto */
-        #logo-uniminuto {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-image: url(https://seeklogo.com/images/U/uniminuto-logo-ABF44A3BC4-seeklogo.com.png); /* Reemplaza con la URL de tu logo */
-            background-size: cover;
-            background-position: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            overflow: hidden; /* Importante para mostrar la imagen completa al hacer hover */
-        }
-
-        #logo-uniminuto:hover {
-            width: 200px; /* Ancho de la imagen completa */
-            height: auto; /* Altura automática para mantener la proporción */
-            border-radius: var(--radius); /* Bordes redondeados al hacer hover */
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        #logo-uniminuto img {
-            display: none; /* Oculta la imagen dentro del div */
-        }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
             <h1>Logos y Espíritu</h1>
-            <p>"Iluminando el camino de los jóvenes con la luz de la fe y el conocimiento"</p>
+            <p>Bienvenidos a Logos y Espíritu, un espacio donde exploramos temas sobre la fe y sobre la razón, además de la obra del Siervo de Dios Rafael García Herreros.</p>
         </div>
         <div id="logo-uniminuto">
-            <img src="https://encuestas.uniminuto.edu/tmp/assets/6b662ff9/Uniminuto_Mesa%20de%20trabajo%201%20copia%202.png" alt="Logo Uniminuto Completo">
-        </div>
+             </div>
     </header>
 
     <div class="container">
         <nav>
-            <ul>
-                <li><a href="#" data-section="publicaciones">Publicaciones</a></li>
+            <ul id="main-nav">
+                <li><a href="#" data-section="publicaciones" class="active">Publicaciones</a></li>
                 </ul>
+            <div class="search-container">
+                <svg id="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px">
+                    <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                    <path d="M0 0h24v24H0z" fill="none"/>
+                </svg>
+                <input type="search" id="search-input" placeholder="Buscar...">
+            </div>
         </nav>
 
-        <section class="post-section" id="publicaciones">
+        <section class="content-section active" id="publicaciones">
             <div class="section-title-container">
                 <h2 class="section-title">Publicaciones Recientes</h2>
-                <svg id="sort-arrow" class="arrow-up" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <svg id="sort-arrow" class="arrow-up" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                     <path d="M7 14l5-5 5 5z"/>
                     <path d="M0 0h24v24H0z" fill="none"/>
                 </svg>
             </div>
             <div class="posts-grid" id="posts-grid">
                 </div>
+            <p id="no-results-message" style="display: none;">No se encontraron publicaciones que coincidan con tu búsqueda.</p>
         </section>
 
-        <section class="single-post" id="single-post">
+        <section class="content-section" id="single-post">
+             <button id="back-to-posts" class="submit-btn" style="margin-bottom: 20px; background: var(--color-dark);">← Volver a Publicaciones</button>
             <h1 class="single-post-title" id="single-post-title"></h1>
             <div class="single-post-info">
                 <span class="single-post-date" id="single-post-date"></span>
@@ -652,299 +686,334 @@
             <div class="single-post-content" id="single-post-content">
                 </div>
         </section>
-         <section class="about-section" id="sobre-mi" style="display: none;">
-             <h2 class="section-title">Sobre mí</h2>
-             <div class="about-content">
-                 <div class="about-image">
-                     <img src="https://placehold.co/400x400/a7f3d0/1f2937?text=Tu+Foto" alt="Foto del autor">
-                 </div>
-                 <div class="about-text">
-                     <h2>¡Hola! Soy [Tu Nombre]</h2>
-                     <p>Bienvenido a mi espacio. Soy un apasionado de la espiritualidad y la religión desde una perspectiva moderna y juvenil. Mi misión es crear puentes entre las tradiciones espirituales milenarias y las nuevas generaciones.</p>
-                     <p>Estudié [Tu Formación] y he dedicado los últimos años a investigar cómo las enseñanzas espirituales pueden transformar positivamente la vida de los jóvenes en el mundo actual.</p>
-                     <p>A través de este blog, quiero compartir reflexiones, herramientas prácticas y experiencias que nos ayuden a conectar con nuestra dimensión espiritual sin desconectarnos del mundo en que vivimos.</p>
-                     <p>¡Gracias por acompañarme en este viaje de descubrimiento y crecimiento!</p>
-                 </div>
-             </div>
-         </section>
- 
-        </div> <footer>
+
+        </div>
+
+    <footer>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
                     <h3>Logos y Espíritu</h3>
                     <p>Bienvenidos a Logos y Espíritu, un espacio donde exploramos temas sobre la fe y sobre la razón, además de la obra del Siervo de Dios Rafael García Herreros.</p>
                     <div class="social-links">
-                        <a href="#"><i class="fa fa-facebook"></i></a>
-                        <a href="#"><i class="fa fa-twitter"></i></a>
-                        <a href="#"><i class="fa fa-instagram"></i></a>
-                        <a href="#"><i class="fa fa-youtube"></i></a>
+                        <a href="#" aria-label="Facebook">
+                            <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"/></svg>
+                        </a>
+                        <a href="#" aria-label="Twitter">
+                            <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+                        </a>
+                        <a href="#" aria-label="Instagram">
+                           <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
+                        </a>
+                        <a href="#" aria-label="YouTube">
+                            <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
+                        </a>
                     </div>
                 </div>
                 <div class="footer-section">
                     <h3>Enlaces Rápidos</h3>
-                    <ul>
+                     <ul>
                         <li><a href="#" data-section="publicaciones">Publicaciones</a></li>
-                    </ul>
+                        </ul>
                 </div>
                 <div class="footer-section">
                     <h3>Suscríbete</h3>
                     <p>Recibe nuestras publicaciones más recientes en tu correo electrónico.</p>
-                    <form>
-                        <input type="email" placeholder="Tu correo electrónico" class="form-input" style="margin-bottom: 10px;">
+                    <form id="subscribe-form">
+                        <input type="email" placeholder="Tu correo electrónico" class="form-input" required>
                         <button type="submit" class="submit-btn">Suscribirse</button>
                     </form>
+                    <div id="subscribe-status" style="margin-top: 10px;"></div>
                 </div>
             </div>
             <div class="copyright">
-                <p>© 2025 Logos y Espíritu. Todos los derechos reservados.</p>
+                <p>© <span id="current-year"></span> Logos y Espíritu. Todos los derechos reservados.</p>
             </div>
         </div>
     </footer>
 
-    <a href="#" class="back-to-top" id="backToTop">
-        <i class="fa fa-chevron-up"></i>
+    <a href="#" class="back-to-top" id="backToTop" aria-label="Volver arriba">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z"/></svg>
     </a>
 
     <script>
-        // Script para mostrar/ocultar el botón de volver arriba
-        window.onscroll = function() {
-            const backToTopButton = document.getElementById('backToTop');
-            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        // --- CONSTANTES Y ELEMENTOS DEL DOM ---
+        const backToTopButton = document.getElementById('backToTop');
+        const postsGrid = document.getElementById('posts-grid');
+        const sortArrow = document.getElementById('sort-arrow');
+        const navLinks = document.querySelectorAll('#main-nav a[data-section]');
+        const contentSections = document.querySelectorAll('.content-section');
+        const singlePostSection = document.getElementById('single-post');
+        const singlePostTitle = document.getElementById('single-post-title');
+        const singlePostDate = document.getElementById('single-post-date');
+        const singlePostCategory = document.getElementById('single-post-category');
+        const singlePostContent = document.getElementById('single-post-content');
+        const backToPostsButton = document.getElementById('back-to-posts');
+        const subscribeForm = document.getElementById('subscribe-form');
+        const subscribeStatus = document.getElementById('subscribe-status');
+        const currentYearSpan = document.getElementById('current-year');
+        const searchInput = document.getElementById('search-input');
+        const searchIcon = document.getElementById('search-icon');
+        const noResultsMessage = document.getElementById('no-results-message');
+
+        // --- DATOS DE PUBLICACIONES (Actualizados) ---
+        const publicaciones = [
+             {
+                id: 'razonabilidad-fe',
+                titulo: 'La razonabilidad de la fe en Dios',
+                fecha: '2025-04-22',
+                resumen: 'Creer no es absurdo: es razonable y transformador. En esta catequesis, Benedicto XVI muestra cómo la fe y la razón no se contradicen...',
+                imagen: 'https://i.postimg.cc/pXGwQH28/imagebene.png',
+                contenido: `
+                    <div class="content-center">
+                        <strong><em>AUDIENCIA GENERAL</em></strong><br>
+                        <em>Sala Pablo VI</em><br>
+                        <em>Miércoles 21 de noviembre de 2012</em>
+                    </div>
+                    <p><img src="https://i.postimg.cc/pXGwQH28/imagebene.png" alt="Benedicto XVI" class="image-right-wrap">Queridos hermanos y hermanas:</p>
+                    <p>Avanzamos en este Año de la fe llevando en nuestro corazón la esperanza de redescubrir cuánta alegría hay en creer y de volver a encontrar el entusiasmo de comunicar a todos las verdades de la fe.</p>
+                    <p>Estas verdades no son un simple mensaje sobre Dios, una información particular sobre Él. Expresan el acontecimiento del encuentro de Dios con los hombres, encuentro salvífico y liberador que realiza las aspiraciones más profundas del hombre, sus anhelos de paz, de fraternidad, de amor. La fe lleva a descubrir que el encuentro con Dios valora, perfecciona y eleva cuanto hay de verdadero, de bueno y de bello en el hombre. Es así que, mientras Dios se revela y se deja conocer, el hombre llega a saber quién es Dios, y conociéndole se descubre a sí mismo, su proprio origen, su destino, la grandeza y la dignidad de la vida humana.</p>
+                    <p>En la catequesis de hoy quisiera detenerme en la razonabilidad de la fe en Dios. La tradición católica, desde el inicio, ha rechazado el llamado fideísmo, que es la voluntad de creer contra la razón. <em>Credo quia absurdum</em> (creo porque es absurdo) no es fórmula que interprete la fe católica. Dios, en efecto, no es absurdo, sino que es misterio. El misterio, a su vez, no es irracional, sino sobreabundancia de sentido, de significado, de verdad. Si, contemplando el misterio, la razón ve oscuridad, no es porque en el misterio no haya luz, sino más bien porque hay demasiada. Es como cuando los ojos del hombre se dirigen directamente al sol para mirarlo: sólo ven tinieblas; pero ¿quién diría que el sol no es luminoso, es más, la fuente de la luz? La fe permite contemplar el «sol», Dios, porque es acogida de su revelación en la historia y, por decirlo así, recibe verdaderamente toda la luminosidad del misterio de Dios, reconociendo el gran milagro: Dios se ha acercado al hombre, se ha ofrecido a su conocimiento, condescendiendo al límite creatural de su razón (cf. Conc. Ecum. Vat. II, Const. Dei Verbum, 13). Al mismo tiempo, Dios, con su gracia, ilumina la razón, le abre horizontes nuevos, inconmensurables e infinitos. Por esto, la fe constituye un estímulo para buscar siempre, para no detenerse jamás y no aquietarse nunca en el descubrimiento inagotable de la verdad y de la realidad. Es falso el prejuicio de algunos pensadores modernos, según los cuales la razón humana quedaría como bloqueada por los dogmas de la fe.</p>`,
+                video: null,
+                categoria: 'Espiritualidad'
+             },
+             {
+                id: 'fe-ciencia-enemigos',
+                titulo: '¿Son enemigos la fe y la ciencia?',
+                fecha: '2025-03-20',
+                resumen: 'Explorando la relación entre logos y espíritu, razón y fe, y desmintiendo el falso antagonismo entre ciencia y devoción.',
+                imagen: 'https://i.postimg.cc/90bQYFbZ/image-TROSTE.png',
+                contenido: `
+                    <p><img src="https://i.postimg.cc/90bQYFbZ/image-TROSTE.png" alt="Fe y Ciencia" class="image-left-wrap">La tradición filosófica ha entendido el término griego λόγος como razón, discurso, estudio o palabra. La expresión espíritu, por su parte, se liga al ámbito trascendental, que las religiones a lo largo y ancho del mundo han definido según sus parámetros; el cristianismo, para más señas, define el espíritu en dos vías: por un lado como la fuerza divina que mora en la carne (a veces de manera antagónica) y, por otro, como el elemento que distancia al hombre del animal, siendo el espíritu diferente al alma, gozando las bestias, las plantas y los humanos de esta, pues es el alma la que anima el cuerpo, es decir, la rosa posee un alma vegetal, el gato un alma animal y las gentes un alma y un espíritu.</p>
+                    <p>Así, ambos términos parecen antípodas. El logos se enmarca, desde tiempos de Heráclito, en el mundo racional, conceptual y terrenal. Designa, entre otras cosas, la ley universal del mundo físico y un conjunto de ideas. Es lo que diferencia a la persona del chimpancé: su capacidad de pensar ordenadamente, lógicamente. Desde esta perspectiva, la razón y la fe están en constante riña, como suele pregonarse en la opinión pública. Por ejemplo, se dice que la devoción es el resultado de la ignorancia y que la ciencia es dañina. Las sociedades cultas, entonces, son las descreídas y las fervientes son las tercermundistas. Esta tradición se encarna en el quehacer académico, por lo que, si hay un lugar con bastante fe en el mundo es la universidad, pues la mayoría dejan allí su fe. Es cada vez más común que, el creyente renuncie en el aula universitaria a sus dogmas.</p>
+                    <p>No obstante, este antagonismo es falso. El espíritu se hermana con la razón, de hecho, la razón habita en el espíritu y el espíritu se entiende a través de la razón. La filosofía, en aras del conocimiento ha desentramado los misterios divinos y, la fe, a la luz de la razón ha formulado sus verdades. De hecho, una fe sin razón es vacía, tradicionalismo puro y una razón sin fe es mero materialismo. No hablo de una fe puesta en esta o aquella divinidad, sino de una fe que se libera de lo mundano y alcanza el estrado de lo trascendente. La historia nos ha dado testimonio de varios pensadores que han desarrollado la ciencia, sin divorciarse de la fe.</p>
+                    <p>En este primer artículo, solo pretendo plantear la problemática que de aquí en adelante se tratará en cada una de las entregas, exponiendo textos racionales que pueden movernos a una reflexión espiritual y al contrario; revisando, también, la figura del padre Rafael García Herreros, un hombre de fe que apostó por las ciencias, fundando una universidad y varios colegios, siempre en la búsqueda de la verdad, que, en últimas, son la meta del logos y el espíritu.</p>`,
+                video: null,
+                categoria: 'Reflexión'
+             },
+             // *** NUEVA PUBLICACIÓN: Humanismo Cristiano ***
+             {
+                id: 'humanismo-cristiano',
+                titulo: 'El Humanismo Cristiano',
+                fecha: '2025-03-27',
+                resumen: 'Una reflexión sobre la belleza, dignidad y potencial del ser humano desde la perspectiva cristiana, inspirada en palabras de Rafael García Herreros.',
+                imagen: 'https://i.postimg.cc/QtkTvDSx/imageblne.png',
+                contenido: `
+                    <p><img src="https://i.postimg.cc/QtkTvDSx/imageblne.png" alt="Humanismo Cristiano" class="image-left-wrap">¡Tú eres una belleza, oh hombre! ¡Tus ojos son el espejo donde se refleja un lejano paisaje! Tus oídos son el caracol donde se transforman los ruidos y se convierten en símbolos y en palabras. Tu boca es capaz de hablar lo más tierno, lo más profundo, lo más sutil. Tus manos son increíbles.</p>
+                    <p>Los griegos decían: “El hombre por las manos”. Tus manos embellecen al mundo. ¡Todas las ciudades, todos los museos, todos los caminos, todos los sembrados, todas las músicas, todas las máquinas fueron hechas por tus manos portentosas, oh hombre! Y tu inteligencia… Ella ha llenado la historia de poemas, de fórmulas matemáticas, de ciencias, de esculturas, de civilización.</p>
+                    <p>¡Yo te amo, te honro y casi te adoro! Te amo en tu belleza, en tu cuerpo y en tu alma; en tus pensamientos y en tus deseos; en tus ambiciones y en tus nostalgias; en tus triunfos y en tus derrotas. ¡Eres maravilloso, oh hombre! ¡Eres capaz del heroísmo, del amor, de la abnegación, de todo lo extraordinario! ¡Yo te amo, oh hombre, polvo sublime! Oh hombre bello y magnífico. Yo sé que tú eres poco inferior a los ángeles, que estás coronado de gloria y majestad. Eres signo de Dios. Eres la teofanía, más que el mar, más que el universo; eres tú, pequeño hombre, la presencia, la verdadera figura de Dios en la Tierra.</p>
+                    <p>Tú no sólo eres la medida de todo, sino el ideal de todo. En tu historia, hay uno maravilloso, uno absolutamente divino, que intensificó tu raza, tu aspecto, tu forma humana: ¡Fue Jesucristo! Yo pienso que no fue indigno de Dios el querer hacerse hombre. Tomar nuestra medida, conocer nuestra interioridad y querer sublimarnos casi a lo divino con su presencia entre nosotros. Yo quiero decirte, hombre, que he descubierto que el secreto para ser feliz es amarte. Y quisiera contarlo a todos. Y quisiera consagrar mi vida a tu servicio.</p>
+                    <p>Tú me has envuelto en el mismo y único amor de Dios. “Amarás al Señor, tu Dios, y a tu hermano el hombre”. Este es el mandato. Cuando estoy junto a ti, sé que estoy cerca de Dios. Todo cuanto hago por ti, hombre, lo hago por el eterno, por el infinito que es Dios. Cuando te amo, estoy auténticamente amando a Dios. Porque la expresión más auténtica de nuestro amor a Dios es nuestro amor al hombre. ¡Hombre! Hace mucho tiempo estoy cerca de ti y apenas ahora comprendo lo que tú eres. Nunca he mirado bien a tus ojos. Nunca he escuchado atentamente tus palabras. Nunca he pensado en lo que eres capaz.</p>
+                    <p>¡De mis labios no debe salir la palabra que te hiera, hombre! De mi inteligencia no debe brotar el pensamiento hostil a ti, que intente poner trabas en tu camino, en tu destino. En mi corazón, no guardaré resentimiento para ti, hombre. Quiero aprender a apreciarte, a honrarte, a ayudarte. Quiero aprender a mirarte no con indiferencia, no con desvío, no con envidia ni con disgustos, sino apasionadamente, con un amor que raye en adoración.</p>
+                    <p>Sólo tú, hombre, eres la solución de mi agonía. Quiero hacer de la vida un acto de amor a ti. Quiero servirte, quiero consagrarme a tu bien, a tu mejoramiento, a tu transformación. Trabajaré con delirio. No descansaré, hasta verte como lo mereces; hasta cambiar la estructura de la ciudad en favor tuyo, hasta hacer la ciudad humana. Sé que es necesario abrirte, anchas, las puertas del mundo. Que todo te pertenece. Que no deben estar cerrados para ti los portones del progreso y del bienestar.</p>
+                    <p>¡Oh hombre! ¡Oh campesino! ¡Oh trabajador! ¡Oh técnico! ¡Oh artista! ¡Oh caminante! ¡Oh luchador! Yo sé que hay que hacer una revolución en favor tuyo, pero sin derramar una gota de sangre; una revolución con ciencia, con energía, con amor. Siento, hombre, la justicia de una revolución en tu favor. Miro con pesadumbre tus sufrimientos, tu pobreza, tu soledad. Quisiera que cambiara el mundo para ti. Hombre, hermano mío: tú no debes vivir en una choza. Debes lograr el rango que te pertenece. No puedes carecer de lo que otros tienen en abundancia. No puedes seguir sollozando por mi culpa, ni seguir viviendo pobre y en harapos. Tú no puedes ser eternamente marginado.</p>
+                    <p>Yo sé que dentro de algún tiempo se habrán resuelto casi todos los problemas que te angustian. Pero cuando todo se haya resuelto, cuando ya no seamos un país subdesarrollado, cuando florezcan todos nuestros campos, cuando todos los niños estudien, cuando todos los jóvenes vayan a las universidades, cuando todo ese bello futuro llegue a ser presente, quedarás tú, solitario e inconforme, hombre, con toda tu belleza, con toda tu soledad, con toda tu gloria. Siempre quedarás con tu propio misterio, añadido al misterio de tu origen y de tu fin.</p>
+                    <p style="text-align: right; font-style: italic; margin-top: 2em;">«El Banquete del Millón». Rafael García Herreros,<br>
+                    Colección Obras Completas, No. 21, Corp. Centro Carismático Minuto de Dios, Bogotá, 2010.</p>`,
+                video: null,
+                categoria: 'Humanismo' // Nueva categoría
+             }
+        ];
+
+        let currentPosts = [...publicaciones];
+        let sortOrder = 'desc';
+
+        // --- FUNCIONES (sin cambios estructurales) ---
+
+        function crearTarjetaPost(post) {
+            const thumbnailSrc = post.video ? `https://i.ytimg.com/vi/${post.video}/hqdefault.jpg` : post.imagen;
+            const videoOverlay = post.video ? `<div class="play-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px"><path d="M8 5v14l11-7z"/><path d="M0 0h24v24H0z" fill="none"/></svg></div>` : '';
+            return `
+                <article class="post-card" data-id="${post.id}">
+                    <div class="video-thumbnail-container">
+                        <img src="${thumbnailSrc}" alt="${post.titulo}" class="post-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/cccccc/ffffff?text=Imagen+no+disponible';">
+                        ${videoOverlay}
+                    </div>
+                    <div class="post-content">
+                        <h3 class="post-title">${post.titulo}</h3>
+                        <div class="post-meta">
+                            <span class="post-date">${formatearFecha(post.fecha)}</span>
+                             <span class="post-category-badge">${post.categoria}</span>
+                        </div>
+                        <p class="post-excerpt">${post.resumen}</p>
+                    </div>
+                </article>
+            `;
+        }
+
+        function renderizarPublicaciones(postsToRender) {
+            postsGrid.innerHTML = '';
+            if (postsToRender.length === 0) {
+                noResultsMessage.style.display = 'block';
+            } else {
+                noResultsMessage.style.display = 'none';
+                postsToRender.forEach(post => {
+                    postsGrid.innerHTML += crearTarjetaPost(post);
+                });
+                document.querySelectorAll('.post-card').forEach(card => {
+                    card.addEventListener('click', () => mostrarPostIndividual(card.dataset.id));
+                });
+            }
+        }
+
+        function ordenarPublicaciones() {
+            const postsToSort = currentPosts;
+            postsToSort.sort((a, b) => {
+                const dateA = new Date(a.fecha);
+                const dateB = new Date(b.fecha);
+                return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+            });
+            renderizarPublicaciones(postsToSort);
+            sortArrow.classList.toggle('arrow-up', sortOrder === 'asc');
+            sortArrow.classList.toggle('arrow-down', sortOrder === 'desc');
+        }
+
+        function cambiarOrden() {
+            sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+            handleSearch();
+        }
+
+        function formatearFecha(fechaString) {
+            const [year, month, day] = fechaString.split('-').map(Number);
+            const fecha = new Date(Date.UTC(year, month - 1, day));
+            const opciones = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
+            return fecha.toLocaleDateString('es-ES', opciones);
+        }
+
+
+        function toggleBackToTopButton() {
+            if (window.scrollY > 300) {
                 backToTopButton.classList.add('visible');
             } else {
                 backToTopButton.classList.remove('visible');
             }
-        };
+        }
 
-        // Función para volver arriba suavemente
-        document.getElementById('backToTop').addEventListener('click', function(e) {
+        function cambiarSeccion(idSeccion) {
+            contentSections.forEach(section => {
+                section.classList.remove('active');
+            });
+            const seccionActiva = document.getElementById(idSeccion);
+            if (seccionActiva) {
+                seccionActiva.classList.add('active');
+            }
+            navLinks.forEach(link => {
+                link.classList.toggle('active', link.dataset.section === idSeccion);
+            });
+            if (idSeccion !== 'single-post') {
+                singlePostSection.classList.remove('active');
+                if(idSeccion === 'publicaciones') {
+                    document.getElementById('publicaciones').classList.add('active');
+                }
+            }
+             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function mostrarPostIndividual(id) {
+            const post = publicaciones.find(p => p.id === id);
+            if (!post) return;
+
+            singlePostTitle.textContent = post.titulo;
+            singlePostDate.textContent = `Publicado el ${formatearFecha(post.fecha)}`;
+            singlePostCategory.textContent = post.categoria;
+
+            let contenidoHTML = '';
+            if (post.video) {
+                contenidoHTML += `
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/${post.video}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
+                `;
+            }
+            contenidoHTML += post.contenido;
+            singlePostContent.innerHTML = contenidoHTML;
+
+            cambiarSeccion('single-post');
+        }
+
+        function volverAPublicaciones() {
+            cambiarSeccion('publicaciones');
+        }
+
+         function handleSubscribeFormSubmit(event) {
+             event.preventDefault();
+             const emailInput = subscribeForm.querySelector('input[type="email"]');
+             subscribeStatus.textContent = 'Procesando suscripción...';
+             subscribeStatus.style.color = 'blue';
+             setTimeout(() => {
+                 if (emailInput.value && emailInput.validity.valid) {
+                     subscribeStatus.textContent = `¡Gracias por suscribirte con ${emailInput.value}!`;
+                     subscribeStatus.style.color = 'green';
+                     subscribeForm.reset();
+                 } else {
+                    subscribeStatus.textContent = 'Por favor, introduce un correo electrónico válido.';
+                    subscribeStatus.style.color = 'red';
+                 }
+             }, 1500);
+         }
+
+        function handleSearch() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+
+            if (searchTerm === '') {
+                currentPosts = [...publicaciones];
+            } else {
+                currentPosts = publicaciones.filter(post => {
+                    const tituloLower = post.titulo.toLowerCase();
+                    const resumenLower = post.resumen.toLowerCase();
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = post.contenido;
+                    const contenidoText = tempDiv.textContent || tempDiv.innerText || "";
+                    const contenidoLower = contenidoText.toLowerCase();
+                    const fechaString = post.fecha;
+                    const fechaFormateada = formatearFecha(post.fecha).toLowerCase();
+
+                    return tituloLower.includes(searchTerm) ||
+                           resumenLower.includes(searchTerm) ||
+                           contenidoLower.includes(searchTerm) ||
+                           fechaString.includes(searchTerm) ||
+                           fechaFormateada.includes(searchTerm);
+                });
+            }
+            ordenarPublicaciones();
+        }
+
+
+        // --- EVENT LISTENERS ---
+        window.addEventListener('scroll', toggleBackToTopButton);
+        backToTopButton.addEventListener('click', (e) => {
             e.preventDefault();
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // Función para mostrar la sección y ocultar las demás
-        function mostrarSeccion(sectionId) {
-            const secciones = document.querySelectorAll('.post-section, .about-section, .contact-section, .single-post');
-            secciones.forEach(seccion => {
-                seccion.style.display = 'none';
-            });
-            const targetSection = document.getElementById(sectionId);
-            if (targetSection) {
-                targetSection.style.display = 'block';
-            } else {
-                console.error("Section with ID not found:", sectionId);
-            }
-             // Si volvemos a la sección de publicaciones, aseguramos que la grid esté visible
-             if (sectionId === 'publicaciones') {
-                document.getElementById('posts-grid').style.display = 'grid'; // O 'block' si prefieres
-            }
-        }
+        sortArrow.addEventListener('click', cambiarOrden);
 
-        // Variable para controlar el orden de las publicaciones
-        let publicacionesOrdenadasRecientePrimero = true;
-
-        // Datos de ejemplo de publicaciones (puedes reemplazarlos con datos reales o cargarlos desde una API)
-        const publicaciones = [
-            {
-                titulo: 'La razonabilidad de la fe en Dios',
-                fecha: '2025-04-22', // Usar formato YYYY-MM-DD para ordenar fácilmente
-                resumen: 'Creer no es absurdo: es razonable y transformador. En esta catequesis, Benedicto XVI muestra cómo la fe y la razón no se contradicen, sino que juntas iluminan el sentido profundo de la vida y abren el corazón a la verdad que salva.',
-                imagen: 'https://c2.staticflickr.com/9/8715/30123671825_18a82a930e_n.jpg',
-                contenido: '<p><strong><em><span data-contrast="none">AUDIENCIA GENERAL</span></em></strong></p>
-                            <p><em><span data-contrast="none">Sala Pablo VI</span></em>&nbsp;<br /><em><span data-contrast="none">Mi&eacute;rcoles 21 de noviembre de 2012</span></em></p>
-                            <p><span data-contrast="none">Queridos hermanos y hermanas:</span></p>
-                            <p><span data-contrast="none">Avanzamos en este A&ntilde;o de la fe llevando en nuestro coraz&oacute;n la esperanza de redescubrir cu&aacute;nta alegr&iacute;a hay en creer y de volver a encontrar el entusiasmo de comunicar a todos las verdades de la fe.</span></p>
-                            <p><span data-contrast="none">Estas verdades no son un simple mensaje sobre Dios, una informaci&oacute;n particular sobre &Eacute;l. Expresan el acontecimiento del encuentro de Dios con los hombres, encuentro salv&iacute;fico y liberador que realiza las aspiraciones m&aacute;s profundas del hombre, sus anhelos de paz, de fraternidad, de amor. La fe lleva a descubrir que el encuentro con Dios valora, perfecciona y eleva cuanto hay de verdadero, de bueno y de bello en el hombre. Es as&iacute; que, mientras Dios se revela y se deja conocer, el hombre llega a saber qui&eacute;n es Dios, y conoci&eacute;ndole se descubre a s&iacute; mismo, su proprio origen, su destino, la grandeza y la dignidad de la vida humana.</span></p>
-                            <p><span data-contrast="none">En la catequesis de hoy quisiera detenerme en la razonabilidad de la fe en Dios. La tradici&oacute;n cat&oacute;lica, desde el inicio, ha rechazado el llamado fide&iacute;smo, que es la voluntad de creer contra la raz&oacute;n. </span><em><span data-contrast="none">Credo quia absurdum</span></em><span data-contrast="none"> (creo porque es absurdo) no es f&oacute;rmula que interprete la fe cat&oacute;lica. Dios, en efecto, no es absurdo, sino que es misterio. El misterio, a su vez, no es irracional, sino sobreabundancia de sentido, de significado, de verdad. Si, contemplando el misterio, la raz&oacute;n ve oscuridad, no es porque en el misterio no haya luz, sino m&aacute;s bien porque hay demasiada. Es como cuando los ojos del hombre se dirigen directamente al sol para mirarlo: s&oacute;lo ven tinieblas; pero &iquest;qui&eacute;n dir&iacute;a que el sol no es luminoso, es m&aacute;s, la fuente de la luz? La fe permite contemplar el &laquo;sol&raquo;, a Dios, porque es acogida de su revelaci&oacute;n en la historia y, por decirlo as&iacute;, recibe verdaderamente toda la luminosidad del misterio de Dios, reconociendo el gran milagro: Dios se ha acercado al hombre, se ha ofrecido a su conocimiento. Al mismo tiempo, Dios, con su gracia, ilumina la raz&oacute;n, le abre horizontes nuevos, inconmensurables e infinitos. Por esto la fe constituye un est&iacute;mulo a buscar siempre, a nunca detenerse y a no aquietarse jam&aacute;s en el descubrimiento inexhausto de la verdad y de la realidad. Es falso el prejuicio de ciertos pensadores modernos seg&uacute;n los cuales la raz&oacute;n humana estar&iacute;a como bloqueada por los dogmas de la fe. Es verdad exactamente lo contrario, como han demostrado los grandes maestros de la tradici&oacute;n cat&oacute;lica. San Agust&iacute;n, antes de su conversi&oacute;n, busca con gran inquietud la verdad a trav&eacute;s de todas las filosof&iacute;as disponibles, hall&aacute;ndolas todas insatisfactorias. Su fatigosa b&uacute;squeda racional es para &eacute;l una pedagog&iacute;a significativa para el encuentro con la Verdad de Cristo. Cuando dice: &laquo;comprende para creer y cree para comprender&raquo; (</span><em><span data-contrast="none">Discurso </span></em><span data-contrast="none">43, 9: PL 38, 258), es como si relatara su propia experiencia de vida. Intelecto y fe, ante la divina Revelaci&oacute;n, no son extra&ntilde;os o antagonistas, sino que ambos son condici&oacute;n para comprender su sentido, para recibir su mensaje aut&eacute;ntico, acerc&aacute;ndose al umbral del misterio. San Agust&iacute;n, junto a muchos otros autores cristianos, es testigo de una fe que se ejercita con la raz&oacute;n, que piensa e invita a pensar. Ser&aacute; sobre todo santo Tom&aacute;s de Aquino &mdash;fuerte en esta tradici&oacute;n&mdash; quien se confronte con la raz&oacute;n de los fil&oacute;sofos, mostrando cu&aacute;nta nueva y fecunda vitalidad racional deriva hacia el pensamiento humano desde la uni&oacute;n con los principios y de las verdades de la fe cristiana.</span></p>
-                            <p><span data-contrast="none">La fe es, por lo tanto, razonable y nutre confianza tambi&eacute;n en la raz&oacute;n humana. El concilio Vaticano I, en la constituci&oacute;n dogm&aacute;tica </span><em><span data-contrast="none">Dei Filius</span></em><span data-contrast="none">, afirm&oacute; que la raz&oacute;n es capaz de conocer con certeza la existencia de Dios a trav&eacute;s de la v&iacute;a de la creaci&oacute;n, mientras que s&oacute;lo a la fe pertenece la posibilidad de conocer &laquo;f&aacute;cilmente, con absoluta certeza y sin error&raquo; las verdades referidas a Dios, a la luz de la gracia. El conocimiento de la fe, adem&aacute;s, no est&aacute; contra la recta raz&oacute;n.&nbsp;</span></p>
-                            <p><span data-contrast="none">Esta creencia es f&aacute;cilmente reconocible en todo el Nuevo Testamento. San Pablo, escribiendo a los cristianos de Corintio, sostiene, como hemos o&iacute;do: &laquo;los jud&iacute;os exigen signos, los griegos buscan sabidur&iacute;a; pero nosotros predicamos a Cristo crucificado: esc&aacute;ndalo para los jud&iacute;os, necedad para los gentiles&raquo; (1 </span><em><span data-contrast="none">Co </span></em><span data-contrast="none">1, 22-23). Y es que Dios salv&oacute; el mundo no con un acto de poder, sino mediante la humillaci&oacute;n de su Hijo unig&eacute;nito: seg&uacute;n los par&aacute;metros humanos, la ins&oacute;lita modalidad actuada por Dios choca con las exigencias de la sabidur&iacute;a griega. Con todo, la Cruz de Cristo tiene su raz&oacute;n, que san Pablo llama &laquo;la palabra de la cruz&raquo; (1 </span><em><span data-contrast="none">Cor </span></em><span data-contrast="none">1, 18). Aqu&iacute; el t&eacute;rmino palabra</span><span data-contrast="none">indica tambi&eacute;n raz&oacute;n y, si alude a la palabra, es porque expresa verbalmente lo que la raz&oacute;n elabora. As&iacute; que Pablo ve en la Cruz no un acontecimiento irracional, sino un hecho salv&iacute;fico que posee una razonabilidad propia reconocible a la luz de la fe. Al mismo tiempo, &eacute;l tiene mucha confianza en la raz&oacute;n humana; hasta el punto de sorprenderse por el hecho de que muchos, aun viendo las obras realizadas por Dios, se obstinen en no creer en &Eacute;l. Dice en la </span><em><span data-contrast="none">Carta a los Romanos</span></em><span data-contrast="none">: &laquo;Lo invisible de Dios, su eterno poder y su divinidad, son perceptibles para la inteligencia a partir de la creaci&oacute;n del mundo y a trav&eacute;s de sus obras&raquo; (1, 20). As&iacute;, tambi&eacute;n san Pedro exhorta a los cristianos de la di&aacute;spora a glorificar &laquo;a Cristo el Se&ntilde;or en vuestros corazones, dispuestos siempre para dar explicaci&oacute;n a todo el que os pida una raz&oacute;n de vuestra esperanza&raquo; (1 </span><em><span data-contrast="none">P</span></em><span data-contrast="none"> 3, 15). En un clima de persecuci&oacute;n y de fuerte exigencia de testimoniar la fe, a los creyentes se les pide que justifiquen con motivaciones fundadas su adhesi&oacute;n a la palabra del Evangelio, que den raz&oacute;n de nuestra esperanza.</span></p>
-                            <p><span data-contrast="none">Sobre estas premisas acerca del nexo fecundo entre comprender y creer se funda tambi&eacute;n la relaci&oacute;n virtuosa entre ciencia y fe. La investigaci&oacute;n cient&iacute;fica lleva al conocimiento de verdades siempre nuevas sobre el hombre y sobre el cosmos, como vemos. El verdadero bien de la humanidad, accesible en la fe, abre el horizonte en el que se debe mover su camino de descubrimiento. Por lo tanto hay que alentar, por ejemplo, las investigaciones puestas al servicio de la vida y orientada a vencer las enfermedades. Son importantes tambi&eacute;n las indagaciones dirigidas a descubrir los secretos de nuestro planeta y del universo, sabiendo que el hombre est&aacute; en el v&eacute;rtice de la creaci&oacute;n, no para explotarla insensatamente, sino para custodiarla y hacerla habitable. De tal forma la fe, vivida realmente, no entra en conflicto con la ciencia; m&aacute;s bien coopera con ella ofreciendo criterios de base para que promueva el bien de todos, pidi&eacute;ndole que renuncie s&oacute;lo a los intentos que &mdash;oponi&eacute;ndose al proyecto originario de Dios&mdash; pueden producir efectos que se vuelvan contra el hombre mismo. Tambi&eacute;n por esto es razonable creer: si la ciencia es una preciosa aliada de la fe para la comprensi&oacute;n del plan de Dios en el universo, la fe permite al progreso cient&iacute;fico que se lleve a cabo siempre por el bien y la verdad del hombre, permaneciendo fiel a dicho plan.</span></p>
-                            <p><span data-contrast="none">Confiemos, pues, en que nuestro empe&ntilde;o en la evangelizaci&oacute;n ayude a devolver nueva centralidad al Evangelio en la vida de tantos hombres y mujeres de nuestro tiempo. Y oremos para que todos vuelvan a encontrar en Cristo el sentido de la existencia y el fundamento de la verdadera libertad: sin Dios el hombre se extrav&iacute;a. Los testimonios de cuantos nos han precedido y dedicaron su vida al Evangelio lo confirman para siempre. Es razonable creer; est&aacute; en juego nuestra existencia. Vale la pena gastarse por Cristo; s&oacute;lo &Eacute;l satisface los deseos de verdad y de bien enraizados en el alma de cada hombre: ahora, en el tiempo que pasa y el d&iacute;a sin fin de la Eternidad bienaventurada.</span></p>',
-                esVideo: false,
-            },
-            {
-                titulo: 'Mindfulness para Jóvenes: Calma en la Era Digital',
-                fecha: '2025-04-15',
-                resumen: 'Herramientas prácticas de atención plena para manejar el estrés y la sobrecarga de información.',
-                imagen: 'https://placehold.co/400x300/a5f3fc/1f2937?text=Mindfulness+Joven',
-                contenido: '<h2>Encontrando el Presente</h2><p>Vivimos en un mundo acelerado, lleno de notificaciones y distracciones. El mindfulness nos invita a hacer una pausa, respirar y reconectar con el momento presente...</p><p>Aprende ejercicios simples que puedes integrar en tu día a día, incluso mientras usas tu smartphone.</p>',
-                esVideo: false,
-            },
-             {
-                titulo: 'Video: Meditación Guiada para Principiantes (5 Minutos)',
-                fecha: '2025-04-24', // Fecha más reciente
-                resumen: '', // No necesario para video en la tarjeta
-                imagen: '', // No necesario para video en la tarjeta
-                contenido: 'Yv-JXjcPo9w', // ID del video de YouTube
-                esVideo: true,
-            },
-            {
-                titulo: 'Fe y Ciencia: ¿Enemigos o Aliados?',
-                fecha: '2025-03-28',
-                resumen: 'Explorando la relación entre la fe religiosa y el conocimiento científico en el siglo XXI.',
-                imagen: 'https://placehold.co/400x300/bae6fd/1f2937?text=Fe+y+Ciencia',
-                contenido: '<h2>Diálogo Constructivo</h2><p>A menudo se presenta la fe y la ciencia como fuerzas opuestas. Sin embargo, ¿es realmente así? Analizaremos cómo ambas pueden coexistir e incluso enriquecerse mutuamente...</p>',
-                esVideo: false,
-            }
-        ];
-
-
-        // Función para agregar una publicación al DOM
-        function agregarNuevaPublicacion(publicacion) {
-            const postsGrid = document.getElementById('posts-grid');
-            if (!postsGrid) return; // Salir si no se encuentra el grid
-
-            const postCard = document.createElement('article');
-            postCard.className = 'post-card';
-            // Guardar todos los datos en atributos data-*
-            postCard.setAttribute('data-post-title', publicacion.titulo);
-            postCard.setAttribute('data-post-date', publicacion.fecha);
-            postCard.setAttribute('data-post-content', publicacion.contenido);
-            postCard.setAttribute('data-post-image', publicacion.imagen);
-            postCard.setAttribute('data-es-video', publicacion.esVideo);
-            postCard.setAttribute('data-post-category', publicacion.categoria || 'General'); // Añadir categoría
-
-            const fechaFormateada = new Date(publicacion.fecha + 'T00:00:00').toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
-
-            if (publicacion.esVideo) {
-                // Usar una miniatura genérica o intentar obtenerla de YouTube (más complejo)
-                const thumbnailUrl = `https://img.youtube.com/vi/${publicacion.contenido}/hqdefault.jpg`;
-                postCard.innerHTML = `
-                    <img src="${thumbnailUrl}" alt="Miniatura video: ${publicacion.titulo}" class="post-image" onerror="this.onerror=null;this.src='https://placehold.co/400x300/cccccc/ffffff?text=Video';"> <div class="post-content">
-                        <h3 class="post-title">${publicacion.titulo}</h3>
-                        <span class="post-date">${fechaFormateada}</span>
-                        <span class="post-category" style="display: block; margin-top: 5px; font-size: 0.8em; color: var(--color-secondary);">${publicacion.categoria || 'Video'}</span>
-                    </div>
-                `;
-            } else {
-                postCard.innerHTML = `
-                    <img src="${publicacion.imagen}" alt="${publicacion.titulo}" class="post-image" onerror="this.onerror=null;this.src='https://placehold.co/400x300/eeeeee/999999?text=Imagen+no+disponible';"> <div class="post-content">
-                        <h3 class="post-title">${publicacion.titulo}</h3>
-                        <span class="post-date">${fechaFormateada}</span>
-                         <span class="post-category" style="display: block; margin-bottom: 10px; font-size: 0.8em; color: var(--color-secondary);">${publicacion.categoria || 'General'}</span>
-                        <p class="post-excerpt">${publicacion.resumen}</p>
-                    </div>
-                `;
-            }
-
-            postCard.addEventListener('click', function() {
-                mostrarPostCompleto(this);
-            });
-
-            postsGrid.appendChild(postCard);
-        }
-
-        // Función para mostrar el post completo
-        function mostrarPostCompleto(postCard) {
-            const titulo = postCard.getAttribute('data-post-title');
-            const fecha = postCard.getAttribute('data-post-date');
-            const contenido = postCard.getAttribute('data-post-content');
-            const imagen = postCard.getAttribute('data-post-image');
-            const esVideo = postCard.getAttribute('data-es-video') === 'true'; // Convertir a booleano
-            const categoria = postCard.getAttribute('data-post-category');
-
-            const singlePostSection = document.getElementById('single-post');
-            const singlePostTitle = document.getElementById('single-post-title');
-            const singlePostDate = document.getElementById('single-post-date');
-            const singlePostCategory = document.getElementById('single-post-category');
-            const singlePostContent = document.getElementById('single-post-content');
-
-             // Formatear fecha para mostrarla
-            const fechaFormateada = new Date(fecha + 'T00:00:00').toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
-
-            singlePostTitle.textContent = titulo;
-            singlePostDate.textContent = `Publicado el ${fechaFormateada}`;
-            singlePostCategory.textContent = categoria;
-
-            if (esVideo) {
-                 // Incrustar video de YouTube responsivo
-                singlePostContent.innerHTML = `<div class="video-container"><iframe src="https://www.youtube.com/embed/${contenido}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
-            } else {
-                // Mostrar imagen (si existe) y contenido HTML
-                let contentHTML = '';
-                if (imagen) {
-                    contentHTML += `<img src="${imagen}" alt="${titulo}" style="max-width: 100%; height: auto; border-radius: var(--radius); margin-bottom: 20px;" onerror="this.style.display='none';">`; // Ocultar si falla
-                }
-                contentHTML += contenido; // Asume que 'contenido' es HTML
-                singlePostContent.innerHTML = contentHTML;
-            }
-
-            mostrarSeccion('single-post');
-             window.scrollTo(0, 0); // Scroll al inicio de la página
-        }
-
-        // Función para cargar y mostrar las publicaciones en la cuadrícula
-        function cargarPublicaciones() {
-            const postsGrid = document.getElementById('posts-grid');
-            if (!postsGrid) {
-                console.error("Element with ID 'posts-grid' not found.");
-                return;
-            }
-            postsGrid.innerHTML = ''; // Limpiar la cuadrícula antes de cargar
-
-            // Ordenar la copia del array
-            const publicacionesOrdenadas = [...publicaciones]; // Crear copia para no modificar el original
-            publicacionesOrdenadas.sort((a, b) => {
-                const dateA = new Date(a.fecha);
-                const dateB = new Date(b.fecha);
-                return publicacionesOrdenadasRecientePrimero ? dateB - dateA : dateA - dateB;
-            });
-
-            // Agregar cada publicación ordenada al DOM
-            publicacionesOrdenadas.forEach(publicacion => {
-                agregarNuevaPublicacion(publicacion);
-            });
-        }
-
-        // Event Listener para la flecha de ordenar
-        const sortArrow = document.getElementById('sort-arrow');
-        if (sortArrow) {
-            sortArrow.addEventListener('click', function() {
-                publicacionesOrdenadasRecientePrimero = !publicacionesOrdenadasRecientePrimero; // Cambiar el estado
-
-                // Cambiar la clase de la flecha para la rotación CSS
-                this.classList.toggle('arrow-up', publicacionesOrdenadasRecientePrimero);
-                this.classList.toggle('arrow-down', !publicacionesOrdenadasRecientePrimero);
-
-                // Volver a cargar las publicaciones con el nuevo orden
-                cargarPublicaciones();
-            });
-        } else {
-            console.error("Element with ID 'sort-arrow' not found.");
-        }
-
-
-        // Event Listeners para la navegación
-        const navLinks = document.querySelectorAll('nav a[data-section], footer a[data-section]');
         navLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
+            link.addEventListener('click', (e) => {
                 e.preventDefault();
-                const targetSectionId = this.getAttribute('data-section');
-                mostrarSeccion(targetSectionId);
-                // Si se hace clic en "Publicaciones", asegurarse de cargarlas
+                const targetSectionId = link.dataset.section;
                 if (targetSectionId === 'publicaciones') {
-                    cargarPublicaciones();
+                    cambiarSeccion(targetSectionId);
+                    searchInput.value = '';
+                    handleSearch();
                 }
             });
         });
 
+        backToPostsButton.addEventListener('click', volverAPublicaciones);
+        subscribeForm.addEventListener('submit', handleSubscribeFormSubmit);
+        searchInput.addEventListener('input', handleSearch);
+        searchIcon.addEventListener('click', () => {
+            searchInput.focus();
+        });
 
-        // Mostrar la sección de publicaciones al cargar la página inicialmente
-        window.onload = function() {
-            mostrarSeccion('publicaciones');
-            cargarPublicaciones();
 
-            // Asegurarse de que la flecha tenga la clase inicial correcta
-             const arrow = document.getElementById('sort-arrow');
-             if (arrow) {
-                arrow.classList.toggle('arrow-up', publicacionesOrdenadasRecientePrimero);
-                arrow.classList.toggle('arrow-down', !publicacionesOrdenadasRecientePrimero);
-             }
-        };
+        // --- INICIALIZACIÓN ---
+        currentYearSpan.textContent = new Date().getFullYear();
+        ordenarPublicaciones();
+        cambiarSeccion('publicaciones');
+
+
     </script>
 </body>
 </html>
