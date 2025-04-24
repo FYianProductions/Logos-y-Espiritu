@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logos y Espíritu | Blog para jóvenes</title>
+    <title>Logos y Espíritu</title>
     <style>
         /* Variables de colores */
         :root {
@@ -16,6 +16,7 @@
             --color-dark: #2c2c2c;
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             --radius: 8px;
+            --header-bg-image: url(https://upload.wikimedia.org/wikipedia/commons/5/5b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg); /* Variable para la imagen de fondo del header */
         }
 
         /* Reset básico */
@@ -42,19 +43,39 @@
 
         /* Header */
         header {
-            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            /* Fallback por si la imagen no carga */
+            background-color: var(--color-primary);
+            /* Imagen de fondo */
+            background-image: var(--header-bg-image);
+            background-size: cover;
+            background-position: center;
             color: var(--color-light);
             padding: 60px 0 30px;
             text-align: center;
             border-radius: 0 0 var(--radius) var(--radius);
             margin-bottom: 40px;
             box-shadow: var(--shadow);
+            position: relative; /* Para el gradiente superpuesto */
+        }
+
+        /* Gradiente superpuesto */
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(109, 93, 252, 0.7), rgba(255, 94, 125, 0.7)); /* Ajusta la opacidad aquí */
+            border-radius: 0 0 var(--radius) var(--radius);
         }
 
         header h1 {
             font-size: 3rem;
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative; /* Para que el texto esté sobre el gradiente */
+            z-index: 1;
         }
 
         header p {
@@ -62,6 +83,8 @@
             max-width: 600px;
             margin: 0 auto;
             opacity: 0.9;
+            position: relative; /* Para que el texto esté sobre el gradiente */
+            z-index: 1;
         }
 
         /* Navegación */
@@ -95,7 +118,7 @@
             padding: 8px 12px;
             border-radius: var(--radius);
             transition: all 0.3s ease;
-            cursor: pointer; /* Cambiamos el cursor para indicar que es un enlace */
+            cursor: pointer;
         }
 
         nav ul li a:hover {
@@ -106,15 +129,24 @@
         /* Sección de publicaciones */
         .post-section {
             padding: 40px 0;
-            display: block; /* Mostramos la sección de publicaciones por defecto */
+            display: block;
+        }
+
+        /* Contenedor para el título y la flecha */
+        .section-title-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px; /* Espacio entre título y flecha */
+            margin-bottom: 30px;
+            text-align: center;
         }
 
         .section-title {
-            text-align: center;
-            margin-bottom: 30px;
             color: var(--color-dark);
             font-size: 2rem;
             position: relative;
+            margin-bottom: 0; /* Quitar margen inferior original */
         }
 
         .section-title::after {
@@ -126,6 +158,24 @@
             margin: 10px auto 0;
             border-radius: 2px;
         }
+
+        /* Estilo para la flecha de ordenar */
+        #sort-arrow {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            width: 24px; /* Tamaño del icono */
+            height: 24px;
+            fill: var(--color-primary); /* Color de la flecha */
+        }
+
+        #sort-arrow.arrow-up {
+            transform: rotate(0deg); /* Flecha hacia arriba (o estado inicial) */
+        }
+
+        #sort-arrow.arrow-down {
+            transform: rotate(180deg); /* Flecha hacia abajo */
+        }
+
 
         .posts-grid {
             display: grid;
@@ -139,7 +189,7 @@
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer; /* Indicamos que la tarjeta es clickable */
+            cursor: pointer;
         }
 
         .post-card:hover {
@@ -175,33 +225,15 @@
             color: #555;
         }
 
-        .read-more {
-            display: inline-block;
-            padding: 8px 20px;
-            background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
-            color: var(--color-light);
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: transform 0.3s ease;
-            display: none; /* Ocultamos el botón "Leer más" */
-        }
-
-        .read-more:hover {
-            transform: scale(1.05);
-        }
-
         /* Estilos para la sección de video */
         .video-container {
             width: 100%;
             height: 0;
-            padding-bottom: 56.25%; /* Proporción 16:9 para el video */
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
             position: relative;
             margin-bottom: 20px;
             border-radius: var(--radius);
             overflow: hidden;
-            display: none; /* Ocultamos el video por defecto */
         }
 
         .video-container iframe {
@@ -219,7 +251,7 @@
             padding: 30px;
             margin-bottom: 40px;
             box-shadow: var(--shadow);
-            display: none; /* Ocultamos la vista de post individual por defecto */
+            display: none; /* Oculto por defecto */
         }
 
         .single-post-title {
@@ -372,7 +404,7 @@
             padding: 40px;
             margin-bottom: 40px;
             box-shadow: var(--shadow);
-            display: none; /* Ocultamos la sección "Sobre mí" por defecto */
+            display: none;
         }
 
         .about-content {
@@ -405,7 +437,7 @@
             padding: 40px;
             margin-bottom: 40px;
             box-shadow: var(--shadow);
-            display: none; /* Ocultamos la sección de contacto por defecto */
+            display: none;
         }
 
         .contact-form {
@@ -484,39 +516,46 @@
                 grid-template-columns: 1fr;
                 gap: 30px;
             }
+            .section-title {
+                font-size: 1.8rem; /* Ajustar tamaño para móviles */
+            }
         }
 
         @media (max-width: 480px) {
             header {
                 padding: 40px 0 20px;
             }
-            
+
             header h1 {
                 font-size: 1.8rem;
             }
-            
+
             header p {
                 font-size: 1rem;
             }
-            
+
             .section-title {
                 font-size: 1.6rem;
             }
-            
+
             .post-title {
                 font-size: 1.2rem;
             }
-            
+
             .single-post {
                 padding: 20px;
             }
-            
+
             .single-post-title {
                 font-size: 1.6rem;
             }
+             .section-title-container {
+                flex-direction: column; /* Apilar título y flecha en móviles */
+                gap: 5px;
+            }
         }
 
-        /* Iconos de FontAwesome */
+        /* Iconos de FontAwesome (como SVGs inline para simplificar) */
         .fa {
             display: inline-block;
             width: 1em;
@@ -545,6 +584,33 @@
         .fa-chevron-up {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath fill='%23ffffff' d='M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z'/%3E%3C/svg%3E");
         }
+
+        /* Estilos para el logo de Uniminuto */
+        #logo-uniminuto {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Logo_Uniminuto.svg/1200px-Logo_Uniminuto.svg.png); /* Reemplaza con la URL de tu logo */
+            background-size: cover;
+            background-position: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            overflow: hidden; /* Importante para mostrar la imagen completa al hacer hover */
+        }
+
+        #logo-uniminuto:hover {
+            width: 200px; /* Ancho de la imagen completa */
+            height: auto; /* Altura automática para mantener la proporción */
+            border-radius: var(--radius); /* Bordes redondeados al hacer hover */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        #logo-uniminuto img {
+            display: none; /* Oculta la imagen dentro del div */
+        }
     </style>
 </head>
 <body>
@@ -553,31 +619,27 @@
             <h1>Logos y Espíritu</h1>
             <p>"Iluminando el camino de los jóvenes con la luz de la fe y el conocimiento"</p>
         </div>
+        <div id="logo-uniminuto">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Logo_Uniminuto.svg/1200px-Logo_Uniminuto.svg.png" alt="Logo Uniminuto Completo">
+        </div>
     </header>
 
     <div class="container">
         <nav>
             <ul>
-                <li><a href="#" data-section="inicio">Inicio</a></li>
-                <li><a href="#" data-section="sobre-mi">Sobre mí</a></li>
                 <li><a href="#" data-section="publicaciones">Publicaciones</a></li>
                 </ul>
         </nav>
 
-        <section class="post-section" id="inicio">
-            <h2 class="section-title">Inicio</h2>
-            <p>Bienvenido al blog Logos y Espíritu. Aquí encontrarás reflexiones, artículos y contenido multimedia para jóvenes que buscan conectar con su espiritualidad y crecer en su fe.</p>
-        </section>
-
         <section class="post-section" id="publicaciones">
-            <h2 class="section-title">Publicaciones Recientes</h2>
+            <div class="section-title-container">
+                <h2 class="section-title">Publicaciones Recientes</h2>
+                <svg id="sort-arrow" class="arrow-up" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M7 14l5-5 5 5z"/>
+                    <path d="M0 0h24v24H0z" fill="none"/>
+                </svg>
+            </div>
             <div class="posts-grid" id="posts-grid">
-                </div>
-        </section>
-
-        <section class="post-section" id="videos" style="display: none;">
-            <h2 class="section-title">Videos Recientes</h2>
-            <div class="posts-grid" id="videos-grid">
                 </div>
         </section>
 
@@ -591,11 +653,11 @@
                 </div>
         </section>
 
-        <section class="about-section" id="sobre-mi">
+        <section class="about-section" id="sobre-mi" style="display: none;">
             <h2 class="section-title">Sobre mí</h2>
             <div class="about-content">
                 <div class="about-image">
-                    <img src="/api/placeholder/400/400" alt="Foto del autor">
+                    <img src="https://placehold.co/400x400/a7f3d0/1f2937?text=Tu+Foto" alt="Foto del autor">
                 </div>
                 <div class="about-text">
                     <h2>¡Hola! Soy [Tu Nombre]</h2>
@@ -607,9 +669,7 @@
             </div>
         </section>
 
-        </div>
-
-    <footer>
+        </div> <footer>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
@@ -628,7 +688,7 @@
                         <li><a href="#" data-section="inicio">Inicio</a></li>
                         <li><a href="#" data-section="sobre-mi">Sobre mí</a></li>
                         <li><a href="#" data-section="publicaciones">Publicaciones</a></li>
-                        </ul>
+                    </ul>
                 </div>
                 <div class="footer-section">
                     <h3>Suscríbete</h3>
@@ -640,7 +700,7 @@
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2025 Logos y Espíritu. Todos los derechos reservados.</p>
+                <p>© 2025 Logos y Espíritu. Todos los derechos reservados.</p>
             </div>
         </div>
     </footer>
@@ -671,94 +731,109 @@
 
         // Función para mostrar la sección y ocultar las demás
         function mostrarSeccion(sectionId) {
-            const secciones = document.querySelectorAll('.post-section, .about-section, .contact-section, .single-post'); // Agregamos .single-post
+            const secciones = document.querySelectorAll('.post-section, .about-section, .contact-section, .single-post');
             secciones.forEach(seccion => {
                 seccion.style.display = 'none';
             });
-            document.getElementById(sectionId).style.display = 'block';
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+            } else {
+                console.error("Section with ID not found:", sectionId);
+            }
+             // Si volvemos a la sección de publicaciones, aseguramos que la grid esté visible
+             if (sectionId === 'publicaciones') {
+                document.getElementById('posts-grid').style.display = 'grid'; // O 'block' si prefieres
+            }
         }
 
-        // Agregamos event listeners a los enlaces de navegación
-        const navLinks = document.querySelectorAll('nav ul li a');
-        navLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetSection = this.getAttribute('data-section');
-                mostrarSeccion(targetSection);
-                if (targetSection === 'publicaciones') {
-                    cargarPublicaciones(); // Cargamos las publicaciones al mostrar la sección de publicaciones
-                }
-                if (targetSection === 'inicio'){
-                    cargarInicio();
-                }
-            });
-        });
+        // Variable para controlar el orden de las publicaciones
+        let publicacionesOrdenadasRecientePrimero = true;
 
-        // Función para cargar la página de inicio
-        function cargarInicio() {
-            const inicioSection = document.getElementById('inicio');
-            inicioSection.innerHTML = `
-                <h2 class="section-title">Inicio</h2>
-                <p>Bienvenido al blog Logos y Espíritu. Aquí encontrarás reflexiones, artículos y contenido multimedia para jóvenes que buscan conectar con su espiritualidad y crecer en su fe.</p>
-                <p>Explora nuestras <a href="#" data-section="publicaciones">publicaciones</a> más recientes o conoce más <a href="#" data-section="sobre-mi">sobre mí</a>.</p>
-            `;
-            const inicioLinks = inicioSection.querySelectorAll('a');
-            inicioLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetSection = this.getAttribute('data-section');
-                    mostrarSeccion(targetSection);
-                    if (targetSection === 'publicaciones') {
-                        cargarPublicaciones(); // Cargamos las publicaciones al mostrar la sección de publicaciones
-                    }
-                });
-            });
-        }
+        // Datos de ejemplo de publicaciones (puedes reemplazarlos con datos reales o cargarlos desde una API)
+        const publicaciones = [
+            {
+                titulo: 'Conectando con lo Divino en la Naturaleza',
+                fecha: '2025-04-20', // Usar formato YYYY-MM-DD para ordenar fácilmente
+                resumen: 'Descubre cómo los paisajes naturales pueden ser portales hacia una profunda experiencia espiritual.',
+                imagen: 'https://placehold.co/400x300/86efac/1f2937?text=Naturaleza+y+Espíritu',
+                contenido: '<h2>La Naturaleza como Templo</h2><p>Desde tiempos inmemoriales, la humanidad ha encontrado en la naturaleza un reflejo de lo sagrado. El silencio de un bosque, la inmensidad del océano o la majestuosidad de una montaña pueden despertar en nosotros un sentido de asombro y conexión...</p><img src="https://placehold.co/800x400/a7f3d0/1f2937?text=Paisaje+Inspirador" alt="Paisaje inspirador"><p>Exploraremos prácticas sencillas para abrir nuestros sentidos y percibir la presencia divina en nuestro entorno natural.</p>',
+                esVideo: false,
+                categoria: 'Espiritualidad Cotidiana'
+            },
+            {
+                titulo: 'Mindfulness para Jóvenes: Calma en la Era Digital',
+                fecha: '2025-04-15',
+                resumen: 'Herramientas prácticas de atención plena para manejar el estrés y la sobrecarga de información.',
+                imagen: 'https://placehold.co/400x300/a5f3fc/1f2937?text=Mindfulness+Joven',
+                contenido: '<h2>Encontrando el Presente</h2><p>Vivimos en un mundo acelerado, lleno de notificaciones y distracciones. El mindfulness nos invita a hacer una pausa, respirar y reconectar con el momento presente...</p><p>Aprende ejercicios simples que puedes integrar en tu día a día, incluso mientras usas tu smartphone.</p>',
+                esVideo: false,
+                categoria: 'Bienestar Mental'
+            },
+             {
+                titulo: 'Video: Meditación Guiada para Principiantes (5 Minutos)',
+                fecha: '2025-04-24', // Fecha más reciente
+                resumen: '', // No necesario para video en la tarjeta
+                imagen: '', // No necesario para video en la tarjeta
+                contenido: 'Yv-JXjcPo9w', // ID del video de YouTube
+                esVideo: true,
+                categoria: 'Meditación'
+            },
+            {
+                titulo: 'Fe y Ciencia: ¿Enemigos o Aliados?',
+                fecha: '2025-03-28',
+                resumen: 'Explorando la relación entre la fe religiosa y el conocimiento científico en el siglo XXI.',
+                imagen: 'https://placehold.co/400x300/bae6fd/1f2937?text=Fe+y+Ciencia',
+                contenido: '<h2>Diálogo Constructivo</h2><p>A menudo se presenta la fe y la ciencia como fuerzas opuestas. Sin embargo, ¿es realmente así? Analizaremos cómo ambas pueden coexistir e incluso enriquecerse mutuamente...</p>',
+                esVideo: false,
+                categoria: 'Reflexión Teológica'
+            }
+        ];
 
-        // Función para agregar una nueva publicación al blog
-        function agregarNuevaPublicacion(titulo, fecha, resumen, imagen, contenido) { // Agregamos el parámetro 'contenido'
+
+        // Función para agregar una publicación al DOM
+        function agregarNuevaPublicacion(publicacion) {
             const postsGrid = document.getElementById('posts-grid');
-            
+            if (!postsGrid) return; // Salir si no se encuentra el grid
+
             const postCard = document.createElement('article');
             postCard.className = 'post-card';
-            postCard.setAttribute('data-post-title', titulo); // Almacenamos el título como atributo
-            postCard.setAttribute('data-post-date', fecha);
-            postCard.setAttribute('data-post-content', contenido); // Almacenamos el contenido
-            postCard.setAttribute('data-post-image', imagen);
-            
-            postCard.innerHTML = `
-                <img src="${imagen}" alt="${titulo}" class="post-image">
-                <div class="post-content">
-                    <h3 class="post-title">${titulo}</h3>
-                    <span class="post-date">${fecha}</span>
-                    <p class="post-excerpt">${resumen}</p>
-                </div>
-            `;
-            
+            // Guardar todos los datos en atributos data-*
+            postCard.setAttribute('data-post-title', publicacion.titulo);
+            postCard.setAttribute('data-post-date', publicacion.fecha);
+            postCard.setAttribute('data-post-content', publicacion.contenido);
+            postCard.setAttribute('data-post-image', publicacion.imagen);
+            postCard.setAttribute('data-es-video', publicacion.esVideo);
+            postCard.setAttribute('data-post-category', publicacion.categoria || 'General'); // Añadir categoría
+
+            const fechaFormateada = new Date(publicacion.fecha + 'T00:00:00').toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+
+            if (publicacion.esVideo) {
+                // Usar una miniatura genérica o intentar obtenerla de YouTube (más complejo)
+                const thumbnailUrl = `https://img.youtube.com/vi/${publicacion.contenido}/hqdefault.jpg`;
+                postCard.innerHTML = `
+                    <img src="${thumbnailUrl}" alt="Miniatura video: ${publicacion.titulo}" class="post-image" onerror="this.onerror=null;this.src='https://placehold.co/400x300/cccccc/ffffff?text=Video';"> <div class="post-content">
+                        <h3 class="post-title">${publicacion.titulo}</h3>
+                        <span class="post-date">${fechaFormateada}</span>
+                        <span class="post-category" style="display: block; margin-top: 5px; font-size: 0.8em; color: var(--color-secondary);">${publicacion.categoria || 'Video'}</span>
+                    </div>
+                `;
+            } else {
+                postCard.innerHTML = `
+                    <img src="${publicacion.imagen}" alt="${publicacion.titulo}" class="post-image" onerror="this.onerror=null;this.src='https://placehold.co/400x300/eeeeee/999999?text=Imagen+no+disponible';"> <div class="post-content">
+                        <h3 class="post-title">${publicacion.titulo}</h3>
+                        <span class="post-date">${fechaFormateada}</span>
+                         <span class="post-category" style="display: block; margin-bottom: 10px; font-size: 0.8em; color: var(--color-secondary);">${publicacion.categoria || 'General'}</span>
+                        <p class="post-excerpt">${publicacion.resumen}</p>
+                    </div>
+                `;
+            }
+
             postCard.addEventListener('click', function() {
-                mostrarPostCompleto(this); // Llamamos a la función al hacer clic
+                mostrarPostCompleto(this);
             });
 
             postsGrid.appendChild(postCard);
-        }
-
-        // Función para agregar un nuevo video al blog
-        function agregarNuevoVideo(titulo, fecha, videoId) {
-            const videosGrid = document.getElementById('videos-grid');
-
-            const videoCard = document.createElement('article');
-            videoCard.className = 'post-card';
-            videoCard.innerHTML = `
-                <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
-                <div class="post-content">
-                    <h3 class="post-title">${titulo}</h3>
-                    <span class="post-date">${fecha}</span>
-                </div>
-            `;
-
-            videosGrid.appendChild(videoCard);
         }
 
         // Función para mostrar el post completo
@@ -767,55 +842,106 @@
             const fecha = postCard.getAttribute('data-post-date');
             const contenido = postCard.getAttribute('data-post-content');
             const imagen = postCard.getAttribute('data-post-image');
+            const esVideo = postCard.getAttribute('data-es-video') === 'true'; // Convertir a booleano
+            const categoria = postCard.getAttribute('data-post-category');
 
             const singlePostSection = document.getElementById('single-post');
             const singlePostTitle = document.getElementById('single-post-title');
             const singlePostDate = document.getElementById('single-post-date');
+            const singlePostCategory = document.getElementById('single-post-category');
             const singlePostContent = document.getElementById('single-post-content');
 
-            singlePostTitle.textContent = titulo;
-            singlePostDate.textContent = fecha;
-            singlePostContent.innerHTML = `<img src="${imagen}" alt="${titulo}" class="post-image" style="margin-bottom: 20px;">` + contenido; // Agregamos la imagen
+             // Formatear fecha para mostrarla
+            const fechaFormateada = new Date(fecha + 'T00:00:00').toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
 
-            mostrarSeccion('single-post'); // Mostramos la sección del post individual
+            singlePostTitle.textContent = titulo;
+            singlePostDate.textContent = `Publicado el ${fechaFormateada}`;
+            singlePostCategory.textContent = categoria;
+
+            if (esVideo) {
+                 // Incrustar video de YouTube responsivo
+                singlePostContent.innerHTML = `<div class="video-container"><iframe src="https://www.youtube.com/embed/${contenido}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
+            } else {
+                // Mostrar imagen (si existe) y contenido HTML
+                let contentHTML = '';
+                if (imagen) {
+                    contentHTML += `<img src="${imagen}" alt="${titulo}" style="max-width: 100%; height: auto; border-radius: var(--radius); margin-bottom: 20px;" onerror="this.style.display='none';">`; // Ocultar si falla
+                }
+                contentHTML += contenido; // Asume que 'contenido' es HTML
+                singlePostContent.innerHTML = contentHTML;
+            }
+
+            mostrarSeccion('single-post');
+             window.scrollTo(0, 0); // Scroll al inicio de la página
         }
 
-        // Cargar las publicaciones
+        // Función para cargar y mostrar las publicaciones en la cuadrícula
         function cargarPublicaciones() {
             const postsGrid = document.getElementById('posts-grid');
-            postsGrid.innerHTML = ''; // Limpiamos el contenido antes de cargar las publicaciones
-            // Llamamos a la función para agregar la publicación de ejemplo
-            agregarNuevaPublicacion(
-                'Ejemplo',
-                '23 de abril, 2025',
-                'Esto es un ejemplo de una publicación en el blog.  Aquí puedes agregar un resumen del artículo. Este texto debe ser atractivo para los jóvenes lectores.',
-                'https://picsum.photos/id/237/400/300',
-                '<h2>Esto es un ejemplo de un post</h2><p>Aquí puedes agregar el contenido completo de tu artículo.  Puedes usar HTML para formatear el texto, agregar imágenes, videos, etc.</p><img src="https://picsum.photos/id/238/800/400" alt="Ejemplo de imagen en el post"><p>Puedes seguir agregando párrafos y más contenido.</p>'
-            );
-             agregarNuevaPublicacion(
-                'Ola',
-                '23 de abril, 2025',
-                'Otro.  Aquí puedes agregar un resumen del artículo. Este texto debe ser atractivo para los jóvenes lectores.',
-                'https://picsum.photos/id/237/400/300',
-                '<h2>Esto es un ejemplo de un post</h2><p>Aquí puedes agregar el contenido completo de tu artículo.  Puedes usar HTML para formatear el texto, agregar imágenes, videos, etc.</p><img src="https://picsum.photos/id/238/800/400" alt="Ejemplo de imagen en el post"><p>Puedes seguir agregando párrafos y más contenido.</p>'
-            );
+            if (!postsGrid) {
+                console.error("Element with ID 'posts-grid' not found.");
+                return;
+            }
+            postsGrid.innerHTML = ''; // Limpiar la cuadrícula antes de cargar
+
+            // Ordenar la copia del array
+            const publicacionesOrdenadas = [...publicaciones]; // Crear copia para no modificar el original
+            publicacionesOrdenadas.sort((a, b) => {
+                const dateA = new Date(a.fecha);
+                const dateB = new Date(b.fecha);
+                return publicacionesOrdenadasRecientePrimero ? dateB - dateA : dateA - dateB;
+            });
+
+            // Agregar cada publicación ordenada al DOM
+            publicacionesOrdenadas.forEach(publicacion => {
+                agregarNuevaPublicacion(publicacion);
+            });
         }
 
-        // Cargar los videos
-        function cargarVideos() {
-            const videosGrid = document.getElementById('videos-grid');
-            videosGrid.innerHTML = ''; // Limpiamos el contenido antes de cargar los videos
-            agregarNuevoVideo(
-                'Video de Ejemplo',
-                '26 de abril, 2025',
-                'Yv-JXjcPo9w'
-            );
+        // Event Listener para la flecha de ordenar
+        const sortArrow = document.getElementById('sort-arrow');
+        if (sortArrow) {
+            sortArrow.addEventListener('click', function() {
+                publicacionesOrdenadasRecientePrimero = !publicacionesOrdenadasRecientePrimero; // Cambiar el estado
+
+                // Cambiar la clase de la flecha para la rotación CSS
+                this.classList.toggle('arrow-up', publicacionesOrdenadasRecientePrimero);
+                this.classList.toggle('arrow-down', !publicacionesOrdenadasRecientePrimero);
+
+                // Volver a cargar las publicaciones con el nuevo orden
+                cargarPublicaciones();
+            });
+        } else {
+            console.error("Element with ID 'sort-arrow' not found.");
         }
 
-        // Mostrar la sección de inicio al cargar la página
+
+        // Event Listeners para la navegación
+        const navLinks = document.querySelectorAll('nav a[data-section], footer a[data-section]');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetSectionId = this.getAttribute('data-section');
+                mostrarSeccion(targetSectionId);
+                // Si se hace clic en "Publicaciones", asegurarse de cargarlas
+                if (targetSectionId === 'publicaciones') {
+                    cargarPublicaciones();
+                }
+            });
+        });
+
+
+        // Mostrar la sección de publicaciones al cargar la página inicialmente
         window.onload = function() {
-            mostrarSeccion('inicio');
-            cargarInicio(); // Cargamos el contenido de inicio
+            mostrarSeccion('publicaciones');
+            cargarPublicaciones();
+
+            // Asegurarse de que la flecha tenga la clase inicial correcta
+             const arrow = document.getElementById('sort-arrow');
+             if (arrow) {
+                arrow.classList.toggle('arrow-up', publicacionesOrdenadasRecientePrimero);
+                arrow.classList.toggle('arrow-down', !publicacionesOrdenadasRecientePrimero);
+             }
         };
     </script>
 </body>
