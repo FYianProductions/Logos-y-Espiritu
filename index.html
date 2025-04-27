@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <title>Logos y Espíritu</title>
     <style>
         /* Variables de colores */
@@ -17,11 +17,12 @@
             --color-text: #333;
             --color-light: #ffffff;
             --color-dark: #2c2c2c;
+            --color-achievement-locked: #e0e0e0;
+            --color-achievement-unlocked-bg: rgba(58, 227, 116, 0.1);
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             --radius: 8px;
-            --radius-nav: 50px; /* Radio para la barra de navegación */
-            --radius-logo: 15px; /* Nuevo radio para el logo */
-            /* Imagen de fondo del header (URL válida) */
+            --radius-nav: 50px;
+            --radius-logo: 15px;
             --header-bg-image: url(https://upload.wikimedia.org/wikipedia/commons/5/5b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg);
         }
 
@@ -33,11 +34,11 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--color-bg);
             color: var(--color-text);
             line-height: 1.6;
-            position: relative; /* Needed for sticker area positioning */
+            position: relative;
             min-height: 100vh;
         }
 
@@ -62,7 +63,7 @@
             margin-bottom: 40px;
             box-shadow: var(--shadow);
             position: relative;
-            overflow: hidden; /* Para contener elementos animados */
+            overflow: hidden;
         }
 
         header::before {
@@ -77,7 +78,7 @@
             z-index: 0;
         }
 
-        header .container { /* Asegurar que el contenido del header esté sobre el ::before */
+        header .container {
             position: relative;
             z-index: 1;
         }
@@ -113,7 +114,7 @@
             z-index: 1;
         }
 
-        /* Logo Uniminuto - Más cuadrado */
+        /* Logo Uniminuto */
         #logo-uniminuto {
             position: absolute;
             top: 15px;
@@ -185,6 +186,8 @@
             position: relative;
             display: flex;
             align-items: center;
+            min-width: 40px; /* Espacio mínimo para el icono */
+            justify-content: flex-end;
         }
 
         #search-icon {
@@ -193,33 +196,47 @@
             transition: fill 0.3s ease;
             width: 24px;
             height: 24px;
-            margin-left: 15px;
+            position: relative; /* Para z-index */
+            z-index: 2; /* Icono encima del input inicialmente */
         }
         #search-icon:hover {
             fill: var(--color-secondary);
         }
 
         #search-input {
-            width: 0;
-            padding: 8px 0;
+            position: absolute;
+            right: 5px; /* Posicionar a la derecha del contenedor */
+            top: 50%;
+            transform: translateY(-50%) scaleX(0); /* Iniciar escalado a 0 */
+            transform-origin: right; /* Escalar desde la derecha */
+            width: 200px; /* Ancho fijo */
+            padding: 8px 15px;
+            padding-right: 30px; /* Espacio para que no tape el icono */
             border: none;
             outline: none;
             font-size: 1rem;
-            transition: width 0.4s ease-in-out, padding 0.4s ease-in-out, opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
+            transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
             opacity: 0;
-            visibility: hidden;
-            margin-left: 10px;
             border-radius: var(--radius-nav);
             background-color: var(--color-bg);
+            box-shadow: var(--shadow);
+            z-index: 1; /* Input detrás del icono */
+            pointer-events: none; /* No interactuable cuando está oculto */
         }
 
+        /* Mostrar input al hacer hover/focus en el *contenedor* */
         .search-container:hover #search-input,
         #search-input:focus {
-            width: 200px;
-            padding: 8px 15px;
+            transform: translateY(-50%) scaleX(1); /* Escalar a tamaño completo */
             opacity: 1;
-            visibility: visible;
+            pointer-events: auto; /* Hacer interactuable */
         }
+        /* Mover icono ligeramente a la derecha cuando el input está activo */
+        .search-container:hover #search-icon,
+        #search-input:focus + #search-icon {
+           /* No es necesario mover el icono si el input está absoluto */
+        }
+
 
         /* Secciones */
         .content-section {
@@ -606,13 +623,13 @@
 
 
         /* Estilos para sección Podcast */
-        #podcast .podcast-grid { /* Cambiado de grid-placeholder */
+        #podcast .podcast-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin-top: 30px;
         }
-        #podcast .podcast-item { /* Cambiado de grid-item */
+        #podcast .podcast-item {
             background-color: var(--color-light);
             padding: 20px;
             border-radius: var(--radius);
@@ -641,31 +658,70 @@
           }
 
 
-        /* ESTILOS ACTUALIZADOS PARA BOTÓN STICKERS */
-        #sticker-button {
+        /* *** ESTILOS PARA BOTONES SUPERIORES DERECHA *** */
+        .top-right-buttons {
             position: fixed;
             top: 15px;
             right: 20px;
             z-index: 999;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .top-right-btn {
             padding: 8px 15px;
             background: linear-gradient(45deg, var(--color-primary), var(--color-secondary));
             color: var(--color-light);
             border: none;
-            border-radius: 50px;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
+            border-radius: var(--radius); /* Bordes redondeados */
+            font-family: 'Poppins', sans-serif; /* Fuente actualizada */
             font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 40px; /* Altura fija */
         }
-        #sticker-button:hover {
+        .top-right-btn:hover {
             transform: scale(1.05);
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
-        #sticker-button:active {
+        .top-right-btn:active {
             transform: scale(0.98);
         }
+
+        #achievements-button {
+            width: 40px;
+            padding: 0;
+        }
+        #achievements-button svg {
+            width: 22px;
+            height: 22px;
+            fill: var(--color-light);
+        }
+
+        /* INDICADOR DE LOGRO PENDIENTE */
+        .top-right-buttons::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            right: 5px;
+            width: 25px;
+            height: 4px;
+            background-color: var(--color-secondary);
+            border-radius: 2px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        .top-right-buttons.has-pending::after {
+            opacity: 1;
+        }
+
 
         /* ESTILOS ACTUALIZADOS PARA CONTENEDOR Y STICKERS */
         #sticker-area {
@@ -683,16 +739,150 @@
             position: absolute;
             max-width: 80px;
             height: auto;
-            border-radius: 5px; /* Bordes ligeramente redondeados */
+            border-radius: 5px;
             /* box-shadow: 0 3px 6px rgba(0,0,0,0.3); */ /* Sombra eliminada */
             pointer-events: auto;
             animation: fadeInSticker 0.5s ease-out;
-            /* filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.2)); */ /* Sombra opcional con filtro */
+            /* filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.2)); */
         }
 
         @keyframes fadeInSticker {
             from { opacity: 0; transform: scale(0.5) rotate(0deg); }
             to { opacity: 1; /* La escala y rotación se aplican inline */ }
+        }
+
+        /* *** ESTILOS PARA MODAL DE LOGROS (Mejorado) *** */
+        #achievements-modal {
+            display: none;
+            position: fixed;
+            z-index: 1050;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        #achievements-modal.active {
+            display: flex;
+        }
+        .achievements-modal-content {
+            background-color: var(--color-bg);
+            padding: 25px 35px;
+            border-radius: var(--radius);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            width: 90%;
+            max-width: 650px;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideIn 0.4s ease-out;
+            font-family: 'Poppins', sans-serif;
+        }
+         @keyframes slideIn {
+            from {transform: translateY(-30px); opacity: 0;}
+            to {transform: translateY(0); opacity: 1;}
+        }
+
+        .achievements-modal-content h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--color-primary);
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.8rem;
+        }
+        #close-achievements-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 32px;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+            line-height: 1;
+        }
+        #close-achievements-modal:hover {
+            color: var(--color-dark);
+        }
+        #achievements-list {
+            list-style: none;
+            padding: 0;
+        }
+        .achievement-section-title {
+            margin-top: 25px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--color-secondary);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+            font-size: 1.2rem;
+        }
+         .achievement-section-title:first-of-type {
+             margin-top: 0;
+         }
+
+        .achievement-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 5px;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.2s ease, opacity 0.3s ease;
+        }
+        .achievement-item:not(.unlocked) .achievement-details p {
+            display: none; /* Ocultar descripción si no está desbloqueado */
+        }
+         .achievement-item.unlocked {
+            opacity: 1;
+        }
+         .achievement-item:not(.unlocked) {
+             opacity: 0.6;
+         }
+
+        .achievement-item:last-child {
+            border-bottom: none;
+        }
+        .achievement-icon {
+            width: 45px;
+            height: 45px;
+            margin-right: 20px;
+            object-fit: contain;
+            filter: grayscale(100%) brightness(1.5);
+            border-radius: var(--radius); /* Bordes cuadrados redondeados */
+            background-color: var(--color-achievement-locked); /* Fondo gris claro */
+            padding: 5px;
+            transition: filter 0.3s ease, background-color 0.3s ease;
+            flex-shrink: 0; /* Evitar que el icono se encoja */
+        }
+        .achievement-item.unlocked .achievement-icon {
+            filter: none;
+            background-color: var(--color-accent); /* Fondo verde al desbloquear */
+        }
+        .achievement-details h4 {
+            margin: 0 0 3px 0;
+            font-size: 1.05rem;
+            color: var(--color-dark);
+            font-weight: 600;
+        }
+        .achievement-details p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.4;
+        }
+        .achievement-item.unlocked .achievement-details h4 {
+             color: var(--color-primary);
+        }
+        /* Animación de desbloqueo */
+        .achievement-item.newly-unlocked {
+            animation: achievementPulse 0.8s ease-out;
+        }
+        @keyframes achievementPulse {
+            0% { background-color: transparent; }
+            50% { background-color: var(--color-achievement-unlocked-bg); }
+            100% { background-color: transparent; }
         }
 
 
@@ -839,6 +1029,7 @@
         /* Responsividad */
         @media (max-width: 992px) {
             .container { max-width: 960px; }
+            .top-right-buttons { right: 15px; }
         }
         @media (max-width: 768px) {
             header h1#main-title { font-size: 2.8rem; }
@@ -853,8 +1044,12 @@
             #subscribe-form { flex-direction: column; }
             #subscribe-form button { width: 100%; }
             .gallery-item { max-width: 45%; }
-            #sticker-button { font-size: 0.8rem; padding: 6px 12px; top: 10px; right: 15px; }
+            .top-right-btn { font-size: 0.8rem; padding: 6px 12px; }
+            #achievements-button { width: 35px; height: 35px; }
+            #achievements-button svg { width: 18px; height: 18px; }
             .sticker-image { max-width: 60px; border-radius: 4px; }
+            .achievements-modal-content { padding: 20px; }
+            .achievements-modal-content h2 { font-size: 1.5rem; }
         }
         @media (max-width: 480px) {
             header h1#main-title { font-size: 2.2rem; }
@@ -871,12 +1066,24 @@
             .back-to-top { width: 45px; height: 45px; bottom: 15px; right: 15px; }
             .back-to-top svg { width: 18px; height: 18px; }
             .gallery-item { max-width: 85%; }
+            .top-right-buttons { top: 10px; right: 10px; gap: 5px;}
+            .top-right-btn { padding: 5px 10px; font-size: 0.75rem;}
+            #achievements-button { width: 30px; height: 30px; }
+            #achievements-button svg { width: 16px; height: 16px; }
         }
 
     </style>
 </head>
 <body>
-    <button id="sticker-button">Stickers</button> <div id="sticker-area"></div>
+    <div class="top-right-buttons">
+        <button id="sticker-button" class="top-right-btn">Stickers</button>
+        <button id="achievements-button" class="top-right-btn" aria-label="Ver Logros">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                <path d="M400 0H176c-26.5 0-48.1 21.8-47.4 48.2C131.1 82.3 144 116.6 144 152V296.6c-38.6 8.8-64 44.1-64 85.4v16c0 17.7 14.3 32 32 32H464c17.7 0 32-14.3 32-32v-16c0-41.3-25.4-76.6-64-85.4V152c0-35.4 12.9-69.7 15.4-103.8C448.1 21.8 426.5 0 400 0zM48 448c-26.5 0-48-21.5-48-48V192c0-26.5 21.5-48 48-48H96V448H48zM528 448H480V144h48c26.5 0 48 21.5 48 48V400c0 26.5-21.5 48-48 48z"/>
+            </svg>
+        </button>
+    </div>
+    <div id="sticker-area"></div>
 
     <header>
         <div class="container">
@@ -936,12 +1143,12 @@
         </section>
 
         <section class="content-section" id="podcast">
-            <h2 class="section-title">Podcast Una Fe Original</h2>
+            <h2 class="section-title">Podcast Logos y Espíritu</h2>
             <p style="text-align: center; margin-bottom: 20px;">Escucha nuestros episodios más recientes.</p>
              <div class="podcast-grid">
                  <div class="podcast-item">
                     <h4>La Vida de San Juan Eudes</h4>
-                    <p>Fecha: 24 de abril de 2025</p> <audio controls style="width: 100%; max-width: 300px; margin-top: 10px;">
+                    <p>Fecha: 24 de abril de 2025</p> <audio id="podcast-sje" controls style="width: 100%; max-width: 300px; margin-top: 10px;">
                       <source src="audio/La Vida de San Juan Eudes.mp3" type="audio/mpeg">
                       Tu navegador no soporta el elemento de audio.
                     </audio>
@@ -1000,6 +1207,14 @@
         <img class="modal-content" id="modalImage">
     </div>
 
+    <div id="achievements-modal" class="image-zoom-modal"> <div class="achievements-modal-content">
+            <span id="close-achievements-modal" class="close-modal">&times;</span>
+            <h2>Logros</h2> <ul id="achievements-list">
+                <li class="achievement-item">Cargando logros...</li>
+            </ul>
+        </div>
+    </div>
+
 
     <a href="#" class="back-to-top" id="backToTop" aria-label="Volver arriba">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z"/></svg>
@@ -1031,8 +1246,13 @@
         const imageModal = document.getElementById('imageModal');
         const modalImage = document.getElementById('modalImage');
         const closeImageModal = document.getElementById('closeImageModal');
-        const stickerButton = document.getElementById('sticker-button'); // Botón Stickers
-        const stickerArea = document.getElementById('sticker-area'); // Área para stickers
+        const stickerButton = document.getElementById('sticker-button');
+        const stickerArea = document.getElementById('sticker-area');
+        const achievementsButton = document.getElementById('achievements-button');
+        const achievementsModal = document.getElementById('achievements-modal');
+        const closeAchievementsModal = document.getElementById('close-achievements-modal');
+        const achievementsList = document.getElementById('achievements-list');
+        const topRightButtonsContainer = document.querySelector('.top-right-buttons');
 
         // --- DATOS DE PUBLICACIONES (Contenido placeholder) ---
         const publicaciones = [
@@ -1132,10 +1352,41 @@
             'https://i.postimg.cc/sxqYPrcj/Dise-o-sin-t-tulo.png',
             'https://i.postimg.cc/m21NLPLt/Dise-o-sin-t-tulo-1.png'
              // ---> AÑADE MÁS URLS AQUÍ <---
-             // 'URL_DE_TU_NUEVA_IMAGEN_STICKER.png',
-             // 'OTRA_URL_STICKER.jpg'
          ];
 
+         // *** ESTRUCTURA DE DATOS PARA LOGROS (Actualizada y con grupos) ***
+         // Reemplaza 'path/to/icon...' con las rutas a tus iconos reales
+         const achievementsData = {
+             'Exploración': [
+                 { id: 'visit', name: '¡Bienvenido Explorador!', description: 'Entraste a la página por primera vez.', icon: 'images/achievements/visit.png', unlocked: false },
+                 { id: 'scroll_bottom', name: 'Hasta el Infinito... ¡y más abajo!', description: 'Llegaste al final de la página principal.', icon: 'images/achievements/scroll.png', unlocked: false },
+                 { id: 'enter_post', name: 'Curiosidad Intelectual', description: 'Entraste a leer una publicación.', icon: 'images/achievements/read.png', unlocked: false },
+                 { id: 'scroll_post_bottom', name: 'Lector Voraz', description: 'Llegaste al final de una publicación.', icon: 'images/achievements/bookworm.png', unlocked: false },
+                 { id: 'enter_100_posts', name: 'Bibliotecario Digital', description: 'Entraste a 100 publicaciones diferentes.', icon: 'images/achievements/library.png', unlocked: false },
+                 { id: 'open_image', name: 'Apreciador de Arte', description: 'Ampliaste una imagen de la galería.', icon: 'images/achievements/gallery.png', unlocked: false },
+                 // { id: 'open_100_images', name: 'Curador Experto', description: 'Abriste 100 imágenes diferentes.', icon: 'images/achievements/curator.png', unlocked: false },
+                 { id: 'search', name: 'Detective de Contenido', description: 'Utilizaste la barra de búsqueda.', icon: 'images/achievements/search.png', unlocked: false },
+             ],
+             'Interacción': [
+                 { id: 'play_podcast', name: '¡Dale al Play!', description: 'Escuchaste un fragmento de podcast.', icon: 'images/achievements/podcast_play.png', unlocked: false },
+                 { id: 'finish_podcast', name: 'Maratón Auditivo', description: 'Escuchaste un podcast completo.', icon: 'images/achievements/podcast_finish.png', unlocked: false },
+                 { id: 'listen_100_min', name: 'Oído de Oro', description: 'Escuchaste 100 minutos de podcast.', icon: 'images/achievements/podcast_time.png', unlocked: false },
+                 { id: 'copy_text', name: 'Ctrl+C Maestro', description: 'Copiasté algo de la página.', icon: 'images/achievements/copy.png', unlocked: false },
+                 // { id: 'copy_post_text', name: 'Para Chat GPT 😉', description: 'Copiasté algo de una publicación.', icon: 'images/achievements/copy_post.png', unlocked: false },
+                 { id: 'paste_text', name: 'Ctrl+V Sorpresa', description: 'Pegaste texto en la página (¿accidentalmente?).', icon: 'images/achievements/paste.png', unlocked: false },
+                 { id: 'click_sticker', name: '¡Fiesta de Stickers!', description: 'Hiciste clic en el botón de Stickers.', icon: 'images/achievements/sticker_click.png', unlocked: false },
+                 { id: 'click_sticker_100', name: 'Adicto a los Stickers', description: '¡100 clics en el botón de Stickers!', icon: 'images/achievements/sticker_100.png', unlocked: false },
+                 { id: 'click_sticker_1000', name: '¡Leyenda de los Stickers!', description: '¡1000 clics! ¿En serio?', icon: 'images/achievements/sticker_1000.png', unlocked: false },
+                 { id: 'subscribe', name: '¡Eres Parte del Club!', description: 'Te suscribiste al boletín.', icon: 'images/achievements/subscribe.png', unlocked: false },
+             ]
+         };
+
+         // Objeto para rastrear el estado y contadores
+         let achievementStatus = {};
+         let achievementCounters = {};
+         let hasPendingAchievement = false; // Flag para indicador
+         let achievementAudioContext; // Contexto de audio para el sonido
+         let achievementSoundBuffer; // Buffer para el sonido precargado
 
         let currentPosts = [...publicaciones];
         let currentImages = [...galeriaImagenes];
@@ -1321,12 +1572,34 @@
                 return;
             };
 
+            // Lógica para logro de 100 posts diferentes
+            if (!achievementCounters.visitedPosts.includes(id)) {
+                achievementCounters.visitedPosts.push(id);
+                saveAchievementCounters();
+                if (achievementCounters.visitedPosts.length >= 100) {
+                    unlockAchievement('enter_100_posts');
+                }
+            }
+
             singlePostTitle.textContent = post.titulo;
             singlePostDate.textContent = `Publicado el ${formatearFecha(post.fecha)}`;
             singlePostCategory.textContent = post.categoria;
             singlePostContent.innerHTML = post.contenido; // Usar placeholder
 
             cambiarSeccion('single-post');
+            unlockAchievement('enter_post');
+
+            // Listener para scroll dentro del post (simplificado)
+            const postContentElement = document.getElementById('single-post-content');
+             const scrollListener = () => {
+                 if (postContentElement.getBoundingClientRect().bottom <= window.innerHeight + 100) {
+                     unlockAchievement('scroll_post_bottom');
+                     window.removeEventListener('scroll', scrollListener);
+                 }
+             };
+             // Remover listener anterior si existe antes de añadir uno nuevo
+             window.removeEventListener('scroll', scrollListener);
+             window.addEventListener('scroll', scrollListener);
         }
 
         function volverAPublicaciones() {
@@ -1343,6 +1616,7 @@
                      subscribeStatus.textContent = `¡Gracias por suscribirte con ${emailInput.value}!`;
                      subscribeStatus.style.color = 'green';
                      subscribeForm.reset();
+                     unlockAchievement('subscribe');
                  } else {
                     subscribeStatus.textContent = 'Por favor, introduce un correo electrónico válido.';
                     subscribeStatus.style.color = 'red';
@@ -1354,6 +1628,10 @@
             const searchTerm = searchInput.value.toLowerCase().trim();
             const publicacionesSection = document.getElementById('publicaciones');
             const imagenesSection = document.getElementById('imagenes');
+
+            if (searchTerm !== '') {
+                unlockAchievement('search');
+            }
 
             if (publicacionesSection.classList.contains('active')) {
                 if (searchTerm === '') {
@@ -1399,6 +1677,7 @@
         function openImageModal(src) {
             modalImage.src = src;
             imageModal.classList.add('active');
+            unlockAchievement('open_image');
         }
 
         function closeImageModalFunc() {
@@ -1406,36 +1685,198 @@
             modalImage.src = "";
         }
 
-        // *** FUNCIÓN PARA AÑADIR STICKER ***
         function addSticker() {
+            achievementCounters.stickerClicks = (achievementCounters.stickerClicks || 0) + 1;
+            saveAchievementCounters();
+
+            unlockAchievement('click_sticker');
+            if (achievementCounters.stickerClicks >= 100) {
+                unlockAchievement('click_sticker_100');
+            }
+            if (achievementCounters.stickerClicks >= 1000) {
+                 unlockAchievement('click_sticker_1000');
+             }
+
             const randomUrl = stickerUrls[Math.floor(Math.random() * stickerUrls.length)];
             const stickerImg = document.createElement('img');
             stickerImg.src = randomUrl;
             stickerImg.alt = "Sticker Decorativo";
             stickerImg.className = 'sticker-image';
-
-            // Calcular posición aleatoria (evitando bordes extremos y área del botón)
-            const randomTop = Math.random() * 70 + 15; // Entre 15% y 85%
-            const randomLeft = Math.random() * 80 + 10; // Entre 10% y 90%
-            const randomRotate = Math.random() * 60 - 30; // Entre -30 y 30 grados
-
+            const randomTop = Math.random() * 70 + 15;
+            const randomLeft = Math.random() * 80 + 10;
+            const randomRotate = Math.random() * 60 - 30;
             stickerImg.style.top = `${randomTop}vh`;
             stickerImg.style.left = `${randomLeft}vw`;
             stickerImg.style.transform = `rotate(${randomRotate}deg)`;
-
             stickerArea.appendChild(stickerImg);
-
-             // Opcional: Hacer que el sticker desaparezca después de un tiempo
              setTimeout(() => {
                  stickerImg.style.transition = 'opacity 0.5s ease-out';
                  stickerImg.style.opacity = '0';
-                 setTimeout(() => stickerImg.remove(), 500); // Eliminar del DOM después de desvanecerse
-             }, 5000); // Desaparece después de 5 segundos
+                 setTimeout(() => stickerImg.remove(), 500);
+             }, 5000);
+        }
+
+        // *** FUNCIONES PARA LOGROS (Actualizadas) ***
+        function loadAchievementStatus() {
+            const savedStatus = localStorage.getItem('blogLogrosStatus');
+            const savedCounters = localStorage.getItem('blogLogrosCounters');
+
+            if (savedStatus) {
+                achievementStatus = JSON.parse(savedStatus);
+            } else {
+                // Inicializar estado si no hay nada guardado
+                Object.values(achievementsData).flat().forEach(ach => {
+                    achievementStatus[ach.id] = false;
+                });
+            }
+
+            if (savedCounters) {
+                achievementCounters = JSON.parse(savedCounters);
+            } else {
+                achievementCounters = {
+                    stickerClicks: 0,
+                    visitedPosts: [],
+                    podcastTime: 0,
+                    // Inicializar otros contadores si son necesarios
+                };
+            }
+             // Comprobar si hay logros pendientes al cargar (antes de desbloquear visita)
+             checkPendingAchievementsOnLoad();
+        }
+
+        function saveAchievementStatus() {
+            localStorage.setItem('blogLogrosStatus', JSON.stringify(achievementStatus));
+        }
+        function saveAchievementCounters() {
+             localStorage.setItem('blogLogrosCounters', JSON.stringify(achievementCounters));
+        }
+
+         // Función para reproducir sonido de logro (si está disponible)
+         function playAchievementSound() {
+             if (achievementAudioContext && achievementSoundBuffer && !hasPendingAchievement) {
+                 const source = achievementAudioContext.createBufferSource();
+                 source.buffer = achievementSoundBuffer;
+                 source.connect(achievementAudioContext.destination);
+                 source.start(0);
+             } else if (!hasPendingAchievement) {
+                 console.log("Sonido de logro (placeholder) - AudioContext no listo o pendiente");
+             }
+         }
+
+
+         function unlockAchievement(id) {
+             if (!achievementStatus[id]) {
+                 console.log(`Logro desbloqueado: ${id}`);
+                 achievementStatus[id] = true;
+                 saveAchievementStatus();
+
+                 // Activar indicador visual de pendiente ANTES de reproducir sonido
+                 setPendingAchievement(true);
+                 playAchievementSound(); // Intentar reproducir sonido
+
+                 // Animar el logro en el modal si está abierto
+                 const achievementItem = document.querySelector(`#achievements-list li[data-achievement-id="${id}"]`);
+                 if (achievementItem) {
+                     achievementItem.classList.add('unlocked', 'newly-unlocked');
+                     setTimeout(() => {
+                         achievementItem.classList.remove('newly-unlocked');
+                     }, 800);
+                 }
+             }
+         }
+
+         // Comprueba si hay logros desbloqueados pero no vistos al cargar
+         function checkPendingAchievementsOnLoad() {
+             let pending = false;
+             for (const id in achievementStatus) {
+                 if (achievementStatus[id]) { // Si está desbloqueado
+                     // Aquí necesitaríamos una forma de saber si ya se 'vio'
+                     // Por simplicidad, asumimos que si está desbloqueado y no se ha abierto el modal
+                     // esta sesión, está pendiente.
+                     pending = true;
+                     break;
+                 }
+             }
+             setPendingAchievement(pending);
+         }
+
+
+         // Función para actualizar el indicador visual de pendiente
+         function setPendingAchievement(isPending) {
+             hasPendingAchievement = isPending; // Actualizar el flag global
+             if (isPending) {
+                 topRightButtonsContainer.classList.add('has-pending');
+             } else {
+                 topRightButtonsContainer.classList.remove('has-pending');
+             }
+         }
+
+        function renderAchievements() {
+            achievementsList.innerHTML = '';
+            for (const category in achievementsData) {
+                const titleLi = document.createElement('li');
+                titleLi.className = 'achievement-section-title';
+                titleLi.textContent = category;
+                achievementsList.appendChild(titleLi);
+
+                achievementsData[category].forEach(ach => {
+                    const li = document.createElement('li');
+                    li.className = 'achievement-item';
+                    li.dataset.achievementId = ach.id;
+                    if (achievementStatus[ach.id]) {
+                        li.classList.add('unlocked');
+                    }
+                    li.innerHTML = `
+                        <img src="${ach.icon}" alt="Icono ${ach.name}" class="achievement-icon" onerror="this.style.display='none'"> <div class="achievement-details">
+                            <h4>${ach.name}</h4>
+                            <p>${ach.description}</p>
+                        </div>
+                    `;
+                    achievementsList.appendChild(li);
+                });
+            }
+        }
+
+
+        function openAchievementsModal() {
+            renderAchievements();
+            achievementsModal.classList.add('active');
+            setPendingAchievement(false); // Limpiar indicador al abrir el modal
+        }
+
+        function closeAchievementsModalFunc() {
+            achievementsModal.classList.remove('active');
+        }
+
+        // --- INICIALIZACIÓN DE AUDIO CONTEXT (para sonido de logro) ---
+        function initAudio() {
+            try {
+                window.AudioContext = window.AudioContext || window.webkitAudioContext;
+                achievementAudioContext = new AudioContext();
+
+                // Cargar el sonido (reemplaza con tu ruta)
+                // fetch('audio/achievement-sound.wav') // Ejemplo con wav
+                //     .then(response => response.arrayBuffer())
+                //     .then(arrayBuffer => achievementAudioContext.decodeAudioData(arrayBuffer))
+                //     .then(audioBuffer => {
+                //         achievementSoundBuffer = audioBuffer;
+                //         console.log("Sonido de logro cargado.");
+                //     })
+                //     .catch(e => console.error("Error loading achievement sound:", e));
+
+            } catch(e) {
+                console.warn('Web Audio API is not supported in this browser');
+            }
         }
 
 
         // --- EVENT LISTENERS ---
-        window.addEventListener('scroll', toggleBackToTopButton);
+        window.addEventListener('scroll', () => {
+            toggleBackToTopButton();
+             if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
+                 unlockAchievement('scroll_bottom');
+             }
+        });
         backToTopButton.addEventListener('click', (e) => {
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1472,18 +1913,116 @@
             }
         });
 
-        // Listener para el botón de stickers
         stickerButton.addEventListener('click', addSticker);
+
+        achievementsButton.addEventListener('click', openAchievementsModal);
+        closeAchievementsModal.addEventListener('click', closeAchievementsModalFunc);
+        achievementsModal.addEventListener('click', (e) => {
+            if (e.target === achievementsModal) {
+                closeAchievementsModalFunc();
+            }
+        });
+
+        document.addEventListener('copy', () => {
+            unlockAchievement('copy_text');
+        });
+
+        document.addEventListener('paste', (event) => {
+            unlockAchievement('paste_text');
+        });
+
+
+        document.querySelectorAll('#podcast audio').forEach(audio => {
+            audio.addEventListener('play', () => {
+                unlockAchievement('play_podcast');
+                // Reiniciar contexto de audio si estaba suspendido (navegadores modernos)
+                if (achievementAudioContext && achievementAudioContext.state === 'suspended') {
+                    achievementAudioContext.resume();
+                }
+            });
+             audio.addEventListener('ended', () => {
+                 unlockAchievement('finish_podcast');
+             });
+            // Lógica básica para tiempo (simplificada)
+            let accumulatedTime = 0;
+            let intervalId = null;
+            audio.addEventListener('play', () => {
+                intervalId = setInterval(() => {
+                    accumulatedTime++;
+                    achievementCounters.podcastTime = (achievementCounters.podcastTime || 0) + 1;
+                    if(achievementCounters.podcastTime % 10 === 0) { // Guardar cada 10s
+                       saveAchievementCounters();
+                    }
+                    if (achievementCounters.podcastTime >= 6000) { // 100 minutos = 6000 segundos
+                        unlockAchievement('listen_100_min');
+                        clearInterval(intervalId); // Detener contador una vez alcanzado
+                    }
+                }, 1000); // Contar cada segundo
+            });
+            audio.addEventListener('pause', () => clearInterval(intervalId));
+            audio.addEventListener('ended', () => clearInterval(intervalId));
+
+        });
 
 
         // --- INICIALIZACIÓN ---
-        currentYearSpan.textContent = new Date().getFullYear();
-        animateTitle(); // Animar el título al cargar
-        renderizarGaleria(galeriaImagenes); // Renderizar galería inicial
-        ordenarPublicaciones(); // Ordena y renderiza las publicaciones iniciales
-        cambiarSeccion('publicaciones'); // Muestra la sección de publicaciones por defecto
+        window.addEventListener('DOMContentLoaded', () => {
+            initAudio(); // Intentar inicializar AudioContext
+            loadAchievementStatus();
+            unlockAchievement('visit');
+            currentYearSpan.textContent = new Date().getFullYear();
+            animateTitle();
+            renderizarGaleria(galeriaImagenes);
+            ordenarPublicaciones();
+            cambiarSeccion('publicaciones');
+        });
 
 
     </script>
 </body>
 </html>
+```
+
+---
+
+Ahora, las explicaciones:
+
+**1. Cómo subir las imágenes de Stickers y Logros a GitHub:**
+
+El proceso es idéntico al que te expliqué para la carpeta `audio`:
+
+1.  **Ve a tu repositorio en GitHub.**
+2.  **Crea las carpetas:**
+    * Haz clic en "Add file" > "Create new file".
+    * Escribe `images/stickers/` en el campo de nombre.
+    * Escribe un nombre de archivo temporal como `.gitkeep` (quedaría `images/stickers/.gitkeep`).
+    * Haz clic en "Commit new file".
+    * Repite el proceso para la carpeta de logros: escribe `images/achievements/` y luego `.gitkeep` (quedaría `images/achievements/.gitkeep`) y confirma.
+3.  **Sube las imágenes:**
+    * Navega dentro de la carpeta `images/stickers` en GitHub.
+    * Haz clic en "Add file" > "Upload files".
+    * Arrastra tus archivos de stickers o haz clic en "choose your files" para seleccionarlos.
+    * Una vez seleccionados, haz clic en "Commit changes".
+    * Repite el proceso para la carpeta `images/achievements` con los iconos de los logros.
+4.  **Actualiza el código:** Asegúrate de que en el array `stickerUrls` y en la propiedad `icon` de `achievementsData` en tu JavaScript, las rutas apunten correctamente a estas nuevas ubicaciones (ej., `'images/stickers/sticker1.webp'`, `'images/achievements/visit-icon.png'`).
+
+**2. Pasos para guardar logros con inicio de sesión (Conceptual):**
+
+Esto requiere un cambio fundamental de un sitio estático a una aplicación web con backend. Es un proceso complejo, pero conceptualmente los pasos son:
+
+1.  **Elegir Tecnologías Backend:** Decide qué lenguaje/framework usarás para el servidor (ej. Node.js con Express, Python con Django/Flask, PHP con Laravel) y qué base de datos (ej. PostgreSQL, MySQL, MongoDB).
+2.  **Configurar Base de Datos:** Diseña las tablas/colecciones necesarias. Como mínimo, necesitarás una tabla para `usuarios` (con id, nombre de usuario, hash de contraseña) y una tabla para `logros_usuarios` (con id_usuario, id_logro, fecha_desbloqueo).
+3.  **Implementar Autenticación:**
+    * Crea rutas/endpoints en tu backend para el registro de nuevos usuarios (guardando el hash de la contraseña, nunca la contraseña en texto plano) y para el inicio de sesión (comparando el hash).
+    * Usa sesiones o tokens (como JWT) para mantener al usuario autenticado después de iniciar sesión.
+4.  **Crear API para Logros:**
+    * Define endpoints en tu backend:
+        * `GET /api/usuarios/yo/logros`: Para obtener los logros desbloqueados por el usuario autenticado actual.
+        * `POST /api/usuarios/yo/logros/:idLogro`: Para que el frontend informe al backend que se ha desbloqueado un logro específico. El backend verifica si es válido y lo guarda en la base de datos.
+5.  **Modificar el Frontend (JavaScript):**
+    * **Inicio de Sesión:** Añade formularios de registro/login en tu HTML. El JavaScript enviará los datos a los endpoints de autenticación del backend usando `fetch`. Si el login es exitoso, el backend devolverá un token que guardarás (quizás en `localStorage` o `sessionStorage`).
+    * **Cargar Logros:** Al cargar la página, si hay un token guardado, haz una petición `fetch` a `GET /api/usuarios/yo/logros` (enviando el token en los headers). Usa la respuesta para actualizar `achievementStatus`.
+    * **Desbloquear Logros:** Cuando la lógica actual detecta un desbloqueo (`unlockAchievement`), además de actualizar el estado local, haz una petición `fetch` a `POST /api/usuarios/yo/logros/:idLogro` (enviando el token) para guardarlo en el servidor.
+6.  **Despliegue:** Necesitarás alojar tanto tu frontend (que puede seguir siendo estático en Netlify/Vercel/GitHub Pages) como tu backend y base de datos (en plataformas como Heroku, Render, AWS, Google Cloud, DigitalOcean, etc., muchas tienen planes gratuitos o de bajo costo para empezar).
+
+**En resumen:** Pasar a un sistema con inicio de sesión y guardado persistente de logros es un salto grande que implica aprender sobre desarrollo backend, bases de datos y autenticación. Para tu sitio actual, `localStorage` es la forma viable de guardar el progreso *por navegado
