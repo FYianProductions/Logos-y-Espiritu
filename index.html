@@ -885,6 +885,43 @@
             100% { background-color: transparent; }
         }
 
+        /* Estilos para pestañas de logros */
+        .achievements-tabs {
+            margin-top: 20px;
+        }
+
+        .tabs-header {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            background-color: var(--color-light);
+            border: 1px solid var(--color-primary);
+            border-radius: var(--radius-nav);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .tab-button.active {
+            background-color: var(--color-primary);
+            color: var(--color-light);
+        }
+
+        .tab-content {
+            display: none;
+            list-style: none;
+            padding: 0;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
 
         /* Footer */
         footer {
@@ -1209,9 +1246,17 @@
 
     <div id="achievements-modal" class="image-zoom-modal"> <div class="achievements-modal-content">
             <span id="close-achievements-modal" class="close-modal">&times;</span>
-            <h2>Logros</h2> <ul id="achievements-list">
-                <li class="achievement-item">Cargando logros...</li>
-            </ul>
+            <h2>Logros</h2> 
+            <div class="achievements-tabs">
+                <div class="tabs-header">
+                    <button class="tab-button active" data-tab="exploration-tab">Exploración</button>
+                    <button class="tab-button" data-tab="interaction-tab">Interacción</button>
+                </div>
+                <div class="tabs-content">
+                    <ul id="exploration-tab" class="tab-content active"></ul>
+                    <ul id="interaction-tab" class="tab-content"></ul>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1812,31 +1857,61 @@
          }
 
         function renderAchievements() {
-            achievementsList.innerHTML = '';
-            for (const category in achievementsData) {
-                const titleLi = document.createElement('li');
-                titleLi.className = 'achievement-section-title';
-                titleLi.textContent = category;
-                achievementsList.appendChild(titleLi);
+            const explorationTab = document.getElementById('exploration-tab');
+            const interactionTab = document.getElementById('interaction-tab');
 
-                achievementsData[category].forEach(ach => {
-                    const li = document.createElement('li');
-                    li.className = 'achievement-item';
-                    li.dataset.achievementId = ach.id;
-                    if (achievementStatus[ach.id]) {
-                        li.classList.add('unlocked');
-                    }
-                    li.innerHTML = `
-                        <img src="${ach.icon}" alt="Icono ${ach.name}" class="achievement-icon" onerror="this.style.display='none'"> <div class="achievement-details">
-                            <h4>${ach.name}</h4>
-                            <p>${ach.description}</p>
-                        </div>
-                    `;
-                    achievementsList.appendChild(li);
-                });
-            }
+            explorationTab.innerHTML = '';
+            interactionTab.innerHTML = '';
+
+            achievementsData['Exploración'].forEach(ach => {
+                const li = document.createElement('li');
+                li.className = 'achievement-item';
+                li.dataset.achievementId = ach.id;
+                if (achievementStatus[ach.id]) {
+                    li.classList.add('unlocked');
+                }
+                li.innerHTML = `
+                    <img src="${ach.icon}" alt="Icono ${ach.name}" class="achievement-icon" onerror="this.style.display='none'">
+                    <div class="achievement-details">
+                        <h4>${ach.name}</h4>
+                        <p>${ach.description}</p>
+                    </div>
+                `;
+                explorationTab.appendChild(li);
+            });
+
+            achievementsData['Interacción'].forEach(ach => {
+                const li = document.createElement('li');
+                li.className = 'achievement-item';
+                li.dataset.achievementId = ach.id;
+                if (achievementStatus[ach.id]) {
+                    li.classList.add('unlocked');
+                }
+                li.innerHTML = `
+                    <img src="${ach.icon}" alt="Icono ${ach.name}" class="achievement-icon" onerror="this.style.display='none'">
+                    <div class="achievement-details">
+                        <h4>${ach.name}</h4>
+                        <p>${ach.description}</p>
+                    </div>
+                `;
+                interactionTab.appendChild(li);
+            });
         }
 
+        // Lógica para cambiar entre pestañas
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const targetTab = button.dataset.tab;
+
+                // Cambiar la pestaña activa
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                // Mostrar el contenido de la pestaña activa
+                document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+                document.getElementById(targetTab).classList.add('active');
+            });
+        });
 
         function openAchievementsModal() {
             renderAchievements();
