@@ -448,19 +448,23 @@
         }
         .image-right-wrap {
             float: right;
-            margin: 0 0 15px 25px;
-            max-width: 50%;
+            margin: 0 0 30px 30px; /* Espacio externo: margen izquierdo y margen inferior */
+            max-width: 45%; /* Ajusta el ancho máximo */
             height: auto;
             border-radius: var(--radius);
-            box-shadow: var(--shadow);
+            background-color: var(--color-bg); /* Color del fondo */
+            padding: 10px; /* Espacio interno para separar la imagen del borde */
+            box-shadow: none; /* Eliminar sombra */
         }
         .image-left-wrap {
             float: left;
-            margin: 5px 30px 15px 0;
-            max-width: 50%;
+            margin: 0 30px 30px 0; /* Espacio externo: margen derecho y margen inferior */
+            max-width: 45%; /* Ajusta el ancho máximo */
             height: auto;
             border-radius: var(--radius);
-            box-shadow: var(--shadow);
+            background-color: var(--color-bg); /* Color del fondo */
+            padding: 10px; /* Espacio interno para separar la imagen del borde */
+            box-shadow: none; /* Eliminar sombra */
         }
 
         @media (max-width: 600px) {
@@ -468,8 +472,8 @@
             .image-left-wrap {
                 float: none;
                 display: block;
-                max-width: 85%;
-                margin: 20px auto;
+                max-width: 55%;
+                margin: 50px auto;
             }
         }
 
@@ -1358,7 +1362,7 @@
              },
              {
                 id: 'encuentro-fe-ciencia', // ID único para esta publicación
-                titulo: 'ENCUENTRO "FE Y CIENCIA: HACIA LA COP26"',
+                titulo: 'Encuentro "Fe y Ciencia: Hacia la COP26"',
                 fecha: '2025-04-22', // Fecha proporcionada (Ajustada a YYYY-MM-DD)
                 resumen: 'Discurso del Santo Padre Francisco sobre la interdependencia, el amor y el respeto como claves para el cuidado de la casa común.', // Resumen creado
                 imagen: 'https://i.postimg.cc/2SkLLgzP/imagefran.png', // Imagen proporcionada
