@@ -184,8 +184,8 @@
             position: relative;
             display: flex;
             align-items: center;
+            min-width: 40px; /* Espacio mínimo para el icono */
             justify-content: flex-end;
-            gap: 10px;
         }
 
         #search-icon {
@@ -194,52 +194,45 @@
             transition: fill 0.3s ease;
             width: 24px;
             height: 24px;
+            position: relative; /* Para z-index */
+            z-index: 2; /* Icono encima del input inicialmente */
         }
         #search-icon:hover {
             fill: var(--color-secondary);
         }
 
         #search-input {
-            position: relative;
-            width: 200px;
+            position: absolute;
+            right: 5px; /* Posicionar a la derecha del contenedor */
+            top: 50%;
+            transform: translateY(-50%) scaleX(0); /* Iniciar escalado a 0 */
+            transform-origin: right; /* Escalar desde la derecha */
+            width: 200px; /* Ancho fijo */
             padding: 8px 15px;
+            padding-right: 30px; /* Espacio para que no tape el icono */
             border: none;
             outline: none;
             font-size: 1rem;
+            transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+            opacity: 0;
             border-radius: var(--radius-nav);
             background-color: var(--color-bg);
             box-shadow: var(--shadow);
-            transition: all 0.4s ease-in-out;
+            z-index: 1; /* Input detrás del icono */
+            pointer-events: none; /* No interactuable cuando está oculto */
         }
 
-        .search-container.active #search-input {
-            width: 100%;
-            max-width: 300px;
+        /* Mostrar input al hacer hover/focus en el *contenedor* */
+        .search-container:hover #search-input,
+        #search-input:focus {
+            transform: translateY(-50%) scaleX(1); /* Escalar a tamaño completo */
+            opacity: 1;
+            pointer-events: auto; /* Hacer interactuable */
         }
-
-        /* Cambios para el recuadro blanco al buscar */
-        nav.search-active {
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-        }
-
-        nav.search-active ul {
-            display: none;
-        }
-
-        nav.search-active .search-container {
-            width: 100%;
-            justify-content: center;
-        }
-
-        nav.search-active #search-input {
-            text-align: center;
-        }
-
-        /* Restaurar diseño al salir de búsqueda */
-        nav:not(.search-active) ul {
-            display: flex;
+        /* Mover icono ligeramente a la derecha cuando el input está activo */
+        .search-container:hover #search-icon,
+        #search-input:focus + #search-icon {
+           /* No es necesario mover el icono si el input está absoluto */
         }
 
         /* Secciones */
@@ -1112,12 +1105,35 @@
             header h1#main-title { font-size: 2.2rem; }
             header p { font-size: 0.9rem; }
             nav { padding: 10px 15px; }
+            nav ul { display: none; }
+            .mobile-section-nav {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+            }
+            .mobile-section-nav button {
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                color: var(--color-primary);
+                cursor: pointer;
+            }
+            .mobile-section-nav span {
+                font-size: 1.2rem;
+                font-weight: bold;
+                color: var(--color-dark);
+            }
             nav ul li a { font-size: 1rem; padding: 6px 10px; }
             .search-container:hover #search-input, #search-input:focus { width: 150px; }
             .section-title { font-size: 1.6rem; }
             .section-title-container { flex-direction: column; gap: 5px; }
-            .posts-grid { grid-template-columns: 1fr; }
-            .post-title { font-size: 1.2rem; }
+            .posts-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .post-card { flex-direction: column; padding: 10px; }
+            .post-card .post-content { display: none; }
+            .post-card .video-thumbnail-container { height: 120px; }
+            .image-gallery { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .gallery-item { max-width: 100%; }
             .single-post { padding: 20px; }
             .single-post-title { font-size: 1.6rem; }
             .back-to-top { width: 45px; height: 45px; bottom: 15px; right: 15px; }
@@ -1127,63 +1143,6 @@
             .top-right-btn { padding: 5px 10px; font-size: 0.75rem;}
             #achievements-button { width: 30px; height: 30px; }
             #achievements-button svg { width: 16px; height: 16px; }
-        }
-
-        /* Estilos para manejar secciones con flechas en dispositivos móviles */
-        @media (max-width: 600px) {
-            nav ul {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                width: 100%;
-                padding: 0 10px;
-            }
-
-            .mobile-section-nav {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                width: 100%;
-                padding: 10px;
-            }
-
-            .mobile-section-nav button {
-                background: none;
-                border: none;
-                font-size: 1.5rem;
-                color: var(--color-primary);
-                cursor: pointer;
-            }
-
-            .mobile-section-nav span {
-                font-size: 1.2rem;
-                font-weight: bold;
-                color: var(--color-dark);
-            }
-
-            .posts-grid {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-
-            .post-card {
-                flex-direction: column;
-                padding: 10px;
-            }
-
-            .post-card .post-content {
-                display: block;
-            }
-
-            .post-card .post-title {
-                font-size: 1rem;
-                margin-bottom: 5px;
-            }
-
-            .post-card .post-meta {
-                font-size: 0.8rem;
-                color: #555;
-            }
         }
     </style>
 </head>
@@ -1220,6 +1179,11 @@
                     <path d="M0 0h24v24H0z" fill="none"/>
                 </svg>
                 <input type="search" id="search-input" placeholder="Buscar...">
+            </div>
+            <div class="mobile-section-nav">
+                <button class="mobile-nav-arrow" onclick="cambiarSeccionConFlechas('izquierda')">←</button>
+                <span>Publicaciones</span>
+                <button class="mobile-nav-arrow" onclick="cambiarSeccionConFlechas('derecha')">→</button>
             </div>
         </nav>
 
@@ -1734,6 +1698,19 @@
              window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        function cambiarSeccionConFlechas(direccion) {
+            const secciones = ['publicaciones', 'imagenes', 'podcast'];
+            const seccionActual = document.querySelector('.content-section.active').id;
+            let indiceActual = secciones.indexOf(seccionActual);
+
+            if (direccion === 'derecha') {
+                indiceActual = (indiceActual + 1) % secciones.length;
+            } else if (direccion === 'izquierda') {
+                indiceActual = (indiceActual - 1 + secciones.length) % secciones.length;
+            }
+
+            cambiarSeccion(secciones[indiceActual]);
+        }
 
         function mostrarPostIndividual(id) {
             const post = publicaciones.find(p => p.id === id);
@@ -2102,7 +2079,15 @@
         subscribeForm.addEventListener('submit', handleSubscribeFormSubmit);
         searchInput.addEventListener('input', handleSearch);
         searchIcon.addEventListener('click', () => {
+            navLinks.forEach(link => link.style.display = 'none');
+            searchInput.style.display = 'block';
             searchInput.focus();
+        });
+        searchInput.addEventListener('blur', () => {
+            if (searchInput.value.trim() === '') {
+                navLinks.forEach(link => link.style.display = 'block');
+                searchInput.style.display = 'none';
+            }
         });
 
         closeImageModal.addEventListener('click', closeImageModalFunc);
