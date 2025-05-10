@@ -83,7 +83,6 @@
             z-index: 1;
         }
 
-
         /* Estilo "Divertido" para el Título Principal */
         header h1#main-title {
             font-family: 'Fredoka One', cursive;
@@ -103,7 +102,6 @@
         header h1#main-title:hover span {
              transform: translateY(-5px) rotate(5deg);
         }
-
 
         header p {
             font-size: 1.1rem;
@@ -236,7 +234,6 @@
         #search-input:focus + #search-icon {
            /* No es necesario mover el icono si el input está absoluto */
         }
-
 
         /* Secciones */
         .content-section {
@@ -496,7 +493,6 @@
             }
         }
 
-
         .video-container {
             position: relative;
             width: 100%;
@@ -562,7 +558,6 @@
             .gallery-item { max-width: 85%; }
          }
 
-
          .gallery-item:hover {
              transform: scale(1.03);
              box-shadow: 0 8px 16px rgba(0,0,0,0.15);
@@ -595,7 +590,6 @@
         .gallery-item:hover .gallery-item-date {
             opacity: 1;
         }
-
 
         /* ESTILOS PARA EL MODAL DE ZOOM */
         .image-zoom-modal {
@@ -644,7 +638,6 @@
             text-decoration: none;
         }
 
-
         /* Estilos para sección Podcast */
         #podcast .podcast-grid {
             display: grid;
@@ -679,7 +672,6 @@
               max-width: 300px;
               margin-top: 10px;
           }
-
 
         /* *** ESTILOS PARA BOTONES SUPERIORES DERECHA *** */
         .top-right-buttons {
@@ -744,7 +736,6 @@
         .top-right-buttons.has-pending::after {
             opacity: 1;
         }
-
 
         /* ESTILOS ACTUALIZADOS PARA CONTENEDOR Y STICKERS */
         #sticker-area {
@@ -1061,7 +1052,6 @@
          }
          #subscribe-status { margin-top: 10px; font-size: 0.9rem; }
 
-
         /* Botón para volver arriba */
         .back-to-top {
             position: fixed;
@@ -1111,7 +1101,7 @@
             .achievements-modal-content { padding: 20px; }
             .achievements-modal-content h2 { font-size: 1.5rem; }
         }
-        @media (max-width: 480px) {
+        @media (max-width: 600px) {
             header h1#main-title { font-size: 2.2rem; }
             header p { font-size: 0.9rem; }
             nav { padding: 10px 15px; }
@@ -1132,6 +1122,67 @@
             #achievements-button svg { width: 16px; height: 16px; }
         }
 
+        /* Estilos para manejar secciones con flechas en dispositivos móviles */
+        @media (max-width: 600px) {
+            nav {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            .mobile-section-nav {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+            }
+
+            .mobile-section-nav button {
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                color: var(--color-primary);
+                cursor: pointer;
+            }
+
+            .mobile-section-nav span {
+                font-size: 1.2rem;
+                font-weight: bold;
+                color: var(--color-dark);
+            }
+
+            .posts-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .post-card {
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            .post-card .post-content {
+                display: none;
+            }
+
+            .post-card .video-thumbnail-container {
+                height: 120px;
+            }
+
+            .image-gallery {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .gallery-item {
+                max-width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1417,7 +1468,7 @@
                 titulo: '¿En el Vagón de Cola? Reflexionando con Kurzgesagt',
                 fecha: '2025-05-9',
                 resumen: 'Es una llamada a examinar si estamos tomando decisiones conscientes o simplemente dejándonos arrastrar por la inercia.',
-                imagen: 'https://img.youtube.com/vi/uYYRAPBbr_w/hqdefault.jpg',
+                imagen: 'https://i.ytimg.com/vi/uYYRAPBbr_w/maxresdefault.jpg',
                 contenido: `
                     <div class="video-container">
                         <iframe src="https://www.youtube.com/embed/uYYRAPBbr_w" title="Introducción a Logos y Espíritu" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
