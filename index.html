@@ -183,13 +183,13 @@
         .search-container {
             position: absolute; /* Cambiar a posición absoluta */
             top: 50%; /* Centrar verticalmente */
-            right: -40px; /* Mover fuera del recuadro */
+            right: 10px; /* Ajustar posición para alinear con otros elementos */
             transform: translateY(-50%); /* Ajustar el centrado */
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 50px; /* Tamaño del círculo */
-            height: 50px; /* Tamaño del círculo */
+            width: 40px; /* Tamaño del círculo */
+            height: 40px; /* Tamaño del círculo */
             background-color: var(--color-light); /* Fondo blanco */
             border-radius: 50%; /* Hacerlo circular */
             box-shadow: var(--shadow); /* Sombra para destacar */
@@ -198,8 +198,8 @@
 
         /* Ajustar el ícono de la lupa */
         #search-icon {
-            width: 24px;
-            height: 24px;
+            width: 20px; /* Ajustar tamaño del ícono */
+            height: 20px; /* Ajustar tamaño del ícono */
             fill: var(--color-primary); /* Color de la lupa */
             cursor: pointer;
             transition: fill 0.3s ease;
@@ -1129,6 +1129,7 @@
                 font-size: 1.5rem;
                 color: var(--color-primary);
                 cursor: pointer;
+                margin: 0 10px; /* Add margin to avoid being too close to the edges */
             }
             .mobile-section-nav span {
                 font-size: 1.2rem;
@@ -1141,9 +1142,25 @@
             .section-title-container { flex-direction: column; gap: 5px; }
             .posts-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .post-card { flex-direction: column; padding: 10px; }
-            .post-card .post-content { display: none; }
-            .post-card .video-thumbnail-container { height: 120px; }
-            .image-gallery { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .post-card .post-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                padding: 10px;
+            }
+            .post-title {
+                font-size: 1rem;
+                margin-bottom: 5px;
+            }
+            .post-meta {
+                font-size: 0.8rem;
+                color: #777;
+            }
+            .image-gallery {
+                grid-template-columns: repeat(2, 1fr); /* Two images per row */
+                gap: 10px; /* Reduce gap between images */
+            }
             .gallery-item { max-width: 100%; }
             .single-post { padding: 20px; }
             .single-post-title { font-size: 1.6rem; }
@@ -1154,6 +1171,14 @@
             .top-right-btn { padding: 5px 10px; font-size: 0.75rem;}
             #achievements-button { width: 30px; height: 30px; }
             #achievements-button svg { width: 16px; height: 16px; }
+            .search-container {
+                right: 5px; /* Prevent overflow */
+            }
+        }
+        @media (min-width: 601px) {
+            .mobile-section-nav {
+                display: none;
+            }
         }
     </style>
 </head>
