@@ -316,13 +316,32 @@
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
         }
-        .post-image {
-            width: 100%;
+
+        /* Ajustar estilos para centrar la miniatura del video y hacerlo responsive */
+        .post-card .video-thumbnail-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f9f9f9;
+            border-radius: var(--radius);
+            overflow: hidden;
+            position: relative;
             height: 200px;
-            object-fit: cover;
-            object-position: top;
-            display: block;
         }
+
+        .post-card .video-thumbnail-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+
+        /* Estilos responsivos para dispositivos móviles */
+        @media (max-width: 600px) {
+            .post-card .video-thumbnail-container {
+                height: 150px;
+            }
+        }
+
         .post-content {
             padding: 20px;
             flex-grow: 1;
@@ -1396,8 +1415,8 @@
             {
                 id: 'video-introduccion',
                 titulo: '¿En el Vagón de Cola? Reflexionando sobre Nuestras Vidas con Kurzgesagt',
-                fecha: '2025-04-26',
-                resumen: 'El video de Kurzgesagt, "¿Qué hacemos con nuestras vidas? El vagón de cola", nos enfrenta con la inquietante posibilidad de estar viviendo de forma pasiva. Es una llamada a examinar si estamos tomando decisiones conscientes o simplemente dejándonos arrastrar por la inercia.',
+                fecha: '2025-05-9',
+                resumen: 'Es una llamada a examinar si estamos tomando decisiones conscientes o simplemente dejándonos arrastrar por la inercia.',
                 imagen: 'https://img.youtube.com/vi/uYYRAPBbr_w/hqdefault.jpg',
                 contenido: `
                     <div class="video-container">
@@ -1409,7 +1428,34 @@
                     <p>Asimismo, exploramos cómo la fe puede motivarnos a superar el conformismo. La conciencia del tiempo limitado nos inspira a tomar decisiones valoradas, buscando una vida con pleno sentido, como lo hicieron figuras de fe y servicio.</p>
                 `,
                 video: 'uYYRAPBbr_w',
-                categoria: 'Introducción'
+                categoria: 'Videos'
+            },
+            {
+                id: 'papa-leon-xiv-eleccion',
+                titulo: 'Habemus Papam: León XIV, un Nuevo Pastor para la Iglesia Universal',
+                fecha: '2025-05-10', // Fecha actual o la que prefieras para la publicación
+                resumen: 'El mundo católico recibe con esperanza al Papa León XIV, antes Cardenal Robert Prevost. Un vistazo a su trayectoria y los desafíos de su pontificado.',
+                imagen: 'https://static.nationalgeographicla.com/files/styles/image_3200/public/home_papa-leao-14.png.webp?w=1600&h=1287&p=top', // Placeholder - Reemplazar con URL de imagen real
+                // Descripción sugerida para la imagen: "El Papa León XIV saluda desde el balcón de la Basílica de San Pedro"
+                contenido: `
+                    <p><img src="https://static.nationalgeographicla.com/files/styles/image_3200/public/home_papa-leao-14.png.webp?w=1600&h=1287&p=top" alt="Papa León XIV en el balcón de San Pedro" class="image-left-wrap"></p>
+                    <p>La Plaza de San Pedro y el mundo católico resonaron con júbilo el pasado 8 de mayo de 2025 ante el anuncio: "Habemus Papam!". Tras un cónclave seguido con atención global, el Cardenal Robert Francis Prevost, O.S.A., originario de Chicago, Estados Unidos, fue elegido como el 267º Sucesor de Pedro, adoptando el nombre de León XIV.</p>
+                    
+                    <p>El nuevo Pontífice, nacido en 1955, cuenta con una rica trayectoria pastoral y administrativa. Antes de su elección, se desempeñaba como Prefecto del Dicasterio para los Obispos y presidente de la Pontificia Comisión para América Latina, cargos designados por su predecesor, el Papa Francisco, quien falleció el 21 de abril de 2025. Su vida religiosa ha estado marcada por un profundo servicio misionero, especialmente en Perú, donde pasó una parte significativa de su ministerio y obtuvo la nacionalidad peruana, lo que le otorga una perspectiva singular sobre las realidades de la Iglesia en el Sur Global.</p>
+                    
+                    <p>La elección del nombre León XIV no es casual. Evoca la figura de León XIII (1878-1903), un Papa recordado por su profunda preocupación por la justicia social, plasmada en la encíclica "Rerum Novarum", que sentó las bases de la Doctrina Social de la Iglesia moderna. Esta elección podría señalar una continuidad con el énfasis en los temas sociales y una Iglesia en diálogo con el mundo contemporáneo, buscando, como expresó en sus primeras palabras, "construir puentes" y "acoger a todos".</p>
+                    
+                    <h4>Un Pontificado entre Logos y Espíritu</h4>
+                    <p>El Papa León XIV asume el liderazgo de la Iglesia Católica en un momento de complejos desafíos globales y transformaciones culturales. Su experiencia internacional, su conocimiento de diversas realidades eclesiales y su formación agustina –orden conocida por su rica tradición intelectual y espiritual, con San Agustín como faro–, sugieren un pontificado que buscará armonizar la fe (Espíritu) con la razón (Logos).</p>
+                    
+                    <p>En sus primeras apariciones, el Papa León XIV ha enfatizado la paz, "una paz desarmada y desarmante, humilde y perseverante", y la necesidad de que la Iglesia sea un "faro que ilumina las noches oscuras de este mundo". Estos mensajes iniciales resuenan con la misión de "Logos y Espíritu" de explorar las intersecciones entre la fe, el pensamiento crítico y el servicio a la humanidad.</p>
+                    
+                    <p>La comunidad de "Logos y Espíritu" se une en oración por el nuevo Santo Padre, pidiendo al Espíritu Santo que lo ilumine en su ministerio petrino, para guiar a la Iglesia con sabiduría y caridad, fomentando el encuentro, el diálogo y la esperanza en un mundo sediento de verdad y trascendencia.</p>
+                    
+                    <p style="text-align: right; font-style: italic; margin-top: 1.5em;">Redacción Logos y Espíritu</p>
+                `,
+                video: null, // Puedes añadir un ID de YouTube si encuentras un video relevante de su primer saludo, por ejemplo.
+                categoria: 'Actualidad Eclesial'
             }
         ];
 
