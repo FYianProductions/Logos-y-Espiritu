@@ -181,35 +181,44 @@
 
         /* Contenedor de Búsqueda */
         .search-container {
-            position: relative;
+            position: absolute; /* Cambiar a posición absoluta */
+            top: 50%; /* Centrar verticalmente */
+            right: -40px; /* Mover fuera del recuadro */
+            transform: translateY(-50%); /* Ajustar el centrado */
             display: flex;
             align-items: center;
-            min-width: 40px; /* Espacio mínimo para el icono */
-            justify-content: flex-end;
+            justify-content: center;
+            width: 50px; /* Tamaño del círculo */
+            height: 50px; /* Tamaño del círculo */
+            background-color: var(--color-light); /* Fondo blanco */
+            border-radius: 50%; /* Hacerlo circular */
+            box-shadow: var(--shadow); /* Sombra para destacar */
+            z-index: 10; /* Asegurar que esté encima */
         }
 
+        /* Ajustar el ícono de la lupa */
         #search-icon {
-            cursor: pointer;
-            fill: var(--color-primary);
-            transition: fill 0.3s ease;
             width: 24px;
             height: 24px;
-            position: relative; /* Para z-index */
-            z-index: 2; /* Icono encima del input inicialmente */
-        }
-        #search-icon:hover {
-            fill: var(--color-secondary);
+            fill: var(--color-primary); /* Color de la lupa */
+            cursor: pointer;
+            transition: fill 0.3s ease;
         }
 
+        #search-icon:hover {
+            fill: var(--color-secondary); /* Cambiar color al pasar el cursor */
+        }
+
+        /* Ajustar el input de búsqueda */
         #search-input {
             position: absolute;
-            right: 5px; /* Posicionar a la derecha del contenedor */
+            right: 60px; /* Mover el input hacia la izquierda */
             top: 50%;
-            transform: translateY(-50%) scaleX(0); /* Iniciar escalado a 0 */
+            transform: translateY(-50%) scaleX(0); /* Escalar a 0 inicialmente */
             transform-origin: right; /* Escalar desde la derecha */
-            width: 200px; /* Ancho fijo */
+            width: 200px; /* Ancho del input */
             padding: 8px 15px;
-            padding-right: 30px; /* Espacio para que no tape el icono */
+            padding-right: 30px; /* Espacio para que no tape el ícono */
             border: none;
             outline: none;
             font-size: 1rem;
@@ -218,21 +227,16 @@
             border-radius: var(--radius-nav);
             background-color: var(--color-bg);
             box-shadow: var(--shadow);
-            z-index: 1; /* Input detrás del icono */
+            z-index: 1; /* Input detrás del ícono inicialmente */
             pointer-events: none; /* No interactuable cuando está oculto */
         }
 
-        /* Mostrar input al hacer hover/focus en el *contenedor* */
+        /* Mostrar el input al hacer hover/focus en el contenedor */
         .search-container:hover #search-input,
         #search-input:focus {
-            transform: translateY(-50%) scaleX(1); /* Escalar a tamaño completo */
+            transform: translateY(-50%) scaleX(1); /* Mostrar el input */
             opacity: 1;
             pointer-events: auto; /* Hacer interactuable */
-        }
-        /* Mover icono ligeramente a la derecha cuando el input está activo */
-        .search-container:hover #search-icon,
-        #search-input:focus + #search-icon {
-           /* No es necesario mover el icono si el input está absoluto */
         }
 
         /* Secciones */
@@ -360,7 +364,11 @@
             flex-wrap: wrap;
             gap: 5px;
         }
-        .post-date {}
+        /* Style for post date */
+        .post-date {
+            font-style: italic;
+            color: #555;
+        }
         .post-category-badge {
             background-color: rgba(255, 94, 125, 0.1);
             color: var(--color-secondary);
@@ -428,7 +436,10 @@
             color: #666;
             font-size: 0.95rem;
         }
-        .single-post-date {}
+        .single-post-date {
+            font-style: italic;
+            color: #555;
+        }
         .single-post-category {
             background-color: rgba(109, 93, 252, 0.1);
             color: var(--color-primary);
