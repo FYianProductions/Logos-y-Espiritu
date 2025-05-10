@@ -184,8 +184,8 @@
             position: relative;
             display: flex;
             align-items: center;
-            min-width: 40px; /* Espacio mínimo para el icono */
             justify-content: flex-end;
+            gap: 10px;
         }
 
         #search-icon {
@@ -194,45 +194,52 @@
             transition: fill 0.3s ease;
             width: 24px;
             height: 24px;
-            position: relative; /* Para z-index */
-            z-index: 2; /* Icono encima del input inicialmente */
         }
         #search-icon:hover {
             fill: var(--color-secondary);
         }
 
         #search-input {
-            position: absolute;
-            right: 5px; /* Posicionar a la derecha del contenedor */
-            top: 50%;
-            transform: translateY(-50%) scaleX(0); /* Iniciar escalado a 0 */
-            transform-origin: right; /* Escalar desde la derecha */
-            width: 200px; /* Ancho fijo */
+            position: relative;
+            width: 200px;
             padding: 8px 15px;
-            padding-right: 30px; /* Espacio para que no tape el icono */
             border: none;
             outline: none;
             font-size: 1rem;
-            transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
-            opacity: 0;
             border-radius: var(--radius-nav);
             background-color: var(--color-bg);
             box-shadow: var(--shadow);
-            z-index: 1; /* Input detrás del icono */
-            pointer-events: none; /* No interactuable cuando está oculto */
+            transition: all 0.4s ease-in-out;
         }
 
-        /* Mostrar input al hacer hover/focus en el *contenedor* */
-        .search-container:hover #search-input,
-        #search-input:focus {
-            transform: translateY(-50%) scaleX(1); /* Escalar a tamaño completo */
-            opacity: 1;
-            pointer-events: auto; /* Hacer interactuable */
+        .search-container.active #search-input {
+            width: 100%;
+            max-width: 300px;
         }
-        /* Mover icono ligeramente a la derecha cuando el input está activo */
-        .search-container:hover #search-icon,
-        #search-input:focus + #search-icon {
-           /* No es necesario mover el icono si el input está absoluto */
+
+        /* Cambios para el recuadro blanco al buscar */
+        nav.search-active {
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+
+        nav.search-active ul {
+            display: none;
+        }
+
+        nav.search-active .search-container {
+            width: 100%;
+            justify-content: center;
+        }
+
+        nav.search-active #search-input {
+            text-align: center;
+        }
+
+        /* Restaurar diseño al salir de búsqueda */
+        nav:not(.search-active) ul {
+            display: flex;
         }
 
         /* Secciones */
@@ -1124,15 +1131,12 @@
 
         /* Estilos para manejar secciones con flechas en dispositivos móviles */
         @media (max-width: 600px) {
-            nav {
+            nav ul {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                padding: 10px;
-            }
-
-            nav ul {
-                display: none;
+                width: 100%;
+                padding: 0 10px;
             }
 
             .mobile-section-nav {
@@ -1140,6 +1144,7 @@
                 justify-content: space-between;
                 align-items: center;
                 width: 100%;
+                padding: 10px;
             }
 
             .mobile-section-nav button {
@@ -1157,7 +1162,7 @@
             }
 
             .posts-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: 1fr;
                 gap: 10px;
             }
 
@@ -1167,20 +1172,17 @@
             }
 
             .post-card .post-content {
-                display: none;
+                display: block;
             }
 
-            .post-card .video-thumbnail-container {
-                height: 120px;
+            .post-card .post-title {
+                font-size: 1rem;
+                margin-bottom: 5px;
             }
 
-            .image-gallery {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-
-            .gallery-item {
-                max-width: 100%;
+            .post-card .post-meta {
+                font-size: 0.8rem;
+                color: #555;
             }
         }
     </style>
