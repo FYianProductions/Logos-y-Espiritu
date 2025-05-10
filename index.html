@@ -1188,10 +1188,18 @@
             <p style="text-align: center; margin-bottom: 20px;">Escucha nuestros episodios más recientes.</p>
              <div class="podcast-grid">
                  <div class="podcast-item">
-                    <h4>La Vida de San Juan Eudes</h4>
+                    <h4>Episodio 1: La Vida de San Juan Eudes</h4>
                     <p>Fecha: 24 de abril de 2025</p> <audio id="podcast-sje" controls style="width: 100%; max-width: 300px; margin-top: 10px;">
                       <source src="audio/La Vida de San Juan Eudes.mp3" type="audio/mpeg">
                       Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+                <div class="podcast-item">
+                    <h4>Episodio 2: La predicación de San Juan Eudes</h4>
+                    <p>Fecha: 25 de abril de 2025</p>
+                    <audio id="podcast-sje2" controls style="width: 100%; max-width: 300px; margin-top: 10px;">
+                        <source src="audio/La predicación de San Juan Eudes.mp3" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
                     </audio>
                 </div>
                 </div>
@@ -1384,6 +1392,24 @@
                     <p><strong>3. Este cuidado es también una vocación al respeto.</strong> Respeto por la creación, respeto por el prójimo, respeto por sí mismos y respeto hacia al Creador. Pero también respeto reciproco entre fe y ciencia, para «entrar en un diálogo entre ellas orientado al cuidado de la naturaleza, a la defensa de los pobres, a la construcción de redes de respeto y de fraternidad». Un respeto que no es el mero reconocimiento abstracto y pasivo del otro, sino vivido de manera empática y activa, con el deseo de conocerlo y entrar en diálogo con él para caminar juntos en este viaje común, sabiendo bien que, como también indica el Llamamiento: «lo que podemos obtener depende no sólo de las oportunidades y de los recursos, sino también de la esperanza, de la valentía y de la buena voluntad».</p>`,
                 video: null,
                 categoria: 'Discurso' // Categoría asignada
+            },
+            {
+                id: 'video-introduccion',
+                titulo: '¿En el Vagón de Cola? Reflexionando sobre Nuestras Vidas con Kurzgesagt',
+                fecha: '2025-04-26',
+                resumen: 'El video de Kurzgesagt, "¿Qué hacemos con nuestras vidas? El vagón de cola", nos enfrenta con la inquietante posibilidad de estar viviendo de forma pasiva. Es una llamada a examinar si estamos tomando decisiones conscientes o simplemente dejándonos arrastrar por la inercia.',
+                imagen: 'https://img.youtube.com/vi/uYYRAPBbr_w/hqdefault.jpg',
+                contenido: `
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/uYYRAPBbr_w" title="Introducción a Logos y Espíritu" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <p>Este video presenta una introducción al propósito y misión de Logos y Espíritu, explorando temas de fe, razón y espiritualidad.</p>
+                    <p>Inspirados por la metáfora del "vagón de cola" del video de Kurzgesagt "¿Qué hacemos con nuestras vidas?", esta publicación explora si somos espectadores o protagonistas de nuestra existencia. El video nos impulsa a cuestionar la pasividad, un mensaje clave para quienes inician su camino.</p>
+                    <p>Desde Logos y Espíritu, vinculamos esta reflexión con la búsqueda de un propósito trascendente. Analizamos cómo la razón nos ayuda a entender nuestra situación y el valor del tiempo en el trabajo y las relaciones, recordando que gran parte del tiempo con nuestros seres queridos podría ya haber pasado si no actuamos conscientemente.</p>
+                    <p>Asimismo, exploramos cómo la fe puede motivarnos a superar el conformismo. La conciencia del tiempo limitado nos inspira a tomar decisiones valoradas, buscando una vida con pleno sentido, como lo hicieron figuras de fe y servicio.</p>
+                `,
+                video: 'uYYRAPBbr_w',
+                categoria: 'Introducción'
             }
         ];
 
@@ -1404,29 +1430,26 @@
          ];
 
          // *** ESTRUCTURA DE DATOS PARA LOGROS (Actualizada y con grupos) ***
-         // Reemplaza 'path/to/icon...' con las rutas a tus iconos reales
          const achievementsData = {
              'Exploración': [
-                 { id: 'visit', name: '¡Bienvenido Explorador!', description: 'Entraste a la página por primera vez.', icon: 'images/achievements/visit.png', unlocked: false },
-                 { id: 'scroll_bottom', name: 'Hasta el Infinito... ¡y más abajo!', description: 'Llegaste al final de la página principal.', icon: 'images/achievements/scroll.png', unlocked: false },
-                 { id: 'enter_post', name: 'Curiosidad Intelectual', description: 'Entraste a leer una publicación.', icon: 'images/achievements/read.png', unlocked: false },
-                 { id: 'scroll_post_bottom', name: 'Lector Voraz', description: 'Llegaste al final de una publicación.', icon: 'images/achievements/bookworm.png', unlocked: false },
-                 { id: 'enter_100_posts', name: 'Bibliotecario Digital', description: 'Entraste a 100 publicaciones diferentes.', icon: 'images/achievements/library.png', unlocked: false },
-                 { id: 'open_image', name: 'Apreciador de Arte', description: 'Ampliaste una imagen de la galería.', icon: 'images/achievements/gallery.png', unlocked: false },
-                 // { id: 'open_100_images', name: 'Curador Experto', description: 'Abriste 100 imágenes diferentes.', icon: 'images/achievements/curator.png', unlocked: false },
-                 { id: 'search', name: 'Detective de Contenido', description: 'Utilizaste la barra de búsqueda.', icon: 'images/achievements/search.png', unlocked: false },
+                 { id: 'visit', name: '¡Bienvenido Explorador!', description: 'Entraste a la página por primera vez.', unlocked: false },
+                 { id: 'scroll_bottom', name: 'Hasta el Infinito... ¡y más abajo!', description: 'Llegaste al final de la página principal.', unlocked: false },
+                 { id: 'enter_post', name: 'Curiosidad Intelectual', description: 'Entraste a leer una publicación.', unlocked: false },
+                 { id: 'scroll_post_bottom', name: 'Lector Voraz', description: 'Llegaste al final de una publicación.', unlocked: false },
+                 { id: 'enter_100_posts', name: 'Bibliotecario Digital', description: 'Entraste a 100 publicaciones diferentes.', unlocked: false },
+                 { id: 'open_image', name: 'Apreciador de Arte', description: 'Ampliaste una imagen de la galería.', unlocked: false },
+                 { id: 'search', name: 'Detective de Contenido', description: 'Utilizaste la barra de búsqueda.', unlocked: false },
              ],
              'Interacción': [
-                 { id: 'play_podcast', name: '¡Dale al Play!', description: 'Escuchaste un fragmento de podcast.', icon: 'images/achievements/podcast_play.png', unlocked: false },
-                 { id: 'finish_podcast', name: 'Maratón Auditivo', description: 'Escuchaste un podcast completo.', icon: 'images/achievements/podcast_finish.png', unlocked: false },
-                 { id: 'listen_100_min', name: 'Oído de Oro', description: 'Escuchaste 100 minutos de podcast.', icon: 'images/achievements/podcast_time.png', unlocked: false },
-                 { id: 'copy_text', name: 'Ctrl+C Maestro', description: 'Copiasté algo de la página.', icon: 'images/achievements/copy.png', unlocked: false },
-                 // { id: 'copy_post_text', name: 'Para Chat GPT 😉', description: 'Copiasté algo de una publicación.', icon: 'images/achievements/copy_post.png', unlocked: false },
-                 { id: 'paste_text', name: 'Ctrl+V Sorpresa', description: 'Pegaste texto en la página (¿accidentalmente?).', icon: 'images/achievements/paste.png', unlocked: false },
-                 { id: 'click_sticker', name: '¡Fiesta de Stickers!', description: 'Hiciste clic en el botón de Stickers.', icon: 'images/achievements/sticker_click.png', unlocked: false },
-                 { id: 'click_sticker_100', name: 'Adicto a los Stickers', description: '¡100 clics en el botón de Stickers!', icon: 'images/achievements/sticker_100.png', unlocked: false },
-                 { id: 'click_sticker_1000', name: '¡Leyenda de los Stickers!', description: '¡1000 clics! ¿En serio?', icon: 'images/achievements/sticker_1000.png', unlocked: false },
-                 { id: 'subscribe', name: '¡Eres Parte del Club!', description: 'Te suscribiste al boletín.', icon: 'images/achievements/subscribe.png', unlocked: false },
+                 { id: 'play_podcast', name: '¡Dale al Play!', description: 'Escuchaste un fragmento de podcast.', unlocked: false },
+                 { id: 'finish_podcast', name: 'Maratón Auditivo', description: 'Escuchaste un podcast completo.', unlocked: false },
+                 { id: 'listen_100_min', name: 'Oído de Oro', description: 'Escuchaste 100 minutos de podcast.', unlocked: false },
+                 { id: 'copy_text', name: 'Ctrl+C Maestro', description: 'Copiaste algo de la página.', unlocked: false },
+                 { id: 'paste_text', name: 'Ctrl+V Sorpresa', description: 'Pegaste texto en la página (¿accidentalmente?).', unlocked: false },
+                 { id: 'click_sticker', name: '¡Fiesta de Stickers!', description: 'Hiciste clic en el botón de Stickers.', unlocked: false },
+                 { id: 'click_sticker_100', name: 'Adicto a los Stickers', description: '¡100 clics en el botón de Stickers!', unlocked: false },
+                 { id: 'click_sticker_1000', name: '¡Leyenda de los Stickers!', description: '¡1000 clics! ¿En serio?', unlocked: false },
+                 { id: 'subscribe', name: '¡Eres Parte del Club!', description: 'Te suscribiste al boletín.', unlocked: false },
              ]
          };
 
@@ -1875,7 +1898,6 @@
                     li.classList.add('unlocked');
                 }
                 li.innerHTML = `
-                    <img src="${ach.icon}" alt="Icono ${ach.name}" class="achievement-icon" onerror="this.style.display='none'">
                     <div class="achievement-details">
                         <h4>${ach.name}</h4>
                         <p>${ach.description}</p>
@@ -1892,7 +1914,6 @@
                     li.classList.add('unlocked');
                 }
                 li.innerHTML = `
-                    <img src="${ach.icon}" alt="Icono ${ach.name}" class="achievement-icon" onerror="this.style.display='none'">
                     <div class="achievement-details">
                         <h4>${ach.name}</h4>
                         <p>${ach.description}</p>
