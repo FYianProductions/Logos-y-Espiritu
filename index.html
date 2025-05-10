@@ -1122,6 +1122,11 @@
                 justify-content: space-between;
                 align-items: center;
                 width: 100%;
+                background-color: var(--color-light);
+                border-radius: var(--radius-nav);
+                padding: 10px 15px;
+                box-shadow: var(--shadow);
+                margin-bottom: 15px;
             }
             .mobile-section-nav button {
                 background: none;
@@ -1137,6 +1142,12 @@
                 color: var(--color-dark);
             }
             nav ul li a { font-size: 1rem; padding: 6px 10px; }
+            .search-container {
+                position: fixed;
+                top: 15px;
+                right: 15px;
+                z-index: 11;
+            }
             .search-container:hover #search-input, #search-input:focus { width: 150px; }
             .section-title { font-size: 1.6rem; }
             .section-title-container { flex-direction: column; gap: 5px; }
@@ -1157,6 +1168,9 @@
                 font-size: 0.8rem;
                 color: #777;
             }
+            .post-excerpt {
+                display: none;
+            }
             .image-gallery {
                 grid-template-columns: repeat(2, 1fr); /* Two images per row */
                 gap: 10px; /* Reduce gap between images */
@@ -1173,6 +1187,15 @@
             #achievements-button svg { width: 16px; height: 16px; }
             .search-container {
                 right: 5px; /* Prevent overflow */
+            }
+            .mobile-section-nav.searching {
+                justify-content: center;
+                padding: 10px 15px;
+            }
+            .mobile-section-nav.searching span {
+                font-size: 1rem;
+                font-weight: normal;
+                color: var(--color-dark);
             }
         }
         @media (min-width: 601px) {
@@ -1382,6 +1405,7 @@
         const closeAchievementsModal = document.getElementById('close-achievements-modal');
         const achievementsList = document.getElementById('achievements-list');
         const topRightButtonsContainer = document.querySelector('.top-right-buttons');
+        const mobileSectionNav = document.querySelector('.mobile-section-nav');
 
         // --- DATOS DE PUBLICACIONES (Contenido placeholder) ---
         const publicaciones = [
@@ -1731,6 +1755,10 @@
                  // Añadir lógica para podcast si se implementa búsqueda
              }
 
+             if (window.innerWidth <= 600) {
+                 mobileSectionNav.querySelector('span').textContent = idSeccion.charAt(0).toUpperCase() + idSeccion.slice(1);
+             }
+
              window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -1745,7 +1773,13 @@
                 indiceActual = (indiceActual - 1 + secciones.length) % secciones.length;
             }
 
-            cambiarSeccion(secciones[indiceActual]);
+            const nuevaSeccion = secciones[indiceActual];
+            cambiarSeccion(nuevaSeccion);
+
+            // Update section name in mobile navigation
+            if (window.innerWidth <= 600) {
+                mobileSectionNav.querySelector('span').textContent = nuevaSeccion.charAt(0).toUpperCase() + nuevaSeccion.slice(1);
+            }
         }
 
         function mostrarPostIndividual(id) {
@@ -2115,11 +2149,20 @@
         subscribeForm.addEventListener('submit', handleSubscribeFormSubmit);
         searchInput.addEventListener('input', handleSearch);
         searchIcon.addEventListener('click', () => {
+            if (window.innerWidth <= 600) {
+                mobileSectionNav.classList.add('searching');
+                mobileSectionNav.querySelector('span').textContent = 'Buscar';
+            }
             navLinks.forEach(link => link.style.display = 'none');
             searchInput.style.display = 'block';
             searchInput.focus();
         });
         searchInput.addEventListener('blur', () => {
+            if (window.innerWidth <= 600 && searchInput.value.trim() === '') {
+                mobileSectionNav.classList.remove('searching');
+                const activeSection = document.querySelector('.content-section.active').id;
+                mobileSectionNav.querySelector('span').textContent = activeSection.charAt(0).toUpperCase() + activeSection.slice(1);
+            }
             if (searchInput.value.trim() === '') {
                 navLinks.forEach(link => link.style.display = 'block');
                 searchInput.style.display = 'none';
