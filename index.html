@@ -136,7 +136,7 @@
         /* Navegación */
         nav {
             background-color: var(--color-light);
-            padding: 10px 25px;
+            padding: 5px 20px;
             border-radius: var(--radius-nav);
             margin: -30px auto 40px;
             max-width: 90%;
@@ -181,44 +181,41 @@
 
         /* Contenedor de Búsqueda */
         .search-container {
-            position: absolute; /* Cambiar a posición absoluta */
-            top: 50%; /* Centrar verticalmente */
-            right: 10px; /* Ajustar posición para alinear con otros elementos */
-            transform: translateY(-50%); /* Ajustar el centrado */
+            position: relative;
+            width: 50px;
+            height: 50px;
             display: flex;
-            align-items: center;
             justify-content: center;
-            width: 40px; /* Tamaño del círculo */
-            height: 40px; /* Tamaño del círculo */
-            background-color: var(--color-light); /* Fondo blanco */
-            border-radius: 50%; /* Hacerlo circular */
-            box-shadow: var(--shadow); /* Sombra para destacar */
-            z-index: 10; /* Asegurar que esté encima */
+            align-items: center;
+            border-radius: var(--radius-logo);
+            background-color: var(--color-light);
+            box-shadow: var(--shadow);
+            margin-right: 10px;
         }
 
         /* Ajustar el ícono de la lupa */
         #search-icon {
-            width: 20px; /* Ajustar tamaño del ícono */
-            height: 20px; /* Ajustar tamaño del ícono */
-            fill: var(--color-primary); /* Color de la lupa */
+            width: 24px;
+            height: 24px;
+            fill: var(--color-primary);
             cursor: pointer;
             transition: fill 0.3s ease;
         }
 
         #search-icon:hover {
-            fill: var(--color-secondary); /* Cambiar color al pasar el cursor */
+            fill: var(--color-secondary);
         }
 
         /* Ajustar el input de búsqueda */
         #search-input {
             position: absolute;
-            right: 60px; /* Mover el input hacia la izquierda */
+            right: 60px;
             top: 50%;
-            transform: translateY(-50%) scaleX(0); /* Escalar a 0 inicialmente */
-            transform-origin: right; /* Escalar desde la derecha */
-            width: 200px; /* Ancho del input */
+            transform: translateY(-50%) scaleX(0);
+            transform-origin: right;
+            width: 200px;
             padding: 8px 15px;
-            padding-right: 30px; /* Espacio para que no tape el ícono */
+            padding-right: 30px;
             border: none;
             outline: none;
             font-size: 1rem;
@@ -227,25 +224,54 @@
             border-radius: var(--radius-nav);
             background-color: var(--color-bg);
             box-shadow: var(--shadow);
-            z-index: 1; /* Input detrás del ícono inicialmente */
-            pointer-events: none; /* No interactuable cuando está oculto */
+            z-index: 1;
+            pointer-events: none;
         }
 
         /* Mostrar el input al hacer hover/focus en el contenedor */
         .search-container:hover #search-input,
         #search-input:focus {
-            transform: translateY(-50%) scaleX(1); /* Mostrar el input */
+            transform: translateY(-50%) scaleX(1);
             opacity: 1;
-            pointer-events: auto; /* Hacer interactuable */
+            pointer-events: auto;
+        }
+
+        /* Botón de stickers */
+        #sticker-button {
+            width: 50px;
+            height: 50px;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #sticker-button svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--color-light);
+        }
+
+        /* Botón de logros */
+        #achievements-button {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #achievements-button svg {
+            width: 30px;
+            height: 30px;
+            fill: var(--color-light);
         }
 
         /* Secciones */
         .content-section {
             padding: 40px 0;
-            display: none; /* Ocultas por defecto */
+            display: none;
         }
         .content-section.active {
-            display: block; /* Mostrar sección activa */
+            display: block;
         }
 
         /* Contenedor para el título y la flecha */
@@ -721,12 +747,12 @@
         }
 
         #achievements-button {
-            width: 40px;
+            width: 60px;
             padding: 0;
         }
         #achievements-button svg {
-            width: 22px;
-            height: 22px;
+            width: 30px;
+            height: 30px;
             fill: var(--color-light);
         }
 
@@ -1232,17 +1258,20 @@
 </head>
 <body>
     <div class="top-right-buttons">
-        <button id="sticker-button" class="top-right-btn">Stickers</button>
         <div class="search-container">
-            <svg id="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px">
+            <svg id="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
                 <path d="M0 0h24v24H0z" fill="none"/>
             </svg>
-            <input type="search" id="search-input" placeholder="Buscar...">
         </div>
-        <button id="achievements-button" class="top-right-btn" aria-label="Ver Logros">
+        <button id="sticker-button" class="top-right-btn" aria-label="Pegatinas">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-5l4.5 2.5-4.5 2.5z"/>
+            </svg>
+        </button>
+        <button id="achievements-button" class="top-right-btn" aria-label="Logros">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                <path d="M400 0H176c-26.5 0-48.1 21.8-47.4 48.2C131.1 82.3 144 116.6 144 152V296.6c-38.6 8.8-64 44.1-64 85.4v16c0 17.7 14.3 32 32 32H464c17.7 0 32-14.3 32-32v-16c0-41.3-25.4-76.6-64-85.4V152c0-35.4 12.9-69.7 15.4-103.8C448.1 21.8 426.5 0 400 0zM48 448c-26.5 0-48-21.5-48-48V192c0-26.5 21.5-48 48-48H96V448H48zM528 448H480V144h48c26.5 0 48 21.5 48 48V400c0 26.5-21.5 48-48 48z"/>
+                <path d="M552 64H424l-24.8-49.6C393.2 5.3 385.9 0 377 0H199c-8.9 0-16.2 5.3-22.2 14.4L152 64H24C10.7 64 0 74.7 0 88v56c0 13.3 10.7 24 24 24h8.8c-1.5 5-2.8 10.1-3.8 15.3-8.4 42.4-1.7 85.7 18.8 123.2 17.6 31.8 43.2 57.4 74.9 75.1-1.2 5.6-2.2 11.3-2.9 17.1C115.5 432.6 144.2 512 192 512c35.3 0 64-28.7 64-64v-83.8c7.8 .5 15.7 .8 24 .8s16.2-.3 24-.8V448c0 35.3 28.7 64 64 64 47.8 0 76.5-79.4 70.2-132.4-.7-5.8-1.7-11.5-2.9-17.1 31.7-17.7 57.3-43.3 74.9-75.1 20.5-37.5 27.2-80.8 18.8-123.2-1-5.2-2.3-10.3-3.8-15.3H552c13.3 0 24-10.7 24-24V88c0-13.3-10.7-24-24-24zM96 256c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm384 0c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z"/>
             </svg>
         </button>
     </div>
