@@ -5,13 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Logos y Espíritu</title>
   <!-- Tus links y estilos aquí -->
-<!-- Scripts de Firebase -->
+</head>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
-
 <script>
-  // Configuración de tu proyecto Firebase
+  // Tu configuración de Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyAVtGpujIzvfoeQAqVtiV__LrnWBt7Gqg",
     authDomain: "logosyespiritu.firebaseapp.com",
@@ -27,14 +26,14 @@
   // Inicializa Firestore
   const db = firebase.firestore();
 
-  // Prueba de conexión: escribe un mensaje en la colección "prueba"
+  // Prueba: escribe en la base de datos
   db.collection("prueba").add({ mensaje: "¡Hola desde mi web!" })
     .then(() => { console.log("Conexión exitosa con Firebase!"); })
     .catch((error) => { console.error("Error:", error); });
 </script>
   
-</head>
 <body>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1263,6 +1262,37 @@
                 display: none;
             }
         }
+
+        /* --- ESTILO PARA ICONO DE ME GUSTA --- */
+        .like-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--color-secondary);
+            font-weight: 600;
+            font-size: 1rem;
+            margin-top: 10px;
+            transition: color 0.2s;
+            outline: none;
+        }
+        .like-btn.liked svg {
+            fill: var(--color-secondary);
+        }
+        .like-btn svg {
+            width: 22px;
+            height: 22px;
+            fill: #bbb;
+            transition: fill 0.2s;
+        }
+        .like-count {
+            font-size: 1rem;
+            color: #888;
+            min-width: 22px;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
@@ -1704,206 +1734,168 @@
         }
 
 
-        function crearTarjetaPost(post) {
-            const thumbnailSrc = post.video ? `https://i.ytimg.com/vi/${post.video}/hqdefault.jpg` : post.imagen;
-            const videoOverlay = post.video ? `<div class="play-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px"><path d="M8 5v14l11-7z"/><path d="M0 0h24v24H0z" fill="none"/></svg></div>` : '';
-            return `
-                <article class="post-card" data-id="${post.id}">
-                    <div class="video-thumbnail-container">
-                        <img src="${thumbnailSrc}" alt="${post.titulo}" class="post-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/cccccc/ffffff?text=Imagen+no+disponible';">
-                        ${videoOverlay}
-                    </div>
-                    <div class="post-content">
-                        <h3 class="post-title">${post.titulo}</h3>
-                        <div class="post-meta">
-                            <span class="post-date">${formatearFecha(post.fecha)}</span>
-                             <span class="post-category-badge">${post.categoria}</span>
-                        </div>
-                        <p class="post-excerpt">${post.resumen}</p>
-                    </div>
-                </article>
-            `;
+        // --- FIRESTORE FUNCIONES DE ME GUSTA ---
+  // Devuelve la referencia al documento de likes de un post
+  function getLikesDocRef(postId) {
+      return db.collection("post_likes").doc(postId);
+  }
+
+  // Lee el número de likes de un post
+  async function getLikesCount(postId) {
+      try {
+          const doc = await getLikesDocRef(postId).get();
+          if (doc.exists && typeof doc.data().count === "number") {
+              return doc.data().count;
+          }
+      } catch (e) {
+          console.error("Error leyendo likes:", e);
+      }
+      return 0;
+  }
+
+  // Incrementa el número de likes de un post (y marca en localStorage para evitar múltiples likes)
+  async function likePost(postId, btnElem, countElem) {
+      // Prevenir múltiples likes por usuario (simple: localStorage)
+      const likedKey = `liked_${postId}`;
+      if (localStorage.getItem(likedKey)) return;
+
+      btnElem.classList.add('liked');
+      localStorage.setItem(likedKey, "1");
+
+      // Incrementar en Firestore
+      try {
+          await getLikesDocRef(postId).set({ count: firebase.firestore.FieldValue.increment(1) }, { merge: true });
+          // Leer el nuevo conteo y actualizar UI
+          const newCount = await getLikesCount(postId);
+          countElem.textContent = newCount;
+      } catch (e) {
+          console.error("Error al dar like:", e);
+      }
+  }
+
+  // Renderiza el botón de like para un post
+  function renderLikeButton(postId) {
+      const likedKey = `liked_${postId}`;
+      const liked = !!localStorage.getItem(likedKey);
+      // El SVG es un corazón
+      return `
+        <button class="like-btn${liked ? ' liked' : ''}" data-post-id="${postId}" aria-label="Me gusta">
+            <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            <span class="like-count" id="like-count-${postId}">...</span>
+        </button>
+      `;
+  }
+
+  // --- MODIFICAR crearTarjetaPost PARA INCLUIR EL BOTÓN DE LIKE ---
+  function crearTarjetaPost(post) {
+      const thumbnailSrc = post.video ? `https://i.ytimg.com/vi/${post.video}/hqdefault.jpg` : post.imagen;
+      const videoOverlay = post.video ? `<div class="play-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px"><path d="M8 5v14l11-7z"/><path d="M0 0h24v24H0z" fill="none"/></svg></div>` : '';
+      // Añadir el botón de like debajo del resumen
+      return `
+          <article class="post-card" data-id="${post.id}">
+              <div class="video-thumbnail-container">
+                  <img src="${thumbnailSrc}" alt="${post.titulo}" class="post-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/cccccc/ffffff?text=Imagen+no+disponible';">
+                  ${videoOverlay}
+              </div>
+              <div class="post-content">
+                  <h3 class="post-title">${post.titulo}</h3>
+                  <div class="post-meta">
+                      <span class="post-date">${formatearFecha(post.fecha)}</span>
+                      <span class="post-category-badge">${post.categoria}</span>
+                  </div>
+                  <p class="post-excerpt">${post.resumen}</p>
+                  ${renderLikeButton(post.id)}
+              </div>
+          </article>
+      `;
+  }
+
+  // --- MODIFICAR renderizarPublicaciones PARA INICIALIZAR BOTONES DE LIKE ---
+  function renderizarPublicaciones(postsToRender) {
+      postsGrid.innerHTML = '';
+      if (postsToRender.length === 0) {
+          noResultsMessage.style.display = 'block';
+      } else {
+          noResultsMessage.style.display = 'none';
+          postsToRender.forEach(post => {
+              postsGrid.innerHTML += crearTarjetaPost(post);
+          });
+          // Listeners para abrir post
+          document.querySelectorAll('.post-card').forEach(card => {
+              card.addEventListener('click', (e) => {
+                  // Evitar que el click en el botón de like abra el post
+                  if (e.target.closest('.like-btn')) return;
+                  mostrarPostIndividual(card.dataset.id);
+              });
+          });
+          // Inicializar botones de like
+          postsToRender.forEach(post => {
+              const btn = document.querySelector(`.like-btn[data-post-id="${post.id}"]`);
+              const countElem = document.getElementById(`like-count-${post.id}`);
+              if (btn && countElem) {
+                  // Leer y mostrar el conteo actual
+                  getLikesCount(post.id).then(count => { countElem.textContent = count; });
+                  // Listener para dar like
+                  btn.addEventListener('click', (e) => {
+                      e.stopPropagation();
+                      likePost(post.id, btn, countElem);
+                  });
+              }
+          });
+      }
+  }
+
+  // --- OPCIONAL: Mostrar likes en el post individual ---
+  function mostrarPostIndividual(id) {
+      const post = publicaciones.find(p => p.id === id);
+      if (!post) {
+          console.error("Post not found:", id);
+          cambiarSeccion('publicaciones');
+          return;
+      };
+
+      // Lógica para logro de 100 posts diferentes
+      if (!achievementCounters.visitedPosts.includes(id)) {
+        achievementCounters.visitedPosts.push(id);
+        saveAchievementCounters();
+        if (achievementCounters.visitedPosts.length >= 100) {
+            unlockAchievement('enter_100_posts');
         }
+      }
 
-        function renderizarPublicaciones(postsToRender) {
-            postsGrid.innerHTML = '';
-            if (postsToRender.length === 0) {
-                noResultsMessage.style.display = 'block';
-            } else {
-                noResultsMessage.style.display = 'none';
-                postsToRender.forEach(post => {
-                    postsGrid.innerHTML += crearTarjetaPost(post);
-                });
-                document.querySelectorAll('.post-card').forEach(card => {
-                    card.addEventListener('click', () => mostrarPostIndividual(card.dataset.id));
-                });
-            }
-        }
+      singlePostTitle.textContent = post.titulo;
+      singlePostDate.textContent = `Publicado el ${formatearFecha(post.fecha)}`;
+      singlePostCategory.textContent = post.categoria;
+      singlePostContent.innerHTML = post.contenido; // Usar placeholder
+      // Añadir botón de like debajo del contenido
+      singlePostContent.innerHTML += `<div style="margin-top:2em;">${renderLikeButton(post.id)}</div>`;
+      // Inicializar botón de like en post individual
+      setTimeout(() => {
+          const btn = document.querySelector(`.like-btn[data-post-id="${post.id}"]`);
+          const countElem = document.getElementById(`like-count-${post.id}`);
+          if (btn && countElem) {
+              getLikesCount(post.id).then(count => { countElem.textContent = count; });
+              btn.addEventListener('click', (e) => {
+                  e.stopPropagation();
+                  likePost(post.id, btn, countElem);
+              });
+          }
+      }, 0);
+      cambiarSeccion('single-post');
+      unlockAchievement('enter_post');
 
-        function renderizarGaleria(imagesToRender) {
-            imageGalleryGrid.innerHTML = '';
-            if (imagesToRender.length === 0) {
-                noImageResultsMessage.style.display = 'block';
-            } else {
-                noImageResultsMessage.style.display = 'none';
-                imagesToRender.forEach(imgData => {
-                    const galleryItem = document.createElement('div');
-                    galleryItem.className = 'gallery-item';
-                    galleryItem.innerHTML = `
-                        <img src="${imgData.src}" alt="${imgData.alt}" loading="lazy">
-                        <span class="gallery-item-date">${formatearFecha(imgData.fecha)}</span>
-                    `;
-                    galleryItem.addEventListener('click', () => openImageModal(imgData.src));
-                    imageGalleryGrid.appendChild(galleryItem);
-                });
-            }
-        }
-
-
-        function ordenarPublicaciones() {
-            if (document.getElementById('publicaciones').classList.contains('active')) {
-                const postsToSort = currentPosts;
-                postsToSort.sort((a, b) => {
-                    const dateA = new Date(a.fecha);
-                    const dateB = new Date(b.fecha);
-                    return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
-                });
-                renderizarPublicaciones(postsToSort);
-                sortArrow.classList.toggle('arrow-up', sortOrder === 'asc');
-                sortArrow.classList.toggle('arrow-down', sortOrder === 'desc');
-            }
-        }
-
-
-        function cambiarOrden() {
-            sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-            handleSearch();
-        }
-
-        function formatearFecha(fechaString) {
-            if (!fechaString) return '';
-            const [year, month, day] = fechaString.split('-').map(Number);
-            if (!year || !month || !day) return '';
-            try {
-                const fecha = new Date(Date.UTC(year, month - 1, day));
-                const opciones = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
-                return fecha.toLocaleDateString('es-ES', opciones);
-            } catch (e) {
-                console.error("Error formatting date:", fechaString, e);
-                return '';
-            }
-        }
-
-
-        function toggleBackToTopButton() {
-            if (window.scrollY > 300) {
-                backToTopButton.classList.add('visible');
-            } else {
-                backToTopButton.classList.remove('visible');
-            }
-        }
-
-        function cambiarSeccion(idSeccion) {
-            let foundSection = false;
-            contentSections.forEach(section => {
-                if (section.id === idSeccion) {
-                    section.classList.add('active');
-                    foundSection = true;
-                } else {
-                    section.classList.remove('active');
-                }
-            });
-
-            if (!foundSection && idSeccion !== 'single-post') {
-                 document.getElementById('publicaciones').classList.add('active');
-                 idSeccion = 'publicaciones';
-            }
-
-            const allNavLinks = [...navLinks, ...footerNavLinks];
-            allNavLinks.forEach(link => {
-                link.classList.toggle('active', link.dataset.section === idSeccion);
-            });
-
-             if (idSeccion !== 'single-post') {
-                 singlePostSection.classList.remove('active');
-             }
-
-             // Mostrar/ocultar flecha de ordenar y ejecutar búsqueda inicial
-             if (idSeccion === 'publicaciones') {
-                 sortArrow.style.display = 'inline-block';
-                 handleSearch();
-             } else {
-                 sortArrow.style.display = 'none';
-                 if (idSeccion === 'imagenes') {
-                     handleSearch();
-                 }
-                 // Añadir lógica para podcast si se implementa búsqueda
-             }
-
-             if (window.innerWidth <= 600) {
-                 mobileSectionNav.querySelector('span').textContent = idSeccion.charAt(0).toUpperCase() + idSeccion.slice(1);
-             }
-
-             window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function cambiarSeccionConFlechas(direccion) {
-            const secciones = ['publicaciones', 'imagenes', 'podcast'];
-            const seccionActual = document.querySelector('.content-section.active').id;
-            let indiceActual = secciones.indexOf(seccionActual);
-
-            if (direccion === 'derecha') {
-                indiceActual = (indiceActual + 1) % secciones.length;
-            } else if (direccion === 'izquierda') {
-                indiceActual = (indiceActual - 1 + secciones.length) % secciones.length;
-            }
-
-            const nuevaSeccion = secciones[indiceActual];
-            cambiarSeccion(nuevaSeccion);
-
-            // Update section name in mobile navigation
-            if (window.innerWidth <= 600) {
-                mobileSectionNav.querySelector('span').textContent = nuevaSeccion.charAt(0).toUpperCase() + nuevaSeccion.slice(1);
-            }
-        }
-
-        function mostrarPostIndividual(id) {
-            const post = publicaciones.find(p => p.id === id);
-            if (!post) {
-                console.error("Post not found:", id);
-                cambiarSeccion('publicaciones');
-                return;
-            };
-
-            // Lógica para logro de 100 posts diferentes
-            if (!achievementCounters.visitedPosts.includes(id)) {
-                achievementCounters.visitedPosts.push(id);
-                saveAchievementCounters();
-                if (achievementCounters.visitedPosts.length >= 100) {
-                    unlockAchievement('enter_100_posts');
-                }
-            }
-
-            singlePostTitle.textContent = post.titulo;
-            singlePostDate.textContent = `Publicado el ${formatearFecha(post.fecha)}`;
-            singlePostCategory.textContent = post.categoria;
-            singlePostContent.innerHTML = post.contenido; // Usar placeholder
-
-            cambiarSeccion('single-post');
-            unlockAchievement('enter_post');
-
-            // Listener para scroll dentro del post (simplificado)
-            const postContentElement = document.getElementById('single-post-content');
-             const scrollListener = () => {
-                 if (postContentElement.getBoundingClientRect().bottom <= window.innerHeight + 100) {
-                     unlockAchievement('scroll_post_bottom');
-                     window.removeEventListener('scroll', scrollListener);
-                 }
-             };
-             // Remover listener anterior si existe antes de añadir uno nuevo
-             window.removeEventListener('scroll', scrollListener);
-             window.addEventListener('scroll', scrollListener);
-        }
+      // Listener para scroll dentro del post (simplificado)
+      const postContentElement = document.getElementById('single-post-content');
+       const scrollListener = () => {
+           if (postContentElement.getBoundingClientRect().bottom <= window.innerHeight + 100) {
+               unlockAchievement('scroll_post_bottom');
+               window.removeEventListener('scroll', scrollListener);
+           }
+       };
+       // Remover listener anterior si existe antes de añadir uno nuevo
+       window.removeEventListener('scroll', scrollListener);
+       window.addEventListener('scroll', scrollListener);
+  }
 
         function volverAPublicaciones() {
             cambiarSeccion('publicaciones');
