@@ -6,37 +6,33 @@
   <title>Logos y Espíritu</title>
   <!-- Tus links y estilos aquí -->
 </head>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+<script>
+  // Tu configuración de Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyAVtGpujIzvfoeQAqVtiV__LrnWBt7Gqg",
+    authDomain: "logosyespiritu.firebaseapp.com",
+    projectId: "logosyespiritu",
+    storageBucket: "logosyespiritu.appspot.com",
+    messagingSenderId: "548451379980",
+    appId: "1:548451379980:web:7dd7a0c2401639c05f729"
+  };
+
+  // Inicializa Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  // Inicializa Firestore
+  const db = firebase.firestore();
+
+  // Prueba: escribe en la base de datos
+  db.collection("prueba").add({ mensaje: "¡Hola desde mi web!" })
+    .then(() => { console.log("Conexión exitosa con Firebase!"); })
+    .catch((error) => { console.error("Error:", error); });
+</script>
+  
 <body>
-  <!-- Tu contenido aquí -->
-
-  <!-- Firebase scripts por CDN -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
-
-  <script>
-    // Tu configuración de Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyAVtGpujIzvfoeQAqVtiV__LrnWBt7Gqg",
-      authDomain: "logosyespiritu.firebaseapp.com",
-      projectId: "logosyespiritu",
-      storageBucket: "logosyespiritu.appspot.com",
-      messagingSenderId: "548451379980",
-      appId: "1:548451379980:web:7dd7a0c2401639c05f729"
-      // Puedes omitir measurementId si no usas Analytics
-    };
-
-    // Inicializa Firebase
-    firebase.initializeApp(firebaseConfig);
-
-    // Inicializa Firestore
-    const db = firebase.firestore();
-
-    // Prueba de escritura
-    db.collection("prueba").add({ mensaje: "¡Hola desde mi web!" })
-      .then(() => { console.log("Conexión exitosa con Firebase!"); })
-      .catch((error) => { console.error("Error:", error); });
-  </script>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
