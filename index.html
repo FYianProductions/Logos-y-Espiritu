@@ -1228,6 +1228,144 @@
                 display: none;
             }
         }
+
+        /* Añade esto en tu <style> para los botones de like, comentarios y estadísticas */
+        .like-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            outline: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 1.1em;
+            color: #ff5e7d;
+            transition: color 0.2s;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        .like-button svg {
+            width: 22px;
+            height: 22px;
+            fill: #ff5e7d;
+            transition: fill 0.2s;
+        }
+        .like-button.liked svg {
+            fill: #e0245e;
+        }
+        .like-count {
+            font-weight: 600;
+            font-size: 1em;
+            color: #e0245e;
+            margin-left: 2px;
+        }
+        .comments-section {
+            margin-top: 40px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 25px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .comments-section h3 {
+            margin-bottom: 15px;
+            color: var(--color-primary);
+        }
+        .comments-list {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+        .comment-item {
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        .comment-author {
+            font-weight: 600;
+            color: #6d5dfc;
+            margin-right: 8px;
+        }
+        .comment-text {
+            color: #333;
+        }
+        .add-comment-form textarea {
+            width: 100%;
+            min-height: 50px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            padding: 8px;
+            font-size: 1em;
+            margin-bottom: 10px;
+            resize: vertical;
+        }
+        .add-comment-form .submit-btn {
+            background: var(--color-accent);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 8px 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .add-comment-form .submit-btn:hover {
+            background: #2ecc71;
+        }
+        #comment-status {
+            margin-top: 8px;
+            font-size: 0.95em;
+        }
+        #estadisticas {
+            display: none;
+            background: #fff;
+            border-radius: 10px;
+            padding: 40px 30px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+            margin-top: 40px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        #estadisticas .section-title {
+            color: var(--color-primary);
+            margin-bottom: 30px;
+        }
+        .stats-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        .stat-item {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 25px 30px;
+            min-width: 180px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .stat-item h4 {
+            color: var(--color-secondary);
+            margin-bottom: 8px;
+        }
+        .stat-item p {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #6d5dfc;
+        }
+        #back-to-main-from-stats {
+            margin-top: 20px;
+            background: var(--color-dark);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 24px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        #back-to-main-from-stats:hover {
+            background: #444;
+        }
     </style>
 </head>
 <body>
@@ -1365,7 +1503,7 @@
                             <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
                         </a>
                         <a href="#" aria-label="Instagram">
-                           <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
+                           <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 224.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
                         </a>
                         <a href="#" aria-label="YouTube">
                             <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
@@ -1421,6 +1559,33 @@
     <a href="#" class="back-to-top" id="backToTop" aria-label="Volver arriba">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z"/></svg>
     </a>
+
+    <section class="content-section" id="estadisticas">
+        <h2 class="section-title">Estadísticas del Sitio</h2>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h4>Suscriptores</h4>
+                <p id="stat-subscribers">87</p>
+            </div>
+            <div class="stat-item">
+                <h4>Likes en Publicaciones</h4>
+                <p id="stat-likes-posts">357</p>
+            </div>
+            <div class="stat-item">
+                <h4>Likes en Imágenes</h4>
+                <p id="stat-likes-images">92</p>
+            </div>
+            <div class="stat-item">
+                <h4>Likes en Podcasts</h4>
+                <p id="stat-likes-podcasts">181</p>
+            </div>
+            <div class="stat-item">
+                <h4>Comentarios</h4>
+                <p id="stat-comments">29</p>
+            </div>
+        </div>
+        <button id="back-to-main-from-stats" class="submit-btn">← Volver al Inicio</button>
+    </section>
 
     <script>
         // --- CONSTANTES Y ELEMENTOS DEL DOM ---
@@ -1669,9 +1834,60 @@
         }
 
 
+        // --- LIKES Y COMENTARIOS (debes añadir esto después de tus datos y antes de las funciones principales) ---
+
+        // Inicializar likes y comentarios en localStorage si no existen
+        function getLikesData() {
+            return JSON.parse(localStorage.getItem('blogLikesData') || '{}');
+        }
+        function setLikesData(data) {
+            localStorage.setItem('blogLikesData', JSON.stringify(data));
+        }
+        function getCommentsData() {
+            return JSON.parse(localStorage.getItem('blogCommentsData') || '{}');
+        }
+        function setCommentsData(data) {
+            localStorage.setItem('blogCommentsData', JSON.stringify(data));
+        }
+        function getSubscribersCount() {
+            return parseInt(localStorage.getItem('blogSubscribersCount') || '0', 10);
+        }
+        function setSubscribersCount(count) {
+            localStorage.setItem('blogSubscribersCount', count);
+        }
+
+        // --- LIKES EN PUBLICACIONES, IMÁGENES Y PODCASTS ---
+        function getLikeCount(type, id) {
+            const likes = getLikesData();
+            return likes[`${type}:${id}`] || 0;
+        }
+        function setLikeCount(type, id, count) {
+            const likes = getLikesData();
+            likes[`${type}:${id}`] = count;
+            setLikesData(likes);
+        }
+        function isLiked(type, id) {
+            return localStorage.getItem(`blogLiked:${type}:${id}`) === '1';
+        }
+        function setLiked(type, id, liked) {
+            localStorage.setItem(`blogLiked:${type}:${id}`, liked ? '1' : '0');
+        }
+
+        // --- COMENTARIOS SIMULADOS ---
+        const fakeComments = [
+            { author: "Ana", text: "¡Excelente reflexión!" },
+            { author: "Carlos", text: "Me encantó este artículo, gracias por compartir." },
+            { author: "María", text: "Muy inspirador, saludos." },
+            { author: "Juan", text: "¡Qué gran aporte, bendiciones!" },
+            { author: "Luisa", text: "Me ayudó mucho a entender el tema." }
+        ];
+
+        // --- RENDERIZAR TARJETAS CON LIKE ---
         function crearTarjetaPost(post) {
             const thumbnailSrc = post.video ? `https://i.ytimg.com/vi/${post.video}/hqdefault.jpg` : post.imagen;
             const videoOverlay = post.video ? `<div class="play-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px"><path d="M8 5v14l11-7z"/><path d="M0 0h24v24H0z" fill="none"/></svg></div>` : '';
+            const likeCount = getLikeCount('post', post.id);
+            const liked = isLiked('post', post.id);
             return `
                 <article class="post-card" data-id="${post.id}">
                     <div class="video-thumbnail-container">
@@ -1682,9 +1898,15 @@
                         <h3 class="post-title">${post.titulo}</h3>
                         <div class="post-meta">
                             <span class="post-date">${formatearFecha(post.fecha)}</span>
-                             <span class="post-category-badge">${post.categoria}</span>
+                            <span class="post-category-badge">${post.categoria}</span>
                         </div>
                         <p class="post-excerpt">${post.resumen}</p>
+                        <div class="post-card-actions">
+                            <button class="like-button${liked ? ' liked' : ''}" data-type="post" data-id="${post.id}" aria-label="Me gusta">
+                                <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                                <span class="like-count">${likeCount}</span>
+                            </button>
+                        </div>
                     </div>
                 </article>
             `;
@@ -1712,13 +1934,20 @@
             } else {
                 noImageResultsMessage.style.display = 'none';
                 imagesToRender.forEach(imgData => {
+                    const likeCount = getLikeCount('img', imgData.id);
+                    const liked = isLiked('img', imgData.id);
                     const galleryItem = document.createElement('div');
                     galleryItem.className = 'gallery-item';
                     galleryItem.innerHTML = `
                         <img src="${imgData.src}" alt="${imgData.alt}" loading="lazy">
                         <span class="gallery-item-date">${formatearFecha(imgData.fecha)}</span>
+                        <button class="like-button${liked ? ' liked' : ''}" data-type="img" data-id="${imgData.id}" aria-label="Me gusta">
+                            <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                            <span class="like-count">${likeCount}</span>
+                        </button>
                     `;
-                    galleryItem.addEventListener('click', () => openImageModal(imgData.src));
+                    galleryItem.querySelector('img').addEventListener('click', () => openImageModal(imgData.src));
+                    galleryItem.querySelector('.like-button').addEventListener('click', handleLikeClick);
                     imageGalleryGrid.appendChild(galleryItem);
                 });
             }
@@ -2289,8 +2518,6 @@
             ordenarPublicaciones();
             cambiarSeccion('publicaciones');
         });
-
-
     </script>
 </body>
 </html>
