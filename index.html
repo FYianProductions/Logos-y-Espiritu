@@ -5,12 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Logos y Espíritu</title>
   <!-- Tus links y estilos aquí -->
-</head>
+<!-- Scripts de Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+
 <script>
-  // Tu configuración de Firebase
+  // Configuración de tu proyecto Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyAVtGpujIzvfoeQAqVtiV__LrnWBt7Gqg",
     authDomain: "logosyespiritu.firebaseapp.com",
@@ -26,14 +27,14 @@
   // Inicializa Firestore
   const db = firebase.firestore();
 
-  // Prueba: escribe en la base de datos
+  // Prueba de conexión: escribe un mensaje en la colección "prueba"
   db.collection("prueba").add({ mensaje: "¡Hola desde mi web!" })
     .then(() => { console.log("Conexión exitosa con Firebase!"); })
     .catch((error) => { console.error("Error:", error); });
 </script>
   
+</head>
 <body>
-<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
