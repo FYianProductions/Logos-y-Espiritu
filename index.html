@@ -2320,13 +2320,10 @@
         animateTitle();
 
         // --- ENLACE "Todos los derechos reservados" lleva a estadísticas ---
-        // document.getElementById('footer-stats-link').addEventListener('click', function() {
-//     cambiarSeccion('estadisticas');
-// });
-document.getElementById('footer-stats-link').addEventListener('click', function(e) {
-    e.preventDefault();
-    cambiarSeccion('estadisticas');
-});
+        document.getElementById('footer-stats-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            cambiarSeccion('estadisticas');
+        });
 
         // --- OCULTAR OTRAS SECCIONES AL ENTRAR A ESTADÍSTICAS (ya lo hace cambiarSeccion) ---
 
@@ -2336,6 +2333,10 @@ document.getElementById('footer-stats-link').addEventListener('click', function(
         renderizarPublicaciones(currentPosts);
         renderizarGaleria(currentImages);
 
+        // --- DEFINICIÓN VACÍA PARA FLECHAS DE NAVEGACIÓN MÓVIL (para evitar errores JS) ---
+        function cambiarSeccionConFlechas(direccion) {
+            // Implementación vacía para evitar errores y permitir que el resto del JS funcione.
+        }
     </script>
 </body>
 </html>
