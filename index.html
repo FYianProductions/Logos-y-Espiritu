@@ -1782,6 +1782,48 @@
         let currentImages = [...galeriaImagenes];
         let sortOrder = 'desc';
 
+        // --- FUNCIONES AUXILIARES FALTANTES PARA EVITAR ERRORES ---
+        // Marca si el usuario ya dio like a un post/imagen
+        function isLiked(type, id) {
+            // Usa localStorage para persistencia
+            try {
+                const liked = JSON.parse(localStorage.getItem('blogLiked') || '{}');
+                return !!liked[`${type}:${id}`];
+            } catch (e) { return false; }
+        }
+        // Marca el like en localStorage y actualiza el botón
+        function handleLikeClick(e) {
+            e.stopPropagation();
+            const btn = e.currentTarget;
+            const type = btn.getAttribute('data-type');
+            const id = btn.getAttribute('data-id');
+            const key = `${type}:${id}`;
+            let liked = {};
+            try { liked = JSON.parse(localStorage.getItem('blogLiked') || '{}'); } catch {}
+            liked[key] = !liked[key];
+            localStorage.setItem('blogLiked', JSON.stringify(liked));
+            btn.classList.toggle('liked', liked[key]);
+        }
+
+        // --- ESTADÍSTICAS: PREPARA DATOS PARA LA SECCIÓN ---
+        // Suma likes y comentarios de los datos simulados
+        const estadisticasLikes = {
+            'razonabilidad-fe': 32,
+            'fe-ciencia-enemigos': 18,
+            'humanismo-cristiano': 21,
+            'encuentro-fe-ciencia': 14,
+            'video-introduccion': 8,
+            'papa-leon-xiv-eleccion': 11
+        };
+        const estadisticasComentarios = {
+            'razonabilidad-fe': fakeCommentsData['razonabilidad-fe'],
+            'fe-ciencia-enemigos': fakeCommentsData['fe-ciencia-enemigos'],
+            'humanismo-cristiano': fakeCommentsData['humanismo-cristiano'],
+            'encuentro-fe-ciencia': fakeCommentsData['encuentro-fe-ciencia'],
+            'video-introduccion': fakeCommentsData['video-introduccion'],
+            'papa-leon-xiv-eleccion': fakeCommentsData['papa-leon-xiv-eleccion']
+        };
+
         // --- FUNCIONES ---
 
         function animateTitle() {
@@ -1797,20 +1839,25 @@
                 mainTitleElement.appendChild(span);
             });
 
-             mainTitleElement.addEventListener('mouseenter', () => {
-                 mainTitleElement.querySelectorAll('span').forEach(span => {
-                     const rotation = Math.random() * 10 - 5;
-                     const yOffset = Math.random() * 6 - 3;
-                     span.style.transform = `rotate(${rotation}deg) translateY(${yOffset}px) scale(1.05)`;
-                 });
-             });
-             mainTitleElement.addEventListener('mouseleave', () => {
-                  mainTitleElement.querySelectorAll('span').forEach(span => {
-                     const rotation = Math.random() * 12 - 6;
-                     const yOffset = Math.random() * 8 - 4;
-                     span.style.transform = `rotate(${rotation}deg) translateY(${yOffset}px) scale(1)`;
-                 });
-             });
+            // Fallback: Si por alguna razón no hay spans, muestra el texto plano
+            if (!mainTitleElement.innerHTML.trim()) {
+                mainTitleElement.textContent = titleText;
+            }
+
+            mainTitleElement.addEventListener('mouseenter', () => {
+                mainTitleElement.querySelectorAll('span').forEach(span => {
+                    const rotation = Math.random() * 10 - 5;
+                    const yOffset = Math.random() * 6 - 3;
+                    span.style.transform = `rotate(${rotation}deg) translateY(${yOffset}px) scale(1.05)`;
+                });
+            });
+            mainTitleElement.addEventListener('mouseleave', () => {
+                mainTitleElement.querySelectorAll('span').forEach(span => {
+                    const rotation = Math.random() * 12 - 6;
+                    const yOffset = Math.random() * 8 - 4;
+                    span.style.transform = `rotate(${rotation}deg) translateY(${yOffset}px) scale(1)`;
+                });
+            });
         }
 
 
@@ -1916,6 +1963,7 @@
                         <div class="post-card-actions">
                             <button class="like-button${liked ? ' liked' : ''}" data-type="post" data-id="${post.id}" aria-label="Me gusta">
                                 <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                            </button>
                         </div>
                     </div>
                 </article>
@@ -1931,8 +1979,11 @@
                 postsToRender.forEach(post => {
                     postsGrid.innerHTML += crearTarjetaPost(post);
                 });
+                // Añade eventos a los botones de like y a la tarjeta
                 document.querySelectorAll('.post-card').forEach(card => {
                     card.addEventListener('click', () => mostrarPostIndividual(card.dataset.id));
+                    const likeBtn = card.querySelector('.like-button');
+                    if (likeBtn) likeBtn.addEventListener('click', handleLikeClick);
                 });
             }
         }
@@ -1961,6 +2012,30 @@
             }
         }
 
+        // --- FUNCIÓN DE BÚSQUEDA (asegura que renderiza) ---
+        function handleSearch() {
+            const query = searchInput.value.trim().toLowerCase();
+            if (document.getElementById('publicaciones').classList.contains('active')) {
+                let filtered = currentPosts.filter(post =>
+                    post.titulo.toLowerCase().includes(query) ||
+                    post.resumen.toLowerCase().includes(query) ||
+                    (post.categoria && post.categoria.toLowerCase().includes(query))
+                );
+                // Ordenar según sortOrder
+                filtered.sort((a, b) => {
+                    const dateA = new Date(a.fecha);
+                    const dateB = new Date(b.fecha);
+                    return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+                });
+                renderizarPublicaciones(filtered);
+            } else if (document.getElementById('imagenes').classList.contains('active')) {
+                let filtered = currentImages.filter(img =>
+                    img.alt.toLowerCase().includes(query) ||
+                    img.descripcion?.toLowerCase().includes(query)
+                );
+                renderizarGaleria(filtered);
+            }
+        }
 
         function ordenarPublicaciones() {
             if (document.getElementById('publicaciones').classList.contains('active')) {
