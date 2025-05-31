@@ -205,32 +205,5 @@
     </a>
 
     <script src="script.js"></script>
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            // LÓGICA PARA EL CONTADOR DE VISITAS
-            function actualizarContadorDeVisitas() {
-                // 1. Obtenemos el elemento donde mostraremos el contador.
-                const contadorElemento = document.getElementById('visit-counter');
-
-                // 2. Intentamos obtener el valor actual del contador desde localStorage.
-                // Si no existe (es la primera visita), lo inicializamos en 0.
-                let contadorVisitas = parseInt(localStorage.getItem('pageVisits') || 0);
-
-                // 3. Incrementamos el contador en 1 para la visita actual.
-                contadorVisitas++;
-
-                // 4. Guardamos el nuevo valor en localStorage para futuras visitas.
-                localStorage.setItem('pageVisits', contadorVisitas);
-
-                // 5. Mostramos el nuevo valor en la página.
-                if (contadorElemento) {
-                    contadorElemento.textContent = contadorVisitas;
-                }
-            }
-
-            // Llamamos a la función para que se ejecute al cargar la página.
-            actualizarContadorDeVisitas();
-        });
-    </script>
 </body>
 </html>
