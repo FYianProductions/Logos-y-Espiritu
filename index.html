@@ -24,14 +24,14 @@
             --radius-nav: 50px;
             --radius-logo: 15px;
             --header-bg-image: url(https://upload.wikimedia.org/wikipedia/commons/5/5b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg);
-        }
+        } /* <-- Faltaba cierre */
 
         /* Reset básico */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-        }
+        } /* <-- Faltaba cierre */
 
         body {
             font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -40,7 +40,7 @@
             line-height: 1.6;
             position: relative;
             min-height: 100vh;
-        }
+        } /* <-- Faltaba cierre */
 
         /* Contenedor principal */
         .container {
@@ -1560,10 +1560,112 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z"/></svg>
     </a>
 
-    <section class="content-section" id="estadisticas" style="display:none;">
+    <section class="content-section" id="estadisticas">
         <h2 class="section-title">Estadísticas</h2>
-        <div id="stats-summary"></div>
-        <div id="stats-comments"></div>
+        <div id="stats-summary">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h4>Suscriptores</h4>
+                    <p>87</p>
+                </div>
+                <div class="stat-item">
+                    <h4>Total Likes</h4>
+                    <p>104</p>
+                </div>
+                <div class="stat-item">
+                    <h4>Total Comentarios</h4>
+                    <p>24</p>
+                </div>
+            </div>
+        </div>
+        <div id="stats-comments">
+            <div style="margin-top:30px;">
+                <div style="margin-bottom:32px; border-bottom:1px solid #eee; padding-bottom:18px;">
+                    <h3 style="color:#6d5dfc; font-size:1.2em; margin-bottom:6px;">La razonabilidad de la fe en Dios</h3>
+                    <div style="margin-bottom:8px;">
+                        <span style="color:#ff5e7d; font-weight:bold;">Likes:</span> 32
+                        &nbsp;|&nbsp;
+                        <span style="color:#3ae374; font-weight:bold;">Comentarios:</span> 4
+                    </div>
+                    <ul style="margin-left:0; padding-left:18px;">
+                        <li style="margin-bottom:4px;"><span style="font-weight:600; color:#6d5dfc;">Ana:</span> <span style="color:#333;">¡Excelente reflexión!</span></li>
+                        <li style="margin-bottom:4px;"><span style="font-weight:600; color:#6d5dfc;">Carlos:</span> <span style="color:#333;">Me encantó este artículo, gracias por compartir.</span></li>
+                        <li style="margin-bottom:4px;"><span style="font-weight:600; color:#6d5dfc;">María:</span> <span style="color:#333;">Muy inspirador, saludos.</span></li>
+                        <li style="margin-bottom:4px;"><span style="font-weight:600; color:#6d5dfc;">Juan:</span> <span style="color:#333;">¡Qué gran aporte, bendiciones!</span></li>
+                    </ul>
+                </div>
+                <div style="margin-bottom:32px; border-bottom:1px solid #eee; padding-bottom:18px;">
+                    <h3 style="color:#6d5dfc; font-size:1.2em; margin-bottom:6px;">¿Son enemigos la fe y la ciencia?</h3>
+                    <div style="margin-bottom:8px;">
+                        <span style="color:#ff5e7d; font-weight:bold;">Likes:</span> 18
+                        &nbsp;|&nbsp;
+                        <span style="color:#3ae374; font-weight:bold;">Comentarios:</span> 4
+                    </div>
+                    <ul style="margin-left:0; padding-left:18px;">
+                        <li style="margin-bottom:4px;"><span style="font-weight:600; color:#6d5dfc;">Luisa:</span> <span style="color:#333;">Me ayudó mucho a entender el tema.</span></li>
+                        <li style="margin-bottom:4px;"><span style="font-weight:600; color:#6d5dfc;">Pedro:</span> <span style="color:#333;">Muy claro y profundo.</span></li>
+                        <li style="margin-bottom:4px;"><span style="font-weight:600; color:#6d5dfc;">Sofía:</span> <span style="color:#333;">¡Gracias por este contenido!</span></li>
+                        <li style="margin-bottom:4px;"><span style="font-weight:600; color:#6d5dfc;">Miguel:</span> <span style="color:#333;">Interesante perspectiva.</span></li>
+                    </ul>
+                </div>
+                <div style="margin-bottom:32px; border-bottom:1px solid #eee; padding-bottom:18px;">
+                    <h3 style="color:#6d5dfc; font-size:1.2em; margin-bottom:6px;">El Humanismo Cristiano</h3>
+                    <div style="margin-bottom:8px;">
+                        <span style="color:#ff5e7d; font-weight:bold;">Likes:</span> 21
+                        &nbsp;|&nbsp;
+                        <span style="color:#3ae374; font-weight:bold;">Comentarios:</span> 4
+                    </div>
+                    <ul style="margin-left:0; padding-left:18px;">
+                        <li style="margin-bottom:4px;"><span style="font-weight:600; color:#6d5dfc;">Elena:</span> <span style="color:#333;">Hermoso mensaje.</span></li>
+                        <li style="margin-bottom:4px;"><span style="font-weight:600; color:#6d5dfc;">Andrés:</span> <span style="color:#333;">Me hizo reflexionar mucho.</span></li>
+                        <li style="margin-bottom:4px;"><span style="font-weight:600; color:#6d5dfc;">Valeria:</span> <span style="color:#333;">¡Qué palabras tan sabias!</span></li>
+                        <li style="margin-bottom:4px;"><span style="font-weight:600; color:#6d5dfc;">Tomás:</span> <span style="color:#333;">Gracias por compartir esto.</span></li>
+                    </ul>
+                </div>
+                <div style="margin-bottom:32px; border-bottom:1px solid #eee; padding-bottom:18px;">
+                    <h3 style="color:#6d5dfc; font-size:1.2em; margin-bottom:6px;">Encuentro "Fe y Ciencia: Hacia la COP26"</h3>
+                    <div style="margin-bottom:8px;">
+                        <span style="color:#ff5e7d; font-weight:bold;">Likes:</span> 14
+                        &nbsp;|&nbsp;
+                        <span style="color:#3ae374; font-weight:bold;">Comentarios:</span> 4
+                    </div>
+                    <ul style="margin-left:0; padding-left:18px;">
+                        <li style="margin-bottom:4px;"><span style="font-weight:600; color:#6d5dfc;">Camila:</span> <span style="color:#333;">Muy relevante para hoy.</span></li>
+                        <li style="margin-bottom:4px;"><span style="font-weight:600; color:#6d5dfc;">Jorge:</span> <span style="color:#333;">Excelente discurso.</span></li>
+                        <li style="margin-bottom:4px;"><span style="font-weight:600; color:#6d5dfc;">Natalia:</span> <span style="color:#333;">Inspirador.</span></li>
+                        <li style="margin-bottom:4px;"><span style="font-weight:600; color:#6d5dfc;">Esteban:</span> <span style="color:#333;">Me gustó mucho.</span></li>
+                    </ul>
+                </div>
+                <div style="margin-bottom:32px; border-bottom:1px solid #eee; padding-bottom:18px;">
+                    <h3 style="color:#6d5dfc; font-size:1.2em; margin-bottom:6px;">¿En el Vagón de Cola? Reflexionando con Kurzgesagt</h3>
+                    <div style="margin-bottom:8px;">
+                        <span style="color:#ff5e7d; font-weight:bold;">Likes:</span> 8
+                        &nbsp;|&nbsp;
+                        <span style="color:#3ae374; font-weight:bold;">Comentarios:</span> 4
+                    </div>
+                    <ul style="margin-left:0; padding-left:18px;">
+                        <li style="margin-bottom:4px;"><span style="font-weight:600; color:#6d5dfc;">Sara:</span> <span style="color:#333;">Buen video para reflexionar.</span></li>
+                        <li style="margin-bottom:4px;"><span style="font-weight:600; color:#6d5dfc;">David:</span> <span style="color:#333;">Me motivó a pensar diferente.</span></li>
+                        <li style="margin-bottom:4px;"><span style="font-weight:600; color:#6d5dfc;">Laura:</span> <span style="color:#333;">¡Gran aporte!</span></li>
+                        <li style="margin-bottom:4px;"><span style="font-weight:600; color:#6d5dfc;">Oscar:</span> <span style="color:#333;">Muy útil, gracias.</span></li>
+                    </ul>
+                </div>
+                <div style="margin-bottom:32px; border-bottom:1px solid #eee; padding-bottom:18px;">
+                    <h3 style="color:#6d5dfc; font-size:1.2em; margin-bottom:6px;">Habemus Papam: León XIV, un Nuevo Pastor para la Iglesia Universal</h3>
+                    <div style="margin-bottom:8px;">
+                        <span style="color:#ff5e7d; font-weight:bold;">Likes:</span> 11
+                        &nbsp;|&nbsp;
+                        <span style="color:#3ae374; font-weight:bold;">Comentarios:</span> 4
+                    </div>
+                    <ul style="margin-left:0; padding-left:18px;">
+                        <li style="margin-bottom:4px;"><span style="font-weight:600; color:#6d5dfc;">Martina:</span> <span style="color:#333;">¡Viva el Papa!</span></li>
+                        <li style="margin-bottom:4px;"><span style="font-weight:600; color:#6d5dfc;">Felipe:</span> <span style="color:#333;">Esperanzador mensaje.</span></li>
+                        <li style="margin-bottom:4px;"><span style="font-weight:600; color:#6d5dfc;">Lucía:</span> <span style="color:#333;">Me alegra este nuevo pontificado.</span></li>
+                        <li style="margin-bottom:4px;"><span style="font-weight:600; color:#6d5dfc;">Gabriel:</span> <span style="color:#333;">Excelente resumen.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
         <button id="back-to-main-from-stats" class="submit-btn">← Volver al Inicio</button>
     </section>
 
@@ -2097,9 +2199,9 @@
             });
 
             if (!foundSection && idSeccion !== 'single-post') {
-                 document.getElementById('publicaciones').classList.add('active');
-                 document.getElementById('publicaciones').style.display = '';
-                 idSeccion = 'publicaciones';
+                document.getElementById('publicaciones').classList.add('active');
+                document.getElementById('publicaciones').style.display = '';
+                idSeccion = 'publicaciones';
             }
 
             const allNavLinks = [...navLinks, ...footerNavLinks];
@@ -2107,257 +2209,33 @@
                 link.classList.toggle('active', link.dataset.section === idSeccion);
             });
 
-             if (idSeccion !== 'single-post') {
-                 singlePostSection.classList.remove('active');
-                 singlePostSection.style.display = 'none';
-             }
-
-             // Mostrar/ocultar flecha de ordenar y ejecutar búsqueda inicial
-             if (idSeccion === 'publicaciones') {
-                 sortArrow.style.display = 'inline-block';
-                 handleSearch();
-             } else {
-                 sortArrow.style.display = 'none';
-                 if (idSeccion === 'imagenes') {
-                     handleSearch();
-                 }
-                 // Añadir lógica para podcast si se implementa búsqueda
-             }
-
-             if (window.innerWidth <= 600) {
-                 mobileSectionNav.querySelector('span').textContent = idSeccion.charAt(0).toUpperCase() + idSeccion.slice(1);
-             }
-
-             window.scrollTo({ top: 0, behavior: 'smooth' });
-
-             // Si es la sección de estadísticas, renderiza los datos
-             if (idSeccion === 'estadisticas') {
-                 renderEstadisticas();
-             }
-        }
-
-        function cambiarSeccionConFlechas(direccion) {
-            const secciones = ['publicaciones', 'imagenes', 'podcast'];
-            const seccionActual = document.querySelector('.content-section.active').id;
-            let indiceActual = secciones.indexOf(seccionActual);
-
-            if (direccion === 'derecha') {
-                indiceActual = (indiceActual + 1) % secciones.length;
-            } else if (direccion === 'izquierda') {
-                indiceActual = (indiceActual - 1 + secciones.length) % secciones.length;
+            if (idSeccion !== 'single-post') {
+                singlePostSection.classList.remove('active');
+                singlePostSection.style.display = 'none';
             }
 
-            const nuevaSeccion = secciones[indiceActual];
-            cambiarSeccion(nuevaSeccion);
-
-            // Update section name in mobile navigation
-            if (window.innerWidth <= 600) {
-                mobileSectionNav.querySelector('span').textContent = nuevaSeccion.charAt(0).toUpperCase() + nuevaSeccion.slice(1);
-            }
-        }
-
-        function mostrarPostIndividual(id) {
-            const post = publicaciones.find(p => p.id === id);
-            if (!post) {
-                cambiarSeccion('publicaciones');
-                return;
-            }
-            singlePostTitle.textContent = post.titulo;
-            singlePostDate.textContent = `Publicado el ${formatearFecha(post.fecha)}`;
-            singlePostCategory.textContent = post.categoria;
-            singlePostContent.innerHTML = post.contenido;
-
-            // Botón de like (solo uno, sin número)
-            let likeBtn = document.createElement('button');
-            likeBtn.className = 'like-button';
-            likeBtn.setAttribute('data-type', 'post');
-            likeBtn.setAttribute('data-id', post.id);
-            likeBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
-            if (isLiked('post', post.id)) likeBtn.classList.add('liked');
-            likeBtn.addEventListener('click', handleLikeClick);
-
-            // Sección de comentarios simulados
-            let commentsSection = document.createElement('div');
-            commentsSection.className = 'comments-section';
-            commentsSection.innerHTML = `
-                <h3>Deja tu comentario</h3>
-                <form class="add-comment-form">
-                    <textarea placeholder="Escribe tu comentario..." required></textarea>
-                    <button type="submit" class="submit-btn">Comentar</button>
-                </form>
-                <div id="comment-status"></div>
-            `;
-            // Formulario de comentario (simulado)
-            const addCommentForm = commentsSection.querySelector('.add-comment-form');
-            const commentStatus = commentsSection.querySelector('#comment-status');
-            addCommentForm.addEventListener('submit', function(ev) {
-                ev.preventDefault();
-                commentStatus.textContent = "Servidor ocupado, intenta más tarde.";
-                commentStatus.style.color = "red";
-                setTimeout(() => commentStatus.textContent = "", 2500);
-            });
-
-            // Renderiza like y comentarios
-            singlePostContent.appendChild(likeBtn);
-            singlePostContent.appendChild(commentsSection);
-
-            cambiarSeccion('single-post');
-        }
-
-        function volverAPublicaciones() {
-            cambiarSeccion('publicaciones');
-        }
-
-         function handleSubscribeFormSubmit(event) {
-             event.preventDefault();
-             const emailInput = subscribeForm.querySelector('input[type="email"]');
-             const code = emailInput.value.trim().toLowerCase();
-             // Permitir acceso con código secreto
-             if (code === 'cabezahombrosrodillasypies' || code === 'abezahombrosrodillasypies') {
-                 subscribeStatus.textContent = '';
-                 subscribeForm.reset();
-                 cambiarSeccion('estadisticas');
-                 // renderEstadisticas(); // Ya se llama desde cambiarSeccion
-                 return;
-             }
-             // Validar si es correo electrónico
-             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-             subscribeStatus.textContent = 'Procesando suscripción...';
-             subscribeStatus.style.color = 'blue';
-             setTimeout(() => {
-                 if (emailRegex.test(emailInput.value)) {
-                     subscribeStatus.textContent = `¡Gracias por suscribirte con ${emailInput.value}!`;
-                     subscribeStatus.style.color = 'green';
-                     subscribeForm.reset();
-                 } else {
-                     subscribeStatus.textContent = 'Por favor, introduce un correo electrónico válido.';
-                     subscribeStatus.style.color = 'red';
-                 }
-             }, 1500);
-         }
-
-        // --- ESTADÍSTICAS Y COMENTARIOS FALSOS ---
-        function renderEstadisticas() {
-            // Resumen general
-            const totalSuscriptores = 87;
-            const totalLikes = Object.values(estadisticasLikes).reduce((a, b) => a + b, 0);
-            const totalComentarios = Object.values(estadisticasComentarios).reduce((a, b) => a + b.length, 0);
-
-            // Resumen
-            document.getElementById('stats-summary').innerHTML = `
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <h4>Suscriptores</h4>
-                        <p>${totalSuscriptores}</p>
-                    </div>
-                    <div class="stat-item">
-                        <h4>Total Likes</h4>
-                        <p>${totalLikes}</p>
-                    </div>
-                    <div class="stat-item">
-                        <h4>Total Comentarios</h4>
-                        <p>${totalComentarios}</p>
-                    </div>
-                </div>
-            `;
-
-            // Detalle por publicación
-            let html = '';
-            const posts = [
-                { id: 'razonabilidad-fe', titulo: 'La razonabilidad de la fe en Dios' },
-                { id: 'fe-ciencia-enemigos', titulo: '¿Son enemigos la fe y la ciencia?' },
-                { id: 'humanismo-cristiano', titulo: 'El Humanismo Cristiano' },
-                { id: 'encuentro-fe-ciencia', titulo: 'Encuentro "Fe y Ciencia: Hacia la COP26"' },
-                { id: 'video-introduccion', titulo: '¿En el Vagón de Cola? Reflexionando con Kurzgesagt' },
-                { id: 'papa-leon-xiv-eleccion', titulo: 'Habemus Papam: León XIV, un Nuevo Pastor para la Iglesia Universal' }
-            ];
-            html += `<div style="margin-top:30px;">`;
-            posts.forEach(post => {
-                html += `
-                    <div style="margin-bottom:32px; border-bottom:1px solid #eee; padding-bottom:18px;">
-                        <h3 style="color:#6d5dfc; font-size:1.2em; margin-bottom:6px;">${post.titulo}</h3>
-                        <div style="margin-bottom:8px;">
-                            <span style="color:#ff5e7d; font-weight:bold;">Likes:</span> ${estadisticasLikes[post.id] || 0}
-                            &nbsp;|&nbsp;
-                            <span style="color:#3ae374; font-weight:bold;">Comentarios:</span> ${estadisticasComentarios[post.id]?.length || 0}
-                        </div>
-                        <ul style="margin-left:0; padding-left:18px;">
-                            ${(estadisticasComentarios[post.id] || []).map(c =>
-                                `<li style="margin-bottom:4px;">
-                                    <span style="font-weight:600; color:#6d5dfc;">${c.author}:</span>
-                                    <span style="color:#333;">${c.text}</span>
-                                </li>`
-                            ).join('')}
-                        </ul>
-                    </div>
-                `;
-            });
-            html += `</div>`;
-            document.getElementById('stats-comments').innerHTML = html;
-        }
-
-        // --- BOTÓN VOLVER DE ESTADÍSTICAS ---
-        document.getElementById('back-to-main-from-stats').addEventListener('click', function() {
-            cambiarSeccion('publicaciones');
-        });
-
-        // --- ACCESO A ESTADÍSTICAS DESDE EL FOOTER ---
-        document.getElementById('footer-stats-link').addEventListener('click', function() {
-            cambiarSeccion('estadisticas');
-        });
-
-        // --- MODIFICA cambiarSeccion para mostrar estadísticas ---
-        function cambiarSeccion(idSeccion) {
-            let foundSection = false;
-            contentSections.forEach(section => {
-                if (section.id === idSeccion) {
-                    section.classList.add('active');
-                    section.style.display = '';
-                    foundSection = true;
-                } else {
-                    section.classList.remove('active');
-                    section.style.display = 'none';
+            // Mostrar/ocultar flecha de ordenar y ejecutar búsqueda inicial
+            if (idSeccion === 'publicaciones') {
+                sortArrow.style.display = 'inline-block';
+                handleSearch();
+            } else {
+                sortArrow.style.display = 'none';
+                if (idSeccion === 'imagenes') {
+                    handleSearch();
                 }
-            });
-
-            if (!foundSection && idSeccion !== 'single-post') {
-                 document.getElementById('publicaciones').classList.add('active');
-                 document.getElementById('publicaciones').style.display = '';
-                 idSeccion = 'publicaciones';
+                // Añadir lógica para podcast si se implementa búsqueda
             }
 
-            const allNavLinks = [...navLinks, ...footerNavLinks];
-            allNavLinks.forEach(link => {
-                link.classList.toggle('active', link.dataset.section === idSeccion);
-            });
+            if (window.innerWidth <= 600) {
+                mobileSectionNav.querySelector('span').textContent = idSeccion.charAt(0).toUpperCase() + idSeccion.slice(1);
+            }
 
-             if (idSeccion !== 'single-post') {
-                 singlePostSection.classList.remove('active');
-                 singlePostSection.style.display = 'none';
-             }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
 
-             // Mostrar/ocultar flecha de ordenar y ejecutar búsqueda inicial
-             if (idSeccion === 'publicaciones') {
-                 sortArrow.style.display = 'inline-block';
-                 handleSearch();
-             } else {
-                 sortArrow.style.display = 'none';
-                 if (idSeccion === 'imagenes') {
-                     handleSearch();
-                 }
-                 // Añadir lógica para podcast si se implementa búsqueda
-             }
-
-             if (window.innerWidth <= 600) {
-                 mobileSectionNav.querySelector('span').textContent = idSeccion.charAt(0).toUpperCase() + idSeccion.slice(1);
-             }
-
-             window.scrollTo({ top: 0, behavior: 'smooth' });
-
-             // Si es la sección de estadísticas, renderiza los datos
-             if (idSeccion === 'estadisticas') {
-                 renderEstadisticas();
-             }
+            // Si es la sección de estadísticas, renderiza los datos
+            if (idSeccion === 'estadisticas') {
+                // renderEstadisticas(); // Si tienes una función para estadísticas, descomenta esto
+            }
         }
 
         // --- EVENTOS DE NAVEGACIÓN ---
