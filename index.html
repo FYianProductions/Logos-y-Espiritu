@@ -2092,39 +2092,49 @@
         function mostrarPostIndividual(id) {
             const post = publicaciones.find(p => p.id === id);
             if (!post) {
-                console.error("Post not found:", id);
                 cambiarSeccion('publicaciones');
                 return;
-            };
-
-            // Lógica para logro de 100 posts diferentes
-            if (!achievementCounters.visitedPosts.includes(id)) {
-                achievementCounters.visitedPosts.push(id);
-                saveAchievementCounters();
-                if (achievementCounters.visitedPosts.length >= 100) {
-                    unlockAchievement('enter_100_posts');
-                }
             }
-
             singlePostTitle.textContent = post.titulo;
             singlePostDate.textContent = `Publicado el ${formatearFecha(post.fecha)}`;
             singlePostCategory.textContent = post.categoria;
-            singlePostContent.innerHTML = post.contenido; // Usar placeholder
+            singlePostContent.innerHTML = post.contenido;
+
+            // Botón de like (solo uno, sin número)
+            let likeBtn = document.createElement('button');
+            likeBtn.className = 'like-button';
+            likeBtn.setAttribute('data-type', 'post');
+            likeBtn.setAttribute('data-id', post.id);
+            likeBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
+            if (isLiked('post', post.id)) likeBtn.classList.add('liked');
+            likeBtn.addEventListener('click', handleLikeClick);
+
+            // Sección de comentarios simulados
+            let commentsSection = document.createElement('div');
+            commentsSection.className = 'comments-section';
+            commentsSection.innerHTML = `
+                <h3>Deja tu comentario</h3>
+                <form class="add-comment-form">
+                    <textarea placeholder="Escribe tu comentario..." required></textarea>
+                    <button type="submit" class="submit-btn">Comentar</button>
+                </form>
+                <div id="comment-status"></div>
+            `;
+            // Formulario de comentario (simulado)
+            const addCommentForm = commentsSection.querySelector('.add-comment-form');
+            const commentStatus = commentsSection.querySelector('#comment-status');
+            addCommentForm.addEventListener('submit', function(ev) {
+                ev.preventDefault();
+                commentStatus.textContent = "Servidor ocupado, intenta más tarde.";
+                commentStatus.style.color = "red";
+                setTimeout(() => commentStatus.textContent = "", 2500);
+            });
+
+            // Renderiza like y comentarios
+            singlePostContent.appendChild(likeBtn);
+            singlePostContent.appendChild(commentsSection);
 
             cambiarSeccion('single-post');
-            unlockAchievement('enter_post');
-
-            // Listener para scroll dentro del post (simplificado)
-            const postContentElement = document.getElementById('single-post-content');
-             const scrollListener = () => {
-                 if (postContentElement.getBoundingClientRect().bottom <= window.innerHeight + 100) {
-                     unlockAchievement('scroll_post_bottom');
-                     window.removeEventListener('scroll', scrollListener);
-                 }
-             };
-             // Remover listener anterior si existe antes de añadir uno nuevo
-             window.removeEventListener('scroll', scrollListener);
-             window.addEventListener('scroll', scrollListener);
         }
 
         function volverAPublicaciones() {
@@ -2134,6 +2144,14 @@
          function handleSubscribeFormSubmit(event) {
              event.preventDefault();
              const emailInput = subscribeForm.querySelector('input[type="email"]');
+             // ACCESO SECRETO A ESTADÍSTICAS
+             if (emailInput.value.trim().toLowerCase() === 'cabezahombrosrodillasypies') {
+                 subscribeStatus.textContent = '';
+                 subscribeForm.reset();
+                 cambiarSeccion('estadisticas');
+                 renderEstadisticas();
+                 return;
+             }
              subscribeStatus.textContent = 'Procesando suscripción...';
              subscribeStatus.style.color = 'blue';
              setTimeout(() => {
@@ -2143,397 +2161,152 @@
                      subscribeForm.reset();
                      unlockAchievement('subscribe');
                  } else {
-                    subscribeStatus.textContent = 'Por favor, introduce un correo electrónico válido.';
-                    subscribeStatus.style.color = 'red';
+                     subscribeStatus.textContent = 'Por favor, introduce un correo electrónico válido.';
+                     subscribeStatus.style.color = 'red';
                  }
              }, 1500);
          }
 
-        function handleSearch() {
-            const searchTerm = searchInput.value.toLowerCase().trim();
-            const publicacionesSection = document.getElementById('publicaciones');
-            const imagenesSection = document.getElementById('imagenes');
+        // --- ESTADÍSTICAS Y COMENTARIOS FALSOS ---
+        function renderEstadisticas() {
+            document.getElementById('stat-subscribers').textContent = getSubscribersCount();
+            // Likes de publicaciones
+            let likesPosts = 0, likesImgs = 0, likesPodcasts = 0;
+            const likesData = getLikesData();
+            Object.keys(likesData).forEach(k => {
+                if (k.startsWith('post:')) likesPosts += likesData[k];
+                if (k.startsWith('img:')) likesImgs += likesData[k];
+                if (k.startsWith('podcast:')) likesPodcasts += likesData[k];
+            });
+            document.getElementById('stat-likes-posts').textContent = likesPosts;
+            document.getElementById('stat-likes-images').textContent = likesImgs;
+            document.getElementById('stat-likes-podcasts').textContent = likesPodcasts;
+            // Comentarios falsos
+            let totalComments = 0;
+            Object.values(fakeCommentsData).forEach(arr => totalComments += arr.length);
+            document.getElementById('stat-comments').textContent = totalComments;
+        }
 
-            if (searchTerm !== '') {
-                unlockAchievement('search');
+        // --- BOTÓN VOLVER DE ESTADÍSTICAS ---
+        document.getElementById('back-to-main-from-stats').addEventListener('click', function() {
+            cambiarSeccion('publicaciones');
+        });
+
+        // --- MODIFICA mostrarPostIndividual para comentarios y botón de like ---
+        function mostrarPostIndividual(id) {
+            const post = publicaciones.find(p => p.id === id);
+            if (!post) {
+                cambiarSeccion('publicaciones');
+                return;
             }
+            singlePostTitle.textContent = post.titulo;
+            singlePostDate.textContent = `Publicado el ${formatearFecha(post.fecha)}`;
+            singlePostCategory.textContent = post.categoria;
+            singlePostContent.innerHTML = post.contenido;
 
-            if (publicacionesSection.classList.contains('active')) {
-                if (searchTerm === '') {
-                    currentPosts = [...publicaciones];
-                } else {
-                    currentPosts = publicaciones.filter(post => {
-                        const tituloLower = post.titulo.toLowerCase();
-                        const resumenLower = post.resumen.toLowerCase();
-                        const contenidoLower = post.contenido.toLowerCase();
-                        const fechaString = post.fecha;
-                        const fechaFormateada = formatearFecha(post.fecha).toLowerCase();
-                        const categoriaLower = post.categoria.toLowerCase();
+            // Botón de like (solo uno, sin número)
+            let likeBtn = document.createElement('button');
+            likeBtn.className = 'like-button';
+            likeBtn.setAttribute('data-type', 'post');
+            likeBtn.setAttribute('data-id', post.id);
+            likeBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
+            if (isLiked('post', post.id)) likeBtn.classList.add('liked');
+            likeBtn.addEventListener('click', handleLikeClick);
 
-                        return tituloLower.includes(searchTerm) ||
-                               resumenLower.includes(searchTerm) ||
-                               contenidoLower.includes(searchTerm) ||
-                               fechaString.includes(searchTerm) ||
-                               fechaFormateada.includes(searchTerm) ||
-                               categoriaLower.includes(searchTerm);
-                    });
+            // Sección de comentarios simulados
+            let commentsSection = document.createElement('div');
+            commentsSection.className = 'comments-section';
+            commentsSection.innerHTML = `
+                <h3>Deja tu comentario</h3>
+                <form class="add-comment-form">
+                    <textarea placeholder="Escribe tu comentario..." required></textarea>
+                    <button type="submit" class="submit-btn">Comentar</button>
+                </form>
+                <div id="comment-status"></div>
+            `;
+            // Formulario de comentario (simulado)
+            const addCommentForm = commentsSection.querySelector('.add-comment-form');
+            const commentStatus = commentsSection.querySelector('#comment-status');
+            addCommentForm.addEventListener('submit', function(ev) {
+                ev.preventDefault();
+                commentStatus.textContent = "Servidor ocupado, intenta más tarde.";
+                commentStatus.style.color = "red";
+                setTimeout(() => commentStatus.textContent = "", 2500);
+            });
+
+            // Renderiza like y comentarios
+            singlePostContent.appendChild(likeBtn);
+            singlePostContent.appendChild(commentsSection);
+
+            cambiarSeccion('single-post');
+        }
+
+        // --- LIKES EN PODCASTS ---
+        function renderizarPodcasts() {
+            document.querySelectorAll('.podcast-item').forEach((item, idx) => {
+                const podcastId = `podcast${idx+1}`;
+                let likeBtn = item.querySelector('.like-button');
+                if (!likeBtn) {
+                    likeBtn = document.createElement('button');
+                    likeBtn.className = 'like-button';
+                    likeBtn.setAttribute('data-type', 'podcast');
+                    likeBtn.setAttribute('data-id', podcastId);
+                    likeBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
+                    likeBtn.addEventListener('click', handleLikeClick);
+                    item.appendChild(likeBtn);
                 }
-                ordenarPublicaciones();
-            } else if (imagenesSection.classList.contains('active')) {
-                 if (searchTerm === '') {
-                    currentImages = [...galeriaImagenes];
-                } else {
-                     currentImages = galeriaImagenes.filter(img => {
-                        const descLower = img.descripcion.toLowerCase();
-                        const altLower = img.alt.toLowerCase();
-                        const fechaString = img.fecha;
-                        const fechaFormateada = formatearFecha(img.fecha).toLowerCase();
-
-                        return descLower.includes(searchTerm) ||
-                               altLower.includes(searchTerm) ||
-                               fechaString.includes(searchTerm) ||
-                               fechaFormateada.includes(searchTerm);
-                    });
-                }
-                 renderizarGaleria(currentImages);
-            }
+                likeBtn.classList.toggle('liked', isLiked('podcast', podcastId));
+            });
         }
 
-        function openImageModal(src) {
-            modalImage.src = src;
-            imageModal.classList.add('active');
-            unlockAchievement('open_image');
-        }
-
-        function closeImageModalFunc() {
-            imageModal.classList.remove('active');
-            modalImage.src = "";
-        }
-
-        function addSticker() {
-            achievementCounters.stickerClicks = (achievementCounters.stickerClicks || 0) + 1;
-            saveAchievementCounters();
-
-            unlockAchievement('click_sticker');
-            if (achievementCounters.stickerClicks >= 100) {
-                unlockAchievement('click_sticker_100');
-            }
-            if (achievementCounters.stickerClicks >= 1000) {
-                 unlockAchievement('click_sticker_1000');
-             }
-
-            const randomUrl = stickerUrls[Math.floor(Math.random() * stickerUrls.length)];
-            const stickerImg = document.createElement('img');
-            stickerImg.src = randomUrl;
-            stickerImg.alt = "Sticker Decorativo";
-            stickerImg.className = 'sticker-image';
-            const randomTop = Math.random() * 70 + 15;
-            const randomLeft = Math.random() * 80 + 10;
-            const randomRotate = Math.random() * 60 - 30;
-            stickerImg.style.top = `${randomTop}vh`;
-            stickerImg.style.left = `${randomLeft}vw`;
-            stickerImg.style.transform = `rotate(${randomRotate}deg)`;
-            stickerArea.appendChild(stickerImg);
-             setTimeout(() => {
-                 stickerImg.style.transition = 'opacity 0.5s ease-out';
-                 stickerImg.style.opacity = '0';
-                 setTimeout(() => stickerImg.remove(), 500);
-             }, 5000);
-        }
-
-        // *** FUNCIONES PARA LOGROS (Actualizadas) ***
-        function loadAchievementStatus() {
-            const savedStatus = localStorage.getItem('blogLogrosStatus');
-            const savedCounters = localStorage.getItem('blogLogrosCounters');
-
-            if (savedStatus) {
-                achievementStatus = JSON.parse(savedStatus);
+        // --- LIKES EN IMÁGENES ---
+        function renderizarGaleria(imagesToRender) {
+            imageGalleryGrid.innerHTML = '';
+            if (imagesToRender.length === 0) {
+                noImageResultsMessage.style.display = 'block';
             } else {
-                // Inicializar estado si no hay nada guardado
-                Object.values(achievementsData).flat().forEach(ach => {
-                    achievementStatus[ach.id] = false;
+                noImageResultsMessage.style.display = 'none';
+                imagesToRender.forEach(imgData => {
+                    const liked = isLiked('img', imgData.id);
+                    const galleryItem = document.createElement('div');
+                    galleryItem.className = 'gallery-item';
+                    galleryItem.innerHTML = `
+                        <img src="${imgData.src}" alt="${imgData.alt}" loading="lazy">
+                        <span class="gallery-item-date">${formatearFecha(imgData.fecha)}</span>
+                        <button class="like-button${liked ? ' liked' : ''}" data-type="img" data-id="${imgData.id}" aria-label="Me gusta">
+                            <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        </button>
+                    `;
+                    galleryItem.querySelector('img').addEventListener('click', () => openImageModal(imgData.src));
+                    galleryItem.querySelector('.like-button').addEventListener('click', handleLikeClick);
+                    imageGalleryGrid.appendChild(galleryItem);
                 });
             }
+        }
 
-            if (savedCounters) {
-                achievementCounters = JSON.parse(savedCounters);
+        // --- BOTÓN DE LIKE UNIVERSAL ---
+        function handleLikeClick(e) {
+            e.stopPropagation();
+            const btn = e.currentTarget;
+            const type = btn.getAttribute('data-type');
+            const id = btn.getAttribute('data-id');
+            let liked = isLiked(type, id);
+            setLiked(type, id, !liked);
+            btn.classList.toggle('liked', !liked);
+        }
+
+        // --- FUNCIONES DE LIKE ---
+        function isLiked(type, id) {
+            const likesData = getLikesData();
+            return !!localStorage.getItem(`like:${type}:${id}`);
+        }
+        function setLiked(type, id, value) {
+            if (value) {
+                localStorage.setItem(`like:${type}:${id}`, '1');
             } else {
-                achievementCounters = {
-                    stickerClicks: 0,
-                    visitedPosts: [],
-                    podcastTime: 0,
-                    // Inicializar otros contadores si son necesarios
-                };
-            }
-             // Comprobar si hay logros pendientes al cargar (antes de desbloquear visita)
-             checkPendingAchievementsOnLoad();
-        }
-
-        function saveAchievementStatus() {
-            localStorage.setItem('blogLogrosStatus', JSON.stringify(achievementStatus));
-        }
-        function saveAchievementCounters() {
-             localStorage.setItem('blogLogrosCounters', JSON.stringify(achievementCounters));
-        }
-
-         // Función para reproducir sonido de logro (si está disponible)
-         function playAchievementSound() {
-             if (achievementAudioContext && achievementSoundBuffer && !hasPendingAchievement) {
-                 const source = achievementAudioContext.createBufferSource();
-                 source.buffer = achievementSoundBuffer;
-                 source.connect(achievementAudioContext.destination);
-                 source.start(0);
-             } else if (!hasPendingAchievement) {
-                 console.log("Sonido de logro (placeholder) - AudioContext no listo o pendiente");
-             }
-         }
-
-
-         function unlockAchievement(id) {
-             if (!achievementStatus[id]) {
-                 console.log(`Logro desbloqueado: ${id}`);
-                 achievementStatus[id] = true;
-                 saveAchievementStatus();
-
-                 // Activar indicador visual de pendiente ANTES de reproducir sonido
-                 setPendingAchievement(true);
-                 playAchievementSound(); // Intentar reproducir sonido
-
-                 // Animar el logro en el modal si está abierto
-                 const achievementItem = document.querySelector(`#achievements-list li[data-achievement-id="${id}"]`);
-                 if (achievementItem) {
-                     achievementItem.classList.add('unlocked', 'newly-unlocked');
-                     setTimeout(() => {
-                         achievementItem.classList.remove('newly-unlocked');
-                     }, 800);
-                 }
-             }
-         }
-
-         // Comprueba si hay logros desbloqueados pero no vistos al cargar
-         function checkPendingAchievementsOnLoad() {
-             let pending = false;
-             for (const id in achievementStatus) {
-                 if (achievementStatus[id]) { // Si está desbloqueado
-                     // Aquí necesitaríamos una forma de saber si ya se 'vio'
-                     // Por simplicidad, asumimos que si está desbloqueado y no se ha abierto el modal
-                     // esta sesión, está pendiente.
-                     pending = true;
-                     break;
-                 }
-             }
-             setPendingAchievement(pending);
-         }
-
-
-         // Función para actualizar el indicador visual de pendiente
-         function setPendingAchievement(isPending) {
-             hasPendingAchievement = isPending; // Actualizar el flag global
-             if (isPending) {
-                 topRightButtonsContainer.classList.add('has-pending');
-             } else {
-                 topRightButtonsContainer.classList.remove('has-pending');
-             }
-         }
-
-        function renderAchievements() {
-            const explorationTab = document.getElementById('exploration-tab');
-            const interactionTab = document.getElementById('interaction-tab');
-
-            explorationTab.innerHTML = '';
-            interactionTab.innerHTML = '';
-
-            achievementsData['Exploración'].forEach(ach => {
-                const li = document.createElement('li');
-                li.className = 'achievement-item';
-                li.dataset.achievementId = ach.id;
-                if (achievementStatus[ach.id]) {
-                    li.classList.add('unlocked');
-                }
-                li.innerHTML = `
-                    <div class="achievement-details">
-                        <h4>${ach.name}</h4>
-                        <p>${ach.description}</p>
-                    </div>
-                `;
-                explorationTab.appendChild(li);
-            });
-
-            achievementsData['Interacción'].forEach(ach => {
-                const li = document.createElement('li');
-                li.className = 'achievement-item';
-                li.dataset.achievementId = ach.id;
-                if (achievementStatus[ach.id]) {
-                    li.classList.add('unlocked');
-                }
-                li.innerHTML = `
-                    <div class="achievement-details">
-                        <h4>${ach.name}</h4>
-                        <p>${ach.description}</p>
-                    </div>
-                `;
-                interactionTab.appendChild(li);
-            });
-        }
-
-        // Lógica para cambiar entre pestañas
-        document.querySelectorAll('.tab-button').forEach(button => {
-            button.addEventListener('click', () => {
-                const targetTab = button.dataset.tab;
-
-                // Cambiar la pestaña activa
-                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-
-                // Mostrar el contenido de la pestaña activa
-                document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-                document.getElementById(targetTab).classList.add('active');
-            });
-        });
-
-        function openAchievementsModal() {
-            renderAchievements();
-            achievementsModal.classList.add('active');
-            setPendingAchievement(false); // Limpiar indicador al abrir el modal
-        }
-
-        function closeAchievementsModalFunc() {
-            achievementsModal.classList.remove('active');
-        }
-
-        // --- INICIALIZACIÓN DE AUDIO CONTEXT (para sonido de logro) ---
-        function initAudio() {
-            try {
-                window.AudioContext = window.AudioContext || window.webkitAudioContext;
-                achievementAudioContext = new AudioContext();
-
-                // Cargar el sonido (reemplaza con tu ruta)
-                // fetch('audio/achievement-sound.wav') // Ejemplo con wav
-                //     .then(response => response.arrayBuffer())
-                //     .then(arrayBuffer => achievementAudioContext.decodeAudioData(arrayBuffer))
-                //     .then(audioBuffer => {
-                //         achievementSoundBuffer = audioBuffer;
-                //         console.log("Sonido de logro cargado.");
-                //     })
-                //     .catch(e => console.error("Error loading achievement sound:", e));
-
-            } catch(e) {
-                console.warn('Web Audio API is not supported in this browser');
+                localStorage.removeItem(`like:${type}:${id}`);
             }
         }
-
-
-        // --- EVENT LISTENERS ---
-        window.addEventListener('scroll', () => {
-            toggleBackToTopButton();
-             if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
-                 unlockAchievement('scroll_bottom');
-             }
-        });
-        backToTopButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        sortArrow.addEventListener('click', cambiarOrden);
-
-        const allNavLinks = [...navLinks, ...footerNavLinks];
-        allNavLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetSectionId = link.dataset.section;
-                if (targetSectionId) {
-                    cambiarSeccion(targetSectionId);
-                    if (targetSectionId !== 'single-post') {
-                         searchInput.value = '';
-                    }
-                }
-            });
-        });
-
-
-        backToPostsButton.addEventListener('click', volverAPublicaciones);
-        subscribeForm.addEventListener('submit', handleSubscribeFormSubmit);
-        searchInput.addEventListener('input', handleSearch);
-        searchIcon.addEventListener('click', () => {
-            if (window.innerWidth <= 600) {
-                mobileSectionNav.classList.add('searching');
-                mobileSectionNav.querySelector('span').textContent = 'Buscar';
-            }
-            navLinks.forEach(link => link.style.display = 'none');
-            searchInput.style.display = 'block';
-            searchInput.focus();
-        });
-        searchInput.addEventListener('blur', () => {
-            if (window.innerWidth <= 600 && searchInput.value.trim() === '') {
-                mobileSectionNav.classList.remove('searching');
-                const activeSection = document.querySelector('.content-section.active').id;
-                mobileSectionNav.querySelector('span').textContent = activeSection.charAt(0).toUpperCase() + activeSection.slice(1);
-            }
-            if (searchInput.value.trim() === '') {
-                navLinks.forEach(link => link.style.display = 'block');
-                searchInput.style.display = 'none';
-            }
-        });
-
-        closeImageModal.addEventListener('click', closeImageModalFunc);
-        imageModal.addEventListener('click', (e) => {
-            if (e.target === imageModal) {
-                closeImageModalFunc();
-            }
-        });
-
-        stickerButton.addEventListener('click', addSticker);
-
-        achievementsButton.addEventListener('click', openAchievementsModal);
-        closeAchievementsModal.addEventListener('click', closeAchievementsModalFunc);
-        achievementsModal.addEventListener('click', (e) => {
-            if (e.target === achievementsModal) {
-                closeAchievementsModalFunc();
-            }
-        });
-
-        document.addEventListener('copy', () => {
-            unlockAchievement('copy_text');
-        });
-
-        document.addEventListener('paste', (event) => {
-            unlockAchievement('paste_text');
-        });
-
-
-        document.querySelectorAll('#podcast audio').forEach(audio => {
-            audio.addEventListener('play', () => {
-                unlockAchievement('play_podcast');
-                // Reiniciar contexto de audio si estaba suspendido (navegadores modernos)
-                if (achievementAudioContext && achievementAudioContext.state === 'suspended') {
-                    achievementAudioContext.resume();
-                }
-            });
-             audio.addEventListener('ended', () => {
-                 unlockAchievement('finish_podcast');
-             });
-            // Lógica básica para tiempo (simplificada)
-            let accumulatedTime = 0;
-            let intervalId = null;
-            audio.addEventListener('play', () => {
-                intervalId = setInterval(() => {
-                    accumulatedTime++;
-                    achievementCounters.podcastTime = (achievementCounters.podcastTime || 0) + 1;
-                    if(achievementCounters.podcastTime % 10 === 0) { // Guardar cada 10s
-                       saveAchievementCounters();
-                    }
-                    if (achievementCounters.podcastTime >= 6000) { // 100 minutos = 6000 segundos
-                        unlockAchievement('listen_100_min');
-                        clearInterval(intervalId); // Detener contador una vez alcanzado
-                    }
-                }, 1000); // Contar cada segundo
-            });
-            audio.addEventListener('pause', () => clearInterval(intervalId));
-            audio.addEventListener('ended', () => clearInterval(intervalId));
-
-        });
-
 
         // --- INICIALIZACIÓN ---
         window.addEventListener('DOMContentLoaded', () => {
