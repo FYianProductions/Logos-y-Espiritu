@@ -2308,17 +2308,124 @@
             }
         }
 
-        // --- INICIALIZACIÓN ---
-        window.addEventListener('DOMContentLoaded', () => {
-            initAudio(); // Intentar inicializar AudioContext
-            loadAchievementStatus();
-            unlockAchievement('visit');
-            currentYearSpan.textContent = new Date().getFullYear();
-            animateTitle();
-            renderizarGaleria(galeriaImagenes);
-            ordenarPublicaciones();
-            cambiarSeccion('publicaciones');
+        // --- FUNCIONES DE BÚSQUEDA ---
+        function handleSearch() {
+            const query = searchInput.value.trim().toLowerCase();
+            if (document.getElementById('publicaciones').classList.contains('active')) {
+                let filtered = currentPosts.filter(post =>
+                    post.titulo.toLowerCase().includes(query) ||
+                    post.resumen.toLowerCase().includes(query) ||
+                    (post.categoria && post.categoria.toLowerCase().includes(query))
+                );
+                filtered.sort((a, b) => {
+                    const dateA = new Date(a.fecha);
+                    const dateB = new Date(b.fecha);
+                    return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+                });
+                renderizarPublicaciones(filtered);
+            } else if (document.getElementById('imagenes').classList.contains('active')) {
+                let filtered = currentImages.filter(img =>
+                    (img.descripcion && img.descripcion.toLowerCase().includes(query)) ||
+                    (img.alt && img.alt.toLowerCase().includes(query))
+                );
+                renderizarGaleria(filtered);
+            }
+        }
+
+        // --- EVENTOS DE NAVEGACIÓN ---
+        navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            cambiarSeccion(this.dataset.section);
         });
+    });
+    footerNavLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            cambiarSeccion(this.dataset.section);
+        });
+    });
+
+    // --- EVENTO PARA FLECHA DE ORDEN ---
+    sortArrow.addEventListener('click', cambiarOrden);
+
+    // --- EVENTO PARA BOTÓN VOLVER A PUBLICACIONES ---
+    backToPostsButton.addEventListener('click', volverAPublicaciones);
+
+    // --- EVENTO PARA FORMULARIO DE SUSCRIPCIÓN ---
+    subscribeForm.addEventListener('submit', handleSubscribeFormSubmit);
+
+    // --- EVENTO PARA BÚSQUEDA ---
+    searchInput.addEventListener('input', function() {
+        handleSearch();
+    });
+
+    // --- BOTÓN VOLVER ARRIBA ---
+    window.addEventListener('scroll', toggleBackToTopButton);
+    backToTopButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // --- INICIALIZACIÓN ---
+    window.addEventListener('DOMContentLoaded', () => {
+        initAudio(); // Intentar inicializar AudioContext
+        loadAchievementStatus();
+        unlockAchievement('visit');
+        currentYearSpan.textContent = new Date().getFullYear();
+        animateTitle();
+        renderizarGaleria(galeriaImagenes);
+        ordenarPublicaciones();
+        cambiarSeccion('publicaciones');
+        renderizarPodcasts();
+    });
+
+    // --- FLECHAS DE NAVEGACIÓN MÓVIL ---
+    window.cambiarSeccionConFlechas = cambiarSeccionConFlechas;
+
+    // --- MODAL DE IMÁGENES ---
+    function openImageModal(src) {
+        modalImage.src = src;
+        imageModal.classList.add('active');
+    }
+    closeImageModal.addEventListener('click', function() {
+        imageModal.classList.remove('active');
+        modalImage.src = '';
+    });
+    imageModal.addEventListener('click', function(e) {
+        if (e.target === imageModal) {
+            imageModal.classList.remove('active');
+            modalImage.src = '';
+        }
+    });
+
+    // --- CORRIGE EL CÓDIGO SECRETO ---
+    function handleSubscribeFormSubmit(event) {
+        event.preventDefault();
+        const emailInput = subscribeForm.querySelector('input[type="email"]');
+        // Corrige el código secreto (ambas variantes)
+        const code = emailInput.value.trim().toLowerCase();
+        if (code === 'cabezahombrosrodillasypies' || code === 'abezahombrosrodillasypies') {
+            subscribeStatus.textContent = '';
+            subscribeForm.reset();
+            cambiarSeccion('estadisticas');
+            renderEstadisticas();
+            return;
+        }
+        subscribeStatus.textContent = 'Procesando suscripción...';
+        subscribeStatus.style.color = 'blue';
+        setTimeout(() => {
+            if (emailInput.value && emailInput.validity.valid) {
+                subscribeStatus.textContent = `¡Gracias por suscribirte con ${emailInput.value}!`;
+                subscribeStatus.style.color = 'green';
+                subscribeForm.reset();
+                // unlockAchievement('subscribe'); // Si tienes logros, descomenta esto
+            } else {
+                subscribeStatus.textContent = 'Por favor, introduce un correo electrónico válido.';
+                subscribeStatus.style.color = 'red';
+            }
+        }, 1500);
+    }
     </script>
 </body>
 </html>
