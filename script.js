@@ -31,6 +31,7 @@ const closeAchievementsModal = document.getElementById('close-achievements-modal
 const achievementsList = document.getElementById('achievements-list');
 const topRightButtonsContainer = document.querySelector('.top-right-buttons');
 const mobileSectionNav = document.querySelector('.mobile-section-nav');
+const visitCounterElement = document.getElementById('visit-counter');
 
 // --- DATOS DE PUBLICACIONES (Contenido placeholder) ---
 const publicaciones = [
@@ -738,6 +739,28 @@ function initAudio() {
     }
 }
 
+// --- LOGICA DEL CONTADOR DE VISITAS GLOBAL (NUEVA) ---
+const COUNTAPI_NAMESPACE = 'logosyespiritu'; // Usa un nombre único para tu proyecto/sitio
+const COUNTAPI_KEY = 'website_visits'; // Una clave para este contador específico
+
+async function updateGlobalVisitCounter() {
+    if (!visitCounterElement) {
+        console.warn('Elemento #visit-counter no encontrado en el DOM.');
+        return;
+    }
+    try {
+        const response = await fetch(`https://api.countapi.xyz/hit/${COUNTAPI_NAMESPACE}/${COUNTAPI_KEY}`);
+        if (!response.ok) {
+            throw new Error(`Error al incrementar el contador: ${response.statusText}`);
+        }
+        const data = await response.json();
+        visitCounterElement.textContent = data.value;
+        console.log(`Visitas totales: ${data.value}`);
+    } catch (error) {
+        console.error('No se pudo actualizar el contador de visitas:', error);
+        visitCounterElement.textContent = 'Error al cargar';
+    }
+}
 
 // --- EVENT LISTENERS ---
 window.addEventListener('scroll', () => {
@@ -859,6 +882,6 @@ window.addEventListener('DOMContentLoaded', () => {
     currentYearSpan.textContent = new Date().getFullYear();
     animateTitle();
     renderizarGaleria(galeriaImagenes);
-    ordenarPublicaciones();
-    cambiarSeccion('publicaciones');
+    updateGlobalVisitCounter(); // Llamar a la función para actualizar el contador de visitas global
+    cambiarSeccion('publicaciones'); // Mostrar la sección inicial
 });
