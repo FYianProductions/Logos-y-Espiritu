@@ -2324,19 +2324,6 @@
             e.preventDefault();
             cambiarSeccion('estadisticas');
         });
-
-        // --- OCULTAR OTRAS SECCIONES AL ENTRAR A ESTADÍSTICAS (ya lo hace cambiarSeccion) ---
-
-        // --- NO RENDERIZAR ESTADÍSTICAS DINÁMICAS, SOLO EL HTML DADO ---
-
-        // --- INICIALIZAR VISTA PRINCIPAL ---
-        renderizarPublicaciones(currentPosts);
-        renderizarGaleria(currentImages);
-
-        // --- DEFINICIÓN VACÍA PARA FLECHAS DE NAVEGACIÓN MÓVIL (para evitar errores JS) ---
-        function cambiarSeccionConFlechas(direccion) {
-            // Implementación vacía para evitar errores y permitir que el resto del JS funcione.
-        }
     </script>
 </body>
 </html>
