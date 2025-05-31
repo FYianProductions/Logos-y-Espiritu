@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <title>Logos y Espíritu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="top-right-buttons">
+        <button id="sticker-button" class="top-right-btn">Stickers</button>
+        <div class="search-container">
+            <svg id="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px" role="img" aria-labelledby="search-title">
+                <title id="search-title">Buscar</title>
+                <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+            <input type="text" id="search-input" placeholder="Buscar...">
+        </div>
+        <button id="achievements-button" class="top-right-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor" role="img" aria-labelledby="achievements-title">
+                <title id="achievements-title">Logros</title>
+                <path d="M432 256c0 17.69-2.731 35.06-7.859 51.75L352 288V96c0-26.51-21.49-48-48-48H128c-26.51 0-48 21.49-48 48v192L23.86 307.7C18.73 291.1 16 273.7 16 256c0-114.9 85.87-209.7 195.4-222.7c.6083-.0763 1.22-.1364 1.832-.1875c.2241-.0182 0-.0093.3364-.0093C332.1 42.33 416 135.5 416 256h16zm-176 96h-64c-8.836 0-16 7.164-16 16v32c0 8.836 7.164 16 16 16h64c8.836 0 16-7.164 16-16v-32C272 359.2 264.8 352 256 352zM384 256c0-26.51-21.49-48-48-48h-64c-26.51 0-48 21.49-48 48v16c0 26.51 21.49 48 48 48h64c26.51 0 48-21.49 48-48v-16zm-160 96h-64c-17.67 0-32 14.33-32 32s14.33 32 32 32h64c17.67 0-32-14.33-32-32s-14.33-32-32-32zM288 192c0-26.51-21.49-48-48-48h-32c-26.51 0-48 21.49-48 48v16c0 26.51 21.49 48 48 48h32c26.51 0 48-21.49 48-48v-16zm-96 96h-32c-17.67 0-32 14.33-32 32s14.33 32 32 32h32c17.67 0-32-14.33-32-32s-14.33-32-32-32zm-64 0h-32c-17.67 0-32 14.33-32 32s14.33 32 32 32h32c17.67 0-32-14.33-32-32s-14.33-32-32-32zm208 0h-32c-17.67 0-32 14.33-32 32s14.33 32 32 32h32c17.67 0-32-14.33-32-32s-14.33-32-32-32zm-32 96h-32c-17.67 0-32 14.33-32 32s14.33 32 32 32h32c17.67 0-32-14.33-32-32s-14.33-32-32-32z"/>
+            </svg>
+        </button>
+    </div>
+
+    <header class="main-header">
+        <h1 id="main-title" class="main-title">Logos y Espíritu</h1>
+        <p class="subtitle">Explora artículos, recursos y contenido inspirador.</p>
+        <div class="header-image-overlay"></div>
+    </header>
+
+    <nav id="main-nav" class="main-nav">
+        <ul>
+            <li><a href="#home" data-section="home" class="active">Inicio</a></li>
+            <li><a href="#posts" data-section="posts">Publicaciones</a></li>
+            <li><a href="#gallery" data-section="gallery">Galería</a></li>
+            <li><a href="#about" data-section="about">Acerca de</a></li>
+            <li><a href="#contact" data-section="contact">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <nav class="mobile-section-nav">
+        <button id="mobile-search-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px">
+                <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+        </button>
+        <div class="mobile-search-input-wrapper">
+            <input type="text" id="mobile-search-input" placeholder="Buscar...">
+            <span id="mobile-search-close-button">&times;</span>
+        </div>
+        <button id="mobile-achievements-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor" width="24px" height="24px">
+                <path d="M432 256c0 17.69-2.731 35.06-7.859 51.75L352 288V96c0-26.51-21.49-48-48-48H128c-26.51 0-48 21.49-48 48v192L23.86 307.7C18.73 291.1 16 273.7 16 256c0-114.9 85.87-209.7 195.4-222.7c.6083-.0763 1.22-.1364 1.832-.1875c.2241-.0182 0-.0093.3364-.0093C332.1 42.33 416 135.5 416 256h16zm-176 96h-64c-8.836 0-16 7.164-16 16v32c0 8.836 7.164 16 16 16h64c8.836 0 16-7.164 16-16v-32C272 359.2 264.8 352 256 352zM384 256c0-26.51-21.49-48-48-48h-64c-26.51 0-48 21.49-48 48v16c0 26.51 21.49 48 48 48h64c26.51 0 48-21.49 48-48v-16zm-160 96h-64c-17.67 0-32 14.33-32 32s14.33 32 32 32h64c17.67 0-32-14.33-32-32s-14.33-32-32-32zM288 192c0-26.51-21.49-48-48-48h-32c-26.51 0-48 21.49-48 48v16c0 26.51 21.49 48 48 48h32c26.51 0 48-21.49 48-48v-16zm-96 96h-32c-17.67 0-32 14.33-32 32s14.33 32 32 32h32c17.67 0-32-14.33-32-32s-14.33-32-32-32zm-64 0h-32c-17.67 0-32 14.33-32 32s14.33 32 32 32h32c17.67 0-32-14.33-32-32s-14.33-32-32-32zm208 0h-32c-17.67 0-32 14.33-32 32s14.33 32 32 32h32c17.67 0-32-14.33-32-32s-14.33-32-32-32zm-32 96h-32c-17.67 0-32 14.33-32 32s14.33 32 32 32h32c17.67 0-32-14.33-32-32s-14.33-32-32-32z"/>
+            </svg>
+        </button>
+        <button id="mobile-menu-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor" width="24px" height="24px">
+                <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/>
+            </svg>
+        </button>
+    </nav>
+
+    <main class="content">
+        <section id="home" class="content-section active">
+            <h2>Bienvenido a Logos y Espíritu</h2>
+            <p>Descubre un espacio dedicado al conocimiento y la inspiración. Aquí encontrarás artículos, recursos y reflexiones que enriquecerán tu mente y espíritu.</p>
+            <div class="home-grid">
+                <div class="home-card">
+                    <h3>Últimas Publicaciones</h3>
+                    <p>Explora nuestros artículos más recientes sobre diversos temas.</p>
+                    <a href="#posts" class="btn" data-section="posts">Ver Publicaciones</a>
+                </div>
+                <div class="home-card">
+                    <h3>Galería de Imágenes</h3>
+                    <p>Descubre una colección de imágenes inspiradoras.</p>
+                    <a href="#gallery" class="btn" data-section="gallery">Explorar Galería</a>
+                </div>
+                <div class="home-card">
+                    <h3>Sobre Nosotros</h3>
+                    <p>Conoce más sobre la misión y visión de Logos y Espíritu.</p>
+                    <a href="#about" class="btn" data-section="about">Saber Más</a>
+                </div>
+            </div>
+            <div class="visit-counter-wrapper">
+                <p>Visitas a la página: <span id="visit-counter">0</span></p>
+            </div>
+        </section>
+
+        <section id="posts" class="content-section">
+            <h2>Publicaciones</h2>
+            <div class="filter-sort-controls">
+                <select id="category-filter">
+                    <option value="all">Todas las Categorías</option>
+                    <option value="filosofia">Filosofía</option>
+                    <option value="espiritualidad">Espiritualidad</option>
+                    <option value="ciencia">Ciencia</option>
+                </select>
+                <button id="sort-button">Ordenar por Fecha <span id="sort-arrow"></span></button>
+            </div>
+            <div id="posts-grid" class="posts-grid">
+                </div>
+            <p id="no-results-message" class="no-results-message" style="display: none;">No se encontraron publicaciones que coincidan con tu búsqueda.</p>
+        </section>
+
+        <section id="single-post" class="content-section single-post-view">
+            <button id="back-to-posts" class="back-button">&larr; Volver a Publicaciones</button>
+            <h2 id="single-post-title"></h2>
+            <p class="post-meta">Fecha: <span id="single-post-date"></span> | Categoría: <span id="single-post-category"></span></p>
+            <div id="single-post-content" class="post-content">
+                </div>
+        </section>
+
+        <section id="gallery" class="content-section">
+            <h2>Galería de Imágenes</h2>
+            <div class="gallery-controls">
+                <input type="text" id="gallery-search-input" placeholder="Buscar imágenes...">
+            </div>
+            <div id="image-gallery-grid" class="image-gallery-grid">
+                </div>
+            <p id="no-image-results-message" class="no-results-message" style="display: none;">No se encontraron imágenes que coincidan con tu búsqueda.</p>
+            <div id="image-modal" class="modal">
+                <span class="close-button">&times;</span>
+                <img class="modal-content" id="modal-image" src="" alt="Imagen en tamaño completo">
+                <div id="caption"></div>
+            </div>
+        </section>
+
+        <section id="about" class="content-section">
+            <h2>Acerca de Logos y Espíritu</h2>
+            <p>Logos y Espíritu es un proyecto dedicado a explorar la intersección entre la razón y la espiritualidad. Nuestro objetivo es ofrecer un espacio para el aprendizaje, la reflexión y el crecimiento personal.</p>
+            <p>Creemos en el poder del conocimiento para transformar vidas y en la importancia de cultivar tanto la mente como el espíritu para alcanzar una existencia plena y significativa.</p>
+            <h3>Nuestro Equipo</h3>
+            <div class="team-members">
+                <div class="team-member-card">
+                    <img src="https://via.placeholder.com/150" alt="Foto de [Nombre del Miembro]">
+                    <h4>[Nombre del Miembro]</h4>
+                    <p>Fundador y Editor</p>
+                    <p>Apasionado por la filosofía y la ciencia, con un enfoque en la divulgación de ideas que inspiren.</p>
+                </div>
+                <div class="team-member-card">
+                    <img src="https://via.placeholder.com/150" alt="Foto de [Otro Nombre del Miembro]">
+                    <h4>[Otro Nombre del Miembro]</h4>
+                    <p>Autor y Contribuyente</p>
+                    <p>Experto en temas de espiritualidad y desarrollo personal, con años de experiencia en la enseñanza.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="content-section">
+            <h2>Contáctanos</h2>
+            <p>¿Tienes alguna pregunta o comentario? No dudes en contactarnos a través del siguiente formulario o enviándonos un correo electrónico.</p>
+            <form id="contact-form" class="contact-form">
+                <div class="form-group">
+                    <label for="name">Nombre:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Correo Electrónico:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Mensaje:</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn">Enviar Mensaje</button>
+                <p id="contact-status" class="form-status"></p>
+            </form>
+            <p>También puedes encontrarnos en nuestras redes sociales:</p>
+            <div class="social-links">
+                <a href="#" target="_blank" aria-label="Facebook">Facebook</a>
+                <a href="#" target="_blank" aria-label="Twitter">Twitter</a>
+                <a href="#" target="_blank" aria-label="Instagram">Instagram</a>
+            </div>
+        </section>
+
+        <section id="achievements-section" class="content-section">
+            <h2>Mis Logros</h2>
+            <div class="achievements-grid" id="achievements-grid">
+                </div>
+            <div id="achievement-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close-button">&times;</span>
+                    <h3 id="achievement-modal-title"></h3>
+                    <p id="achievement-modal-description"></p>
+                    <div class="achievement-modal-icon">
+                        <img id="achievement-modal-image" src="" alt="Icono de logro">
+                    </div>
+                    <p id="achievement-modal-progress"></p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <button id="backToTop" class="back-to-top-button" title="Volver arriba">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="currentColor">
+            <path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"/>
+        </svg>
+    </button>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section about-us">
+                <h3>Sobre Nosotros</h3>
+                <p>Explorando la unión de la razón y el espíritu para una vida más plena.</p>
+            </div>
+            <div class="footer-section footer-links">
+                <h3>Enlaces Rápidos</h3>
+                <ul>
+                    <li><a href="#home" data-section="home">Inicio</a></li>
+                    <li><a href="#posts" data-section="posts">Publicaciones</a></li>
+                    <li><a href="#gallery" data-section="gallery">Galería</a></li>
+                    <li><a href="#about" data-section="about">Acerca de</a></li>
+                    <li><a href="#contact" data-section="contact">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-section social">
+                <h3>Síguenos</h3>
+                <a href="#" target="_blank" aria-label="Facebook">Facebook</a>
+                <a href="#" target="_blank" aria-label="Twitter">Twitter</a>
+                <a href="#" target="_blank" aria-label="Instagram">Instagram</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <span id="current-year"></span> Logos y Espíritu. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
