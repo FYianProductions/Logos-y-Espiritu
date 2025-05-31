@@ -1834,59 +1834,91 @@
         }
 
 
-        // --- LIKES Y COMENTARIOS (debes añadir esto después de tus datos y antes de las funciones principales) ---
-
-        // Inicializar likes y comentarios en localStorage si no existen
+        // --- LIKES Y SUSCRIPTORES INICIALES ---
         function getLikesData() {
-            return JSON.parse(localStorage.getItem('blogLikesData') || '{}');
+            // Likes iniciales por defecto (puedes ajustar los valores)
+            const defaultLikes = {
+                'post:razonabilidad-fe': 32,
+                'post:fe-ciencia-enemigos': 18,
+                'post:humanismo-cristiano': 21,
+                'post:encuentro-fe-ciencia': 14,
+                'post:video-introduccion': 8,
+                'post:papa-leon-xiv-eleccion': 11,
+                'img:img1': 23,
+                'img:img2': 31,
+                'img:img3': 18,
+                'podcast:podcast1': 45,
+                'podcast:podcast2': 38,
+                'podcast:podcast3': 52,
+                'podcast:podcast4': 30,
+                'podcast:podcast5': 25
+            };
+            let data = JSON.parse(localStorage.getItem('blogLikesData') || 'null');
+            if (!data) {
+                data = defaultLikes;
+                setLikesData(data);
+            }
+            return data;
         }
         function setLikesData(data) {
             localStorage.setItem('blogLikesData', JSON.stringify(data));
         }
-        function getCommentsData() {
-            return JSON.parse(localStorage.getItem('blogCommentsData') || '{}');
-        }
-        function setCommentsData(data) {
-            localStorage.setItem('blogCommentsData', JSON.stringify(data));
-        }
         function getSubscribersCount() {
-            return parseInt(localStorage.getItem('blogSubscribersCount') || '0', 10);
+            let count = parseInt(localStorage.getItem('blogSubscribersCount') || '0', 10);
+            if (!count) {
+                count = 87;
+                setSubscribersCount(count);
+            }
+            return count;
         }
         function setSubscribersCount(count) {
             localStorage.setItem('blogSubscribersCount', count);
         }
 
-        // --- LIKES EN PUBLICACIONES, IMÁGENES Y PODCASTS ---
-        function getLikeCount(type, id) {
-            const likes = getLikesData();
-            return likes[`${type}:${id}`] || 0;
-        }
-        function setLikeCount(type, id, count) {
-            const likes = getLikesData();
-            likes[`${type}:${id}`] = count;
-            setLikesData(likes);
-        }
-        function isLiked(type, id) {
-            return localStorage.getItem(`blogLiked:${type}:${id}`) === '1';
-        }
-        function setLiked(type, id, liked) {
-            localStorage.setItem(`blogLiked:${type}:${id}`, liked ? '1' : '0');
-        }
+        // --- COMENTARIOS FALSOS (solo para estadísticas) ---
+        const fakeCommentsData = {
+            'razonabilidad-fe': [
+                { author: "Ana", text: "¡Excelente reflexión!" },
+                { author: "Carlos", text: "Me encantó este artículo, gracias por compartir." },
+                { author: "María", text: "Muy inspirador, saludos." },
+                { author: "Juan", text: "¡Qué gran aporte, bendiciones!" }
+            ],
+            'fe-ciencia-enemigos': [
+                { author: "Luisa", text: "Me ayudó mucho a entender el tema." },
+                { author: "Pedro", text: "Muy claro y profundo." },
+                { author: "Sofía", text: "¡Gracias por este contenido!" },
+                { author: "Miguel", text: "Interesante perspectiva." }
+            ],
+            'humanismo-cristiano': [
+                { author: "Elena", text: "Hermoso mensaje." },
+                { author: "Andrés", text: "Me hizo reflexionar mucho." },
+                { author: "Valeria", text: "¡Qué palabras tan sabias!" },
+                { author: "Tomás", text: "Gracias por compartir esto." }
+            ],
+            'encuentro-fe-ciencia': [
+                { author: "Camila", text: "Muy relevante para hoy." },
+                { author: "Jorge", text: "Excelente discurso." },
+                { author: "Natalia", text: "Inspirador." },
+                { author: "Esteban", text: "Me gustó mucho." }
+            ],
+            'video-introduccion': [
+                { author: "Sara", text: "Buen video para reflexionar." },
+                { author: "David", text: "Me motivó a pensar diferente." },
+                { author: "Laura", text: "¡Gran aporte!" },
+                { author: "Oscar", text: "Muy útil, gracias." }
+            ],
+            'papa-leon-xiv-eleccion': [
+                { author: "Martina", text: "¡Viva el Papa!" },
+                { author: "Felipe", text: "Esperanzador mensaje." },
+                { author: "Lucía", text: "Me alegra este nuevo pontificado." },
+                { author: "Gabriel", text: "Excelente resumen." }
+            ]
+        };
 
-        // --- COMENTARIOS SIMULADOS ---
-        const fakeComments = [
-            { author: "Ana", text: "¡Excelente reflexión!" },
-            { author: "Carlos", text: "Me encantó este artículo, gracias por compartir." },
-            { author: "María", text: "Muy inspirador, saludos." },
-            { author: "Juan", text: "¡Qué gran aporte, bendiciones!" },
-            { author: "Luisa", text: "Me ayudó mucho a entender el tema." }
-        ];
-
-        // --- RENDERIZAR TARJETAS CON LIKE ---
+        // --- RENDERIZAR POSTS CON BOTÓN DE LIKE (sin número) ---
         function crearTarjetaPost(post) {
             const thumbnailSrc = post.video ? `https://i.ytimg.com/vi/${post.video}/hqdefault.jpg` : post.imagen;
             const videoOverlay = post.video ? `<div class="play-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px"><path d="M8 5v14l11-7z"/><path d="M0 0h24v24H0z" fill="none"/></svg></div>` : '';
-            const likeCount = getLikeCount('post', post.id);
             const liked = isLiked('post', post.id);
             return `
                 <article class="post-card" data-id="${post.id}">
@@ -1904,8 +1936,6 @@
                         <div class="post-card-actions">
                             <button class="like-button${liked ? ' liked' : ''}" data-type="post" data-id="${post.id}" aria-label="Me gusta">
                                 <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                                <span class="like-count">${likeCount}</span>
-                            </button>
                         </div>
                     </div>
                 </article>
@@ -1934,7 +1964,6 @@
             } else {
                 noImageResultsMessage.style.display = 'none';
                 imagesToRender.forEach(imgData => {
-                    const likeCount = getLikeCount('img', imgData.id);
                     const liked = isLiked('img', imgData.id);
                     const galleryItem = document.createElement('div');
                     galleryItem.className = 'gallery-item';
@@ -1943,7 +1972,6 @@
                         <span class="gallery-item-date">${formatearFecha(imgData.fecha)}</span>
                         <button class="like-button${liked ? ' liked' : ''}" data-type="img" data-id="${imgData.id}" aria-label="Me gusta">
                             <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                            <span class="like-count">${likeCount}</span>
                         </button>
                     `;
                     galleryItem.querySelector('img').addEventListener('click', () => openImageModal(imgData.src));
