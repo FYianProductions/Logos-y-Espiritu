@@ -1560,7 +1560,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z"/></svg>
     </a>
 
-    <section class="content-section" id="estadisticas">
+    <section class="content-section" id="estadisticas" style="display:none;">
         <h2 class="section-title">Estadísticas</h2>
         <div id="stats-summary"></div>
         <div id="stats-comments"></div>
@@ -2010,14 +2010,17 @@
             contentSections.forEach(section => {
                 if (section.id === idSeccion) {
                     section.classList.add('active');
+                    section.style.display = '';
                     foundSection = true;
                 } else {
                     section.classList.remove('active');
+                    section.style.display = 'none';
                 }
             });
 
             if (!foundSection && idSeccion !== 'single-post') {
                  document.getElementById('publicaciones').classList.add('active');
+                 document.getElementById('publicaciones').style.display = '';
                  idSeccion = 'publicaciones';
             }
 
@@ -2028,6 +2031,7 @@
 
              if (idSeccion !== 'single-post') {
                  singlePostSection.classList.remove('active');
+                 singlePostSection.style.display = 'none';
              }
 
              // Mostrar/ocultar flecha de ordenar y ejecutar búsqueda inicial
@@ -2220,148 +2224,62 @@
         });
 
         // --- ACCESO A ESTADÍSTICAS DESDE EL FOOTER ---
-    document.getElementById('footer-stats-link').addEventListener('click', function() {
-        cambiarSeccion('estadisticas');
-    });
+        document.getElementById('footer-stats-link').addEventListener('click', function() {
+            cambiarSeccion('estadisticas');
+        });
 
-        // --- MODIFICA mostrarPostIndividual para comentarios y botón de like ---
-        function mostrarPostIndividual(id) {
-            const post = publicaciones.find(p => p.id === id);
-            if (!post) {
-                cambiarSeccion('publicaciones');
-                return;
-            }
-            singlePostTitle.textContent = post.titulo;
-            singlePostDate.textContent = `Publicado el ${formatearFecha(post.fecha)}`;
-            singlePostCategory.textContent = post.categoria;
-            singlePostContent.innerHTML = post.contenido;
-
-            // Botón de like (solo uno, sin número)
-            let likeBtn = document.createElement('button');
-            likeBtn.className = 'like-button';
-            likeBtn.setAttribute('data-type', 'post');
-            likeBtn.setAttribute('data-id', post.id);
-            likeBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
-            if (isLiked('post', post.id)) likeBtn.classList.add('liked');
-            likeBtn.addEventListener('click', handleLikeClick);
-
-            // Sección de comentarios simulados
-            let commentsSection = document.createElement('div');
-            commentsSection.className = 'comments-section';
-            commentsSection.innerHTML = `
-                <h3>Deja tu comentario</h3>
-                <form class="add-comment-form">
-                    <textarea placeholder="Escribe tu comentario..." required></textarea>
-                    <button type="submit" class="submit-btn">Comentar</button>
-                </form>
-                <div id="comment-status"></div>
-            `;
-            // Formulario de comentario (simulado)
-            const addCommentForm = commentsSection.querySelector('.add-comment-form');
-            const commentStatus = commentsSection.querySelector('#comment-status');
-            addCommentForm.addEventListener('submit', function(ev) {
-                ev.preventDefault();
-                commentStatus.textContent = "Servidor ocupado, intenta más tarde.";
-                commentStatus.style.color = "red";
-                setTimeout(() => commentStatus.textContent = "", 2500);
-            });
-
-            // Renderiza like y comentarios
-            singlePostContent.appendChild(likeBtn);
-            singlePostContent.appendChild(commentsSection);
-
-            cambiarSeccion('single-post');
-        }
-
-        // --- LIKES EN PODCASTS ---
-        function renderizarPodcasts() {
-            document.querySelectorAll('.podcast-item').forEach((item, idx) => {
-                const podcastId = `podcast${idx+1}`;
-                let likeBtn = item.querySelector('.like-button');
-                if (!likeBtn) {
-                    likeBtn = document.createElement('button');
-                    likeBtn.className = 'like-button';
-                    likeBtn.setAttribute('data-type', 'podcast');
-                    likeBtn.setAttribute('data-id', podcastId);
-                    likeBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
-                    likeBtn.addEventListener('click', handleLikeClick);
-                    item.appendChild(likeBtn);
+        // --- MODIFICA cambiarSeccion para mostrar estadísticas ---
+        function cambiarSeccion(idSeccion) {
+            let foundSection = false;
+            contentSections.forEach(section => {
+                if (section.id === idSeccion) {
+                    section.classList.add('active');
+                    section.style.display = '';
+                    foundSection = true;
+                } else {
+                    section.classList.remove('active');
+                    section.style.display = 'none';
                 }
-                likeBtn.classList.toggle('liked', isLiked('podcast', podcastId));
             });
-        }
 
-        // --- LIKES EN IMÁGENES ---
-        function renderizarGaleria(imagesToRender) {
-            imageGalleryGrid.innerHTML = '';
-            if (imagesToRender.length === 0) {
-                noImageResultsMessage.style.display = 'block';
-            } else {
-                noImageResultsMessage.style.display = 'none';
-                imagesToRender.forEach(imgData => {
-                    const liked = isLiked('img', imgData.id);
-                    const galleryItem = document.createElement('div');
-                    galleryItem.className = 'gallery-item';
-                    galleryItem.innerHTML = `
-                        <img src="${imgData.src}" alt="${imgData.alt}" loading="lazy">
-                        <span class="gallery-item-date">${formatearFecha(imgData.fecha)}</span>
-                        <button class="like-button${liked ? ' liked' : ''}" data-type="img" data-id="${imgData.id}" aria-label="Me gusta">
-                            <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                        </button>
-                    `;
-                    galleryItem.querySelector('img').addEventListener('click', () => openImageModal(imgData.src));
-                    galleryItem.querySelector('.like-button').addEventListener('click', handleLikeClick);
-                    imageGalleryGrid.appendChild(galleryItem);
-                });
+            if (!foundSection && idSeccion !== 'single-post') {
+                 document.getElementById('publicaciones').classList.add('active');
+                 document.getElementById('publicaciones').style.display = '';
+                 idSeccion = 'publicaciones';
             }
-        }
 
-        // --- BOTÓN DE LIKE UNIVERSAL ---
-        function handleLikeClick(e) {
-            e.stopPropagation();
-            const btn = e.currentTarget;
-            const type = btn.getAttribute('data-type');
-            const id = btn.getAttribute('data-id');
-            let liked = isLiked(type, id);
-            setLiked(type, id, !liked);
-            btn.classList.toggle('liked', !liked);
-        }
+            const allNavLinks = [...navLinks, ...footerNavLinks];
+            allNavLinks.forEach(link => {
+                link.classList.toggle('active', link.dataset.section === idSeccion);
+            });
 
-        // --- FUNCIONES DE LIKE ---
-        function isLiked(type, id) {
-            const likesData = getLikesData();
-            return !!localStorage.getItem(`like:${type}:${id}`);
-        }
-        function setLiked(type, id, value) {
-            if (value) {
-                localStorage.setItem(`like:${type}:${id}`, '1');
-            } else {
-                localStorage.removeItem(`like:${type}:${id}`);
-            }
-        }
+             if (idSeccion !== 'single-post') {
+                 singlePostSection.classList.remove('active');
+                 singlePostSection.style.display = 'none';
+             }
 
-        // --- FUNCIONES DE BÚSQUEDA ---
-        function handleSearch() {
-            const query = searchInput.value.trim().toLowerCase();
-            if (document.getElementById('publicaciones').classList.contains('active')) {
-                let filtered = currentPosts.filter(post =>
-                    post.titulo.toLowerCase().includes(query) ||
-                    post.resumen.toLowerCase().includes(query) ||
-                    (post.categoria && post.categoria.toLowerCase().includes(query))
-                );
-                filtered.sort((a, b) => {
-                    const dateA = new Date(a.fecha);
-                    const dateB = new Date(b.fecha);
-                    return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
-                });
-                renderizarPublicaciones(filtered);
-            } else if (document.getElementById('imagenes').classList.contains('active')) {
-                let filtered = currentImages.filter(img =>
-                    (img.descripcion && img.descripcion.toLowerCase().includes(query)) ||
-                    (img.alt && img.alt.toLowerCase().includes(query))
-                );
-                renderizarGaleria(filtered);
-            }
+             // Mostrar/ocultar flecha de ordenar y ejecutar búsqueda inicial
+             if (idSeccion === 'publicaciones') {
+                 sortArrow.style.display = 'inline-block';
+                 handleSearch();
+             } else {
+                 sortArrow.style.display = 'none';
+                 if (idSeccion === 'imagenes') {
+                     handleSearch();
+                 }
+                 // Añadir lógica para podcast si se implementa búsqueda
+             }
+
+             if (window.innerWidth <= 600) {
+                 mobileSectionNav.querySelector('span').textContent = idSeccion.charAt(0).toUpperCase() + idSeccion.slice(1);
+             }
+
+             window.scrollTo({ top: 0, behavior: 'smooth' });
+
+             // Si es la sección de estadísticas, renderiza los datos
+             if (idSeccion === 'estadisticas') {
+                 renderEstadisticas();
+             }
         }
 
         // --- EVENTOS DE NAVEGACIÓN ---
