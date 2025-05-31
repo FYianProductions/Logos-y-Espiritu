@@ -1561,29 +1561,9 @@
     </a>
 
     <section class="content-section" id="estadisticas">
-        <h2 class="section-title">Estadísticas del Sitio</h2>
-        <div class="stats-grid">
-            <div class="stat-item">
-                <h4>Suscriptores</h4>
-                <p id="stat-subscribers">87</p>
-            </div>
-            <div class="stat-item">
-                <h4>Likes en Publicaciones</h4>
-                <p id="stat-likes-posts">357</p>
-            </div>
-            <div class="stat-item">
-                <h4>Likes en Imágenes</h4>
-                <p id="stat-likes-images">92</p>
-            </div>
-            <div class="stat-item">
-                <h4>Likes en Podcasts</h4>
-                <p id="stat-likes-podcasts">181</p>
-            </div>
-            <div class="stat-item">
-                <h4>Comentarios</h4>
-                <p id="stat-comments">29</p>
-            </div>
-        </div>
+        <h2 class="section-title">Estadísticas</h2>
+        <div id="stats-summary"></div>
+        <div id="stats-comments"></div>
         <button id="back-to-main-from-stats" class="submit-btn">← Volver al Inicio</button>
     </section>
 
@@ -2176,22 +2156,62 @@
 
         // --- ESTADÍSTICAS Y COMENTARIOS FALSOS ---
         function renderEstadisticas() {
-            document.getElementById('stat-subscribers').textContent = getSubscribersCount();
-            // Likes de publicaciones
-            let likesPosts = 0, likesImgs = 0, likesPodcasts = 0;
-            const likesData = getLikesData();
-            Object.keys(likesData).forEach(k => {
-                if (k.startsWith('post:')) likesPosts += likesData[k];
-                if (k.startsWith('img:')) likesImgs += likesData[k];
-                if (k.startsWith('podcast:')) likesPodcasts += likesData[k];
+            // Resumen general
+            const totalSuscriptores = 87;
+            const totalLikes = Object.values(estadisticasLikes).reduce((a, b) => a + b, 0);
+            const totalComentarios = Object.values(estadisticasComentarios).reduce((a, b) => a + b.length, 0);
+
+            // Resumen
+            document.getElementById('stats-summary').innerHTML = `
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <h4>Suscriptores</h4>
+                        <p>${totalSuscriptores}</p>
+                    </div>
+                    <div class="stat-item">
+                        <h4>Total Likes</h4>
+                        <p>${totalLikes}</p>
+                    </div>
+                    <div class="stat-item">
+                        <h4>Total Comentarios</h4>
+                        <p>${totalComentarios}</p>
+                    </div>
+                </div>
+            `;
+
+            // Detalle por publicación
+            let html = '';
+            const posts = [
+                { id: 'razonabilidad-fe', titulo: 'La razonabilidad de la fe en Dios' },
+                { id: 'fe-ciencia-enemigos', titulo: '¿Son enemigos la fe y la ciencia?' },
+                { id: 'humanismo-cristiano', titulo: 'El Humanismo Cristiano' },
+                { id: 'encuentro-fe-ciencia', titulo: 'Encuentro "Fe y Ciencia: Hacia la COP26"' },
+                { id: 'video-introduccion', titulo: '¿En el Vagón de Cola? Reflexionando con Kurzgesagt' },
+                { id: 'papa-leon-xiv-eleccion', titulo: 'Habemus Papam: León XIV, un Nuevo Pastor para la Iglesia Universal' }
+            ];
+            html += `<div style="margin-top:30px;">`;
+            posts.forEach(post => {
+                html += `
+                    <div style="margin-bottom:32px; border-bottom:1px solid #eee; padding-bottom:18px;">
+                        <h3 style="color:#6d5dfc; font-size:1.2em; margin-bottom:6px;">${post.titulo}</h3>
+                        <div style="margin-bottom:8px;">
+                            <span style="color:#ff5e7d; font-weight:bold;">Likes:</span> ${estadisticasLikes[post.id] || 0}
+                            &nbsp;|&nbsp;
+                            <span style="color:#3ae374; font-weight:bold;">Comentarios:</span> ${estadisticasComentarios[post.id]?.length || 0}
+                        </div>
+                        <ul style="margin-left:0; padding-left:18px;">
+                            ${(estadisticasComentarios[post.id] || []).map(c =>
+                                `<li style="margin-bottom:4px;">
+                                    <span style="font-weight:600; color:#6d5dfc;">${c.author}:</span>
+                                    <span style="color:#333;">${c.text}</span>
+                                </li>`
+                            ).join('')}
+                        </ul>
+                    </div>
+                `;
             });
-            document.getElementById('stat-likes-posts').textContent = likesPosts;
-            document.getElementById('stat-likes-images').textContent = likesImgs;
-            document.getElementById('stat-likes-podcasts').textContent = likesPodcasts;
-            // Comentarios falsos
-            let totalComments = 0;
-            Object.values(fakeCommentsData).forEach(arr => totalComments += arr.length);
-            document.getElementById('stat-comments').textContent = totalComments;
+            html += `</div>`;
+            document.getElementById('stats-comments').innerHTML = html;
         }
 
         // --- BOTÓN VOLVER DE ESTADÍSTICAS ---
