@@ -24,14 +24,14 @@
             --radius-nav: 50px;
             --radius-logo: 15px;
             --header-bg-image: url(https://upload.wikimedia.org/wikipedia/commons/5/5b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg);
-        } /* <-- Faltaba cierre */
+        }
 
         /* Reset básico */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-        } /* <-- Faltaba cierre */
+        }
 
         body {
             font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -40,7 +40,7 @@
             line-height: 1.6;
             position: relative;
             min-height: 100vh;
-        } /* <-- Faltaba cierre */
+        }
 
         /* Contenedor principal */
         .container {
@@ -1228,144 +1228,6 @@
                 display: none;
             }
         }
-
-        /* Añade esto en tu <style> para los botones de like, comentarios y estadísticas */
-        .like-button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            outline: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 1.1em;
-            color: #ff5e7d;
-            transition: color 0.2s;
-            margin-right: 8px;
-            vertical-align: middle;
-        }
-        .like-button svg {
-            width: 22px;
-            height: 22px;
-            fill: #ff5e7d;
-            transition: fill 0.2s;
-        }
-        .like-button.liked svg {
-            fill: #e0245e;
-        }
-        .like-count {
-            font-weight: 600;
-            font-size: 1em;
-            color: #e0245e;
-            margin-left: 2px;
-        }
-        .comments-section {
-            margin-top: 40px;
-            background: #f9f9f9;
-            border-radius: 8px;
-            padding: 25px 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-        }
-        .comments-section h3 {
-            margin-bottom: 15px;
-            color: var(--color-primary);
-        }
-        .comments-list {
-            list-style: none;
-            padding: 0;
-            margin-bottom: 20px;
-        }
-        .comment-item {
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #eee;
-        }
-        .comment-author {
-            font-weight: 600;
-            color: #6d5dfc;
-            margin-right: 8px;
-        }
-        .comment-text {
-            color: #333;
-        }
-        .add-comment-form textarea {
-            width: 100%;
-            min-height: 50px;
-            border-radius: 6px;
-            border: 1px solid #ddd;
-            padding: 8px;
-            font-size: 1em;
-            margin-bottom: 10px;
-            resize: vertical;
-        }
-        .add-comment-form .submit-btn {
-            background: var(--color-accent);
-            color: #fff;
-            border: none;
-            border-radius: 50px;
-            padding: 8px 18px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .add-comment-form .submit-btn:hover {
-            background: #2ecc71;
-        }
-        #comment-status {
-            margin-top: 8px;
-            font-size: 0.95em;
-        }
-        #estadisticas {
-            display: none;
-            background: #fff;
-            border-radius: 10px;
-            padding: 40px 30px;
-            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
-            margin-top: 40px;
-            margin-bottom: 40px;
-            text-align: center;
-        }
-        #estadisticas .section-title {
-            color: var(--color-primary);
-            margin-bottom: 30px;
-        }
-        .stats-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            justify-content: center;
-            margin-bottom: 30px;
-        }
-        .stat-item {
-            background: #f9f9f9;
-            border-radius: 8px;
-            padding: 25px 30px;
-            min-width: 180px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        .stat-item h4 {
-            color: var(--color-secondary);
-            margin-bottom: 8px;
-        }
-        .stat-item p {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #6d5dfc;
-        }
-        #back-to-main-from-stats {
-            margin-top: 20px;
-            background: var(--color-dark);
-            color: #fff;
-            border: none;
-            border-radius: 50px;
-            padding: 10px 24px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        #back-to-main-from-stats:hover {
-            background: #444;
-        }
     </style>
 </head>
 <body>
@@ -1489,8 +1351,7 @@
                 </div>
             </div>
         </section>
-        </div> 
-        <footer>
+        </div> <footer>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
@@ -1504,7 +1365,7 @@
                             <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
                         </a>
                         <a href="#" aria-label="Instagram">
-                           <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 224.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
+                           <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
                         </a>
                         <a href="#" aria-label="YouTube">
                             <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
@@ -1513,25 +1374,24 @@
                 </div>
                 <div class="footer-section">
                     <h3>Enlaces Rápidos</h3>
-                    <ul>
+                     <ul>
                         <li><a href="#" data-section="publicaciones">Publicaciones</a></li>
                         <li><a href="#" data-section="imagenes">Imagenes</a></li>
                         <li><a href="#" data-section="podcast">Podcast</a></li>
-                        <li><a href="#" data-section="estadisticas">Estadísticas</a></li> <!-- Nuevo enlace -->
-                    </ul>
+                     </ul>
                 </div>
                 <div class="footer-section">
                     <h3>Suscríbete</h3>
                     <p>Recibe nuestras publicaciones más recientes en tu correo electrónico.</p>
                     <form id="subscribe-form">
-    <input type="email" placeholder="Tu correo electrónico o código" class="form-input" required>
-    <button type="submit" class="submit-btn">Suscribirse</button>
-</form>
+                        <input type="email" placeholder="Tu correo electrónico" class="form-input" required>
+                        <button type="submit" class="submit-btn">Suscribirse</button>
+                    </form>
                     <div id="subscribe-status" style="margin-top: 10px;"></div>
                 </div>
             </div>
             <div class="copyright">
-                <p>© <span id="current-year"></span> Logos y Espíritu. <span id="footer-stats-link" style="cursor:pointer;text-decoration:underline;">Todos los derechos reservados.</span></p>
+                <p>© <span id="current-year"></span> Logos y Espíritu. Todos los derechos reservados.</p>
             </div>
         </div>
     </footer>
@@ -1561,83 +1421,6 @@
     <a href="#" class="back-to-top" id="backToTop" aria-label="Volver arriba">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z"/></svg>
     </a>
-
-    <section class="content-section" id="estadisticas">
-        <h2 class="section-title">Estadísticas</h2>
-        <div>
-            <h3>Suscriptores</h3>
-            <p>87</p>
-        </div>
-        <div>
-            <h3>Información por Publicación</h3>
-            <div>
-                <h4>razonabilidad-fe</h4>
-                <h5>Comentarios:</h5>
-                <ul>
-                    <li>Ana: ¡Excelente reflexión!</li>
-                    <li>Carlos: Me encantó este artículo, gracias por compartir.</li>
-                    <li>María: Muy inspirador, saludos.</li>
-                    <li>Juan: ¡Qué gran aporte, bendiciones!</li>
-                </ul>
-                <p>Likes: 32</p>
-            </div>
-            <div>
-                <h4>fe-ciencia-enemigos</h4>
-                <h5>Comentarios:</h5>
-                <ul>
-                    <li>Luisa: Me ayudó mucho a entender el tema.</li>
-                    <li>Pedro: Muy claro y profundo.</li>
-                    <li>Sofía: ¡Gracias por este contenido!</li>
-                    <li>Miguel: Interesante perspectiva.</li>
-                </ul>
-                <p>Likes: 18</p>
-            </div>
-            <div>
-                <h4>humanismo-cristiano</h4>
-                <h5>Comentarios:</h5>
-                <ul>
-                    <li>Elena: Hermoso mensaje.</li>
-                    <li>Andrés: Me hizo reflexionar mucho.</li>
-                    <li>Valeria: ¡Qué palabras tan sabias!</li>
-                    <li>Tomás: Gracias por compartir esto.</li>
-                </ul>
-                <p>Likes: 21</p>
-            </div>
-            <div>
-                <h4>encuentro-fe-ciencia</h4>
-                <h5>Comentarios:</h5>
-                <ul>
-                    <li>Camila: Muy relevante para hoy.</li>
-                    <li>Jorge: Excelente discurso.</li>
-                    <li>Natalia: Inspirador.</li>
-                    <li>Esteban: Me gustó mucho.</li>
-                </ul>
-                <p>Likes: 14</p>
-            </div>
-            <div>
-                <h4>video-introduccion</h4>
-                <h5>Comentarios:</h5>
-                <ul>
-                    <li>Sara: Buen video para reflexionar.</li>
-                    <li>David: Me motivó a pensar diferente.</li>
-                    <li>Laura: ¡Gran aporte!</li>
-                    <li>Oscar: Muy útil, gracias.</li>
-                </ul>
-                <p>Likes: 8</p>
-            </div>
-            <div>
-                <h4>papa-leon-xiv-eleccion</h4>
-                <h5>Comentarios:</h5>
-                <ul>
-                    <li>Martina: ¡Viva el Papa!</li>
-                    <li>Felipe: Esperanzador mensaje.</li>
-                    <li>Lucía: Me alegra este nuevo pontificado.</li>
-                    <li>Gabriel: Excelente resumen.</li>
-                </ul>
-                <p>Likes: 11</p>
-            </div>
-        </div>
-    </section>
 
     <script>
         // --- CONSTANTES Y ELEMENTOS DEL DOM ---
@@ -1673,7 +1456,6 @@
         const achievementsList = document.getElementById('achievements-list');
         const topRightButtonsContainer = document.querySelector('.top-right-buttons');
         const mobileSectionNav = document.querySelector('.mobile-section-nav');
-        const backToMainFromStatsButton = document.getElementById('back-to-main-from-stats');
 
         // --- DATOS DE PUBLICACIONES (Contenido placeholder) ---
         const publicaciones = [
@@ -1855,87 +1637,6 @@
         let currentImages = [...galeriaImagenes];
         let sortOrder = 'desc';
 
-        // --- FUNCIONES AUXILIARES FALTANTES PARA EVITAR ERRORES ---
-        // Marca si el usuario ya dio like a un post/imagen
-        function isLiked(type, id) {
-            // Usa localStorage para persistencia
-            try {
-                const liked = JSON.parse(localStorage.getItem('blogLiked') || '{}');
-                return !!liked[`${type}:${id}`];
-            } catch (e) { return false; }
-        }
-        // Marca el like en localStorage y actualiza el botón
-        function handleLikeClick(e) {
-            e.stopPropagation();
-            const btn = e.currentTarget;
-            const type = btn.getAttribute('data-type');
-            const id = btn.getAttribute('data-id');
-            const key = `${type}:${id}`;
-            let liked = {};
-            try { liked = JSON.parse(localStorage.getItem('blogLiked') || '{}'); } catch {}
-            liked[key] = !liked[key];
-            localStorage.setItem('blogLiked', JSON.stringify(liked));
-            btn.classList.toggle('liked', liked[key]);
-        }
-
-        // --- COMENTARIOS FALSOS (solo para estadísticas) ---
-        const fakeCommentsData = {
-            'razonabilidad-fe': [
-                { author: "Ana", text: "¡Excelente reflexión!" },
-                { author: "Carlos", text: "Me encantó este artículo, gracias por compartir." },
-                { author: "María", text: "Muy inspirador, saludos." },
-                { author: "Juan", text: "¡Qué gran aporte, bendiciones!" }
-            ],
-            'fe-ciencia-enemigos': [
-                { author: "Luisa", text: "Me ayudó mucho a entender el tema." },
-                { author: "Pedro", text: "Muy claro y profundo." },
-                { author: "Sofía", text: "¡Gracias por este contenido!" },
-                { author: "Miguel", text: "Interesante perspectiva." }
-            ],
-            'humanismo-cristiano': [
-                { author: "Elena", text: "Hermoso mensaje." },
-                { author: "Andrés", text: "Me hizo reflexionar mucho." },
-                { author: "Valeria", text: "¡Qué palabras tan sabias!" },
-                { author: "Tomás", text: "Gracias por compartir esto." }
-            ],
-            'encuentro-fe-ciencia': [
-                { author: "Camila", text: "Muy relevante para hoy." },
-                { author: "Jorge", text: "Excelente discurso." },
-                { author: "Natalia", text: "Inspirador." },
-                { author: "Esteban", text: "Me gustó mucho." }
-            ],
-            'video-introduccion': [
-                { author: "Sara", text: "Buen video para reflexionar." },
-                { author: "David", text: "Me motivó a pensar diferente." },
-                { author: "Laura", text: "¡Gran aporte!" },
-                { author: "Oscar", text: "Muy útil, gracias." }
-            ],
-            'papa-leon-xiv-eleccion': [
-                { author: "Martina", text: "¡Viva el Papa!" },
-                { author: "Felipe", text: "Esperanzador mensaje." },
-                { author: "Lucía", text: "Me alegra este nuevo pontificado." },
-                { author: "Gabriel", text: "Excelente resumen." }
-            ]
-        };
-
-        // --- ESTADÍSTICAS: PREPARA DATOS PARA LA SECCIÓN ---
-        const estadisticasLikes = {
-            'razonabilidad-fe': 32,
-            'fe-ciencia-enemigos': 18,
-            'humanismo-cristiano': 21,
-            'encuentro-fe-ciencia': 14,
-            'video-introduccion': 8,
-            'papa-leon-xiv-eleccion': 11
-        };
-        const estadisticasComentarios = {
-            'razonabilidad-fe': fakeCommentsData['razonabilidad-fe'],
-            'fe-ciencia-enemigos': fakeCommentsData['fe-ciencia-enemigos'],
-            'humanismo-cristiano': fakeCommentsData['humanismo-cristiano'],
-            'encuentro-fe-ciencia': fakeCommentsData['encuentro-fe-ciencia'],
-            'video-introduccion': fakeCommentsData['video-introduccion'],
-            'papa-leon-xiv-eleccion': fakeCommentsData['papa-leon-xiv-eleccion']
-        };
-
         // --- FUNCIONES ---
 
         function animateTitle() {
@@ -1951,74 +1652,26 @@
                 mainTitleElement.appendChild(span);
             });
 
-            // Fallback: Si por alguna razón no hay spans, muestra el texto plano
-            if (!mainTitleElement.innerHTML.trim()) {
-                mainTitleElement.textContent = titleText;
-            }
-
-            mainTitleElement.addEventListener('mouseenter', () => {
-                mainTitleElement.querySelectorAll('span').forEach(span => {
-                    const rotation = Math.random() * 10 - 5;
-                    const yOffset = Math.random() * 6 - 3;
-                    span.style.transform = `rotate(${rotation}deg) translateY(${yOffset}px) scale(1.05)`;
-                });
-            });
-            mainTitleElement.addEventListener('mouseleave', () => {
-                mainTitleElement.querySelectorAll('span').forEach(span => {
-                    const rotation = Math.random() * 12 - 6;
-                    const yOffset = Math.random() * 8 - 4;
-                    span.style.transform = `rotate(${rotation}deg) translateY(${yOffset}px) scale(1)`;
-                });
-            });
+             mainTitleElement.addEventListener('mouseenter', () => {
+                 mainTitleElement.querySelectorAll('span').forEach(span => {
+                     const rotation = Math.random() * 10 - 5;
+                     const yOffset = Math.random() * 6 - 3;
+                     span.style.transform = `rotate(${rotation}deg) translateY(${yOffset}px) scale(1.05)`;
+                 });
+             });
+             mainTitleElement.addEventListener('mouseleave', () => {
+                  mainTitleElement.querySelectorAll('span').forEach(span => {
+                     const rotation = Math.random() * 12 - 6;
+                     const yOffset = Math.random() * 8 - 4;
+                     span.style.transform = `rotate(${rotation}deg) translateY(${yOffset}px) scale(1)`;
+                 });
+             });
         }
 
 
-        // --- LIKES Y SUSCRIPTORES INICIALES ---
-        function getLikesData() {
-            // Likes iniciales por defecto (puedes ajustar los valores)
-            const defaultLikes = {
-                'post:razonabilidad-fe': 32,
-                'post:fe-ciencia-enemigos': 18,
-                'post:humanismo-cristiano': 21,
-                'post:encuentro-fe-ciencia': 14,
-                'post:video-introduccion': 8,
-                'post:papa-leon-xiv-eleccion': 11,
-                'img:img1': 23,
-                'img:img2': 31,
-                'img:img3': 18,
-                'podcast:podcast1': 45,
-                'podcast:podcast2': 38,
-                'podcast:podcast3': 52,
-                'podcast:podcast4': 30,
-                'podcast:podcast5': 25
-            };
-            let data = JSON.parse(localStorage.getItem('blogLikesData') || 'null');
-            if (!data) {
-                data = defaultLikes;
-                setLikesData(data);
-            }
-            return data;
-        }
-        function setLikesData(data) {
-            localStorage.setItem('blogLikesData', JSON.stringify(data));
-        }
-        function getSubscribersCount() {
-            let count = parseInt(localStorage.getItem('blogSubscribersCount') || '0', 10);
-            if (!count) {
-                count = 87;
-                setSubscribersCount(count);
-            }
-            return count;
-        }
-        function setSubscribersCount(count) {
-            localStorage.setItem('blogSubscribersCount', count);
-        }
-
-        // --- RENDERIZAR POSTS CON BOTÓN DE LIKE (sin número) ---
         function crearTarjetaPost(post) {
             const thumbnailSrc = post.video ? `https://i.ytimg.com/vi/${post.video}/hqdefault.jpg` : post.imagen;
             const videoOverlay = post.video ? `<div class="play-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px"><path d="M8 5v14l11-7z"/><path d="M0 0h24v24H0z" fill="none"/></svg></div>` : '';
-            const liked = isLiked('post', post.id);
             return `
                 <article class="post-card" data-id="${post.id}">
                     <div class="video-thumbnail-container">
@@ -2029,14 +1682,9 @@
                         <h3 class="post-title">${post.titulo}</h3>
                         <div class="post-meta">
                             <span class="post-date">${formatearFecha(post.fecha)}</span>
-                            <span class="post-category-badge">${post.categoria}</span>
+                             <span class="post-category-badge">${post.categoria}</span>
                         </div>
                         <p class="post-excerpt">${post.resumen}</p>
-                        <div class="post-card-actions">
-                            <button class="like-button${liked ? ' liked' : ''}" data-type="post" data-id="${post.id}" aria-label="Me gusta">
-                                <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                            </button>
-                        </div>
                     </div>
                 </article>
             `;
@@ -2051,32 +1699,10 @@
                 postsToRender.forEach(post => {
                     postsGrid.innerHTML += crearTarjetaPost(post);
                 });
-                // Añade eventos a los botones de like y a la tarjeta
                 document.querySelectorAll('.post-card').forEach(card => {
-                    card.addEventListener('click', function(e) {
-                        // Evita que el click en el botón de like abra el post
-                        if (e.target.closest('.like-button')) return;
-                        mostrarPostIndividual(card.dataset.id);
-                    });
-                    const likeBtn = card.querySelector('.like-button');
-                    if (likeBtn) likeBtn.addEventListener('click', handleLikeClick);
+                    card.addEventListener('click', () => mostrarPostIndividual(card.dataset.id));
                 });
             }
-        }
-
-        // --- NUEVO: Mostrar post individual ---
-        function mostrarPostIndividual(postId) {
-            const post = publicaciones.find(p => p.id === postId);
-            if (!post) return;
-            singlePostTitle.textContent = post.titulo;
-            singlePostDate.textContent = formatearFecha(post.fecha);
-            singlePostCategory.textContent = post.categoria || '';
-            singlePostContent.innerHTML = post.contenido;
-            cambiarSeccion('single-post');
-        }
-
-        function volverAPublicaciones() {
-            cambiarSeccion('publicaciones');
         }
 
         function renderizarGaleria(imagesToRender) {
@@ -2086,47 +1712,18 @@
             } else {
                 noImageResultsMessage.style.display = 'none';
                 imagesToRender.forEach(imgData => {
-                    const liked = isLiked('img', imgData.id);
                     const galleryItem = document.createElement('div');
                     galleryItem.className = 'gallery-item';
                     galleryItem.innerHTML = `
                         <img src="${imgData.src}" alt="${imgData.alt}" loading="lazy">
                         <span class="gallery-item-date">${formatearFecha(imgData.fecha)}</span>
-                        <button class="like-button${liked ? ' liked' : ''}" data-type="img" data-id="${imgData.id}" aria-label="Me gusta">
-                            <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                        </button>
                     `;
-                    galleryItem.querySelector('img').addEventListener('click', () => openImageModal(imgData.src));
-                    galleryItem.querySelector('.like-button').addEventListener('click', handleLikeClick);
+                    galleryItem.addEventListener('click', () => openImageModal(imgData.src));
                     imageGalleryGrid.appendChild(galleryItem);
                 });
             }
         }
 
-        // --- FUNCIÓN DE BÚSQUEDA (asegura que renderiza) ---
-        function handleSearch() {
-            const query = searchInput.value.trim().toLowerCase();
-            if (document.getElementById('publicaciones').classList.contains('active')) {
-                let filtered = currentPosts.filter(post =>
-                    post.titulo.toLowerCase().includes(query) ||
-                    post.resumen.toLowerCase().includes(query) ||
-                    (post.categoria && post.categoria.toLowerCase().includes(query))
-                );
-                // Ordenar según sortOrder
-                filtered.sort((a, b) => {
-                    const dateA = new Date(a.fecha);
-                    const dateB = new Date(b.fecha);
-                    return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
-                });
-                renderizarPublicaciones(filtered);
-            } else if (document.getElementById('imagenes').classList.contains('active')) {
-                let filtered = currentImages.filter(img =>
-                    img.alt.toLowerCase().includes(query) ||
-                    (img.descripcion && img.descripcion.toLowerCase().includes(query))
-                );
-                renderizarGaleria(filtered);
-            }
-        }
 
         function ordenarPublicaciones() {
             if (document.getElementById('publicaciones').classList.contains('active')) {
@@ -2176,18 +1773,15 @@
             contentSections.forEach(section => {
                 if (section.id === idSeccion) {
                     section.classList.add('active');
-                    section.style.display = '';
                     foundSection = true;
                 } else {
                     section.classList.remove('active');
-                    section.style.display = 'none';
                 }
             });
 
             if (!foundSection && idSeccion !== 'single-post') {
-                document.getElementById('publicaciones').classList.add('active');
-                document.getElementById('publicaciones').style.display = '';
-                idSeccion = 'publicaciones';
+                 document.getElementById('publicaciones').classList.add('active');
+                 idSeccion = 'publicaciones';
             }
 
             const allNavLinks = [...navLinks, ...footerNavLinks];
@@ -2195,104 +1789,508 @@
                 link.classList.toggle('active', link.dataset.section === idSeccion);
             });
 
-            if (idSeccion !== 'single-post') {
-                singlePostSection.classList.remove('active');
-                singlePostSection.style.display = 'none';
+             if (idSeccion !== 'single-post') {
+                 singlePostSection.classList.remove('active');
+             }
+
+             // Mostrar/ocultar flecha de ordenar y ejecutar búsqueda inicial
+             if (idSeccion === 'publicaciones') {
+                 sortArrow.style.display = 'inline-block';
+                 handleSearch();
+             } else {
+                 sortArrow.style.display = 'none';
+                 if (idSeccion === 'imagenes') {
+                     handleSearch();
+                 }
+                 // Añadir lógica para podcast si se implementa búsqueda
+             }
+
+             if (window.innerWidth <= 600) {
+                 mobileSectionNav.querySelector('span').textContent = idSeccion.charAt(0).toUpperCase() + idSeccion.slice(1);
+             }
+
+             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function cambiarSeccionConFlechas(direccion) {
+            const secciones = ['publicaciones', 'imagenes', 'podcast'];
+            const seccionActual = document.querySelector('.content-section.active').id;
+            let indiceActual = secciones.indexOf(seccionActual);
+
+            if (direccion === 'derecha') {
+                indiceActual = (indiceActual + 1) % secciones.length;
+            } else if (direccion === 'izquierda') {
+                indiceActual = (indiceActual - 1 + secciones.length) % secciones.length;
             }
 
-            // Mostrar/ocultar flecha de ordenar y ejecutar búsqueda inicial
-            if (idSeccion === 'publicaciones') {
-                sortArrow.style.display = 'inline-block';
-                handleSearch();
-            } else {
-                sortArrow.style.display = 'none';
-                if (idSeccion === 'imagenes') {
-                    handleSearch();
-                }
-                // Añadir lógica para podcast si se implementa búsqueda
-            }
+            const nuevaSeccion = secciones[indiceActual];
+            cambiarSeccion(nuevaSeccion);
 
+            // Update section name in mobile navigation
             if (window.innerWidth <= 600) {
-                mobileSectionNav.querySelector('span').textContent = idSeccion.charAt(0).toUpperCase() + idSeccion.slice(1);
-            }
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-
-            // Si es la sección de estadísticas, renderiza los datos
-            if (idSeccion === 'estadisticas') {
-                // renderEstadisticas(); // Si tienes una función para estadísticas, descomenta esto
+                mobileSectionNav.querySelector('span').textContent = nuevaSeccion.charAt(0).toUpperCase() + nuevaSeccion.slice(1);
             }
         }
 
-        // --- EVENTOS DE NAVEGACIÓN ---
-        navLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                cambiarSeccion(this.dataset.section);
-            });
-        });
-        footerNavLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                cambiarSeccion(this.dataset.section);
-            });
-        });
-
-        // --- EVENTO PARA FLECHA DE ORDEN ---
-        sortArrow.addEventListener('click', cambiarOrden);
-
-        // --- EVENTO PARA BOTÓN VOLVER A PUBLICACIONES ---
-        backToPostsButton.addEventListener('click', volverAPublicaciones);
-
-        // --- EVENTO PARA BOTÓN VOLVER AL INICIO DESDE ESTADÍSTICAS ---
-        if (backToMainFromStatsButton) {
-            backToMainFromStatsButton.addEventListener('click', function() {
+        function mostrarPostIndividual(id) {
+            const post = publicaciones.find(p => p.id === id);
+            if (!post) {
+                console.error("Post not found:", id);
                 cambiarSeccion('publicaciones');
-            });
+                return;
+            };
+
+            // Lógica para logro de 100 posts diferentes
+            if (!achievementCounters.visitedPosts.includes(id)) {
+                achievementCounters.visitedPosts.push(id);
+                saveAchievementCounters();
+                if (achievementCounters.visitedPosts.length >= 100) {
+                    unlockAchievement('enter_100_posts');
+                }
+            }
+
+            singlePostTitle.textContent = post.titulo;
+            singlePostDate.textContent = `Publicado el ${formatearFecha(post.fecha)}`;
+            singlePostCategory.textContent = post.categoria;
+            singlePostContent.innerHTML = post.contenido; // Usar placeholder
+
+            cambiarSeccion('single-post');
+            unlockAchievement('enter_post');
+
+            // Listener para scroll dentro del post (simplificado)
+            const postContentElement = document.getElementById('single-post-content');
+             const scrollListener = () => {
+                 if (postContentElement.getBoundingClientRect().bottom <= window.innerHeight + 100) {
+                     unlockAchievement('scroll_post_bottom');
+                     window.removeEventListener('scroll', scrollListener);
+                 }
+             };
+             // Remover listener anterior si existe antes de añadir uno nuevo
+             window.removeEventListener('scroll', scrollListener);
+             window.addEventListener('scroll', scrollListener);
         }
 
-        // --- EVENTO PARA FORMULARIO DE SUSCRIPCIÓN ---
-        subscribeForm.addEventListener('submit', handleSubscribeFormSubmit);
+        function volverAPublicaciones() {
+            cambiarSeccion('publicaciones');
+        }
 
-        // --- EVENTO PARA BÚSQUEDA ---
-        searchInput.addEventListener('input', function() {
-            handleSearch();
-        });
+         function handleSubscribeFormSubmit(event) {
+             event.preventDefault();
+             const emailInput = subscribeForm.querySelector('input[type="email"]');
+             subscribeStatus.textContent = 'Procesando suscripción...';
+             subscribeStatus.style.color = 'blue';
+             setTimeout(() => {
+                 if (emailInput.value && emailInput.validity.valid) {
+                     subscribeStatus.textContent = `¡Gracias por suscribirte con ${emailInput.value}!`;
+                     subscribeStatus.style.color = 'green';
+                     subscribeForm.reset();
+                     unlockAchievement('subscribe');
+                 } else {
+                    subscribeStatus.textContent = 'Por favor, introduce un correo electrónico válido.';
+                    subscribeStatus.style.color = 'red';
+                 }
+             }, 1500);
+         }
 
-        // --- BOTÓN VOLVER ARRIBA ---
-        window.addEventListener('scroll', toggleBackToTopButton);
-        backToTopButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+        function handleSearch() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const publicacionesSection = document.getElementById('publicaciones');
+            const imagenesSection = document.getElementById('imagenes');
 
-        // --- FLECHAS DE NAVEGACIÓN MÓVIL ---
-        window.cambiarSeccionConFlechas = cambiarSeccionConFlechas;
+            if (searchTerm !== '') {
+                unlockAchievement('search');
+            }
 
-        // --- MODAL DE IMÁGENES ---
+            if (publicacionesSection.classList.contains('active')) {
+                if (searchTerm === '') {
+                    currentPosts = [...publicaciones];
+                } else {
+                    currentPosts = publicaciones.filter(post => {
+                        const tituloLower = post.titulo.toLowerCase();
+                        const resumenLower = post.resumen.toLowerCase();
+                        const contenidoLower = post.contenido.toLowerCase();
+                        const fechaString = post.fecha;
+                        const fechaFormateada = formatearFecha(post.fecha).toLowerCase();
+                        const categoriaLower = post.categoria.toLowerCase();
+
+                        return tituloLower.includes(searchTerm) ||
+                               resumenLower.includes(searchTerm) ||
+                               contenidoLower.includes(searchTerm) ||
+                               fechaString.includes(searchTerm) ||
+                               fechaFormateada.includes(searchTerm) ||
+                               categoriaLower.includes(searchTerm);
+                    });
+                }
+                ordenarPublicaciones();
+            } else if (imagenesSection.classList.contains('active')) {
+                 if (searchTerm === '') {
+                    currentImages = [...galeriaImagenes];
+                } else {
+                     currentImages = galeriaImagenes.filter(img => {
+                        const descLower = img.descripcion.toLowerCase();
+                        const altLower = img.alt.toLowerCase();
+                        const fechaString = img.fecha;
+                        const fechaFormateada = formatearFecha(img.fecha).toLowerCase();
+
+                        return descLower.includes(searchTerm) ||
+                               altLower.includes(searchTerm) ||
+                               fechaString.includes(searchTerm) ||
+                               fechaFormateada.includes(searchTerm);
+                    });
+                }
+                 renderizarGaleria(currentImages);
+            }
+        }
+
         function openImageModal(src) {
             modalImage.src = src;
             imageModal.classList.add('active');
+            unlockAchievement('open_image');
         }
-        closeImageModal.addEventListener('click', function() {
+
+        function closeImageModalFunc() {
             imageModal.classList.remove('active');
-            modalImage.src = '';
+            modalImage.src = "";
+        }
+
+        function addSticker() {
+            achievementCounters.stickerClicks = (achievementCounters.stickerClicks || 0) + 1;
+            saveAchievementCounters();
+
+            unlockAchievement('click_sticker');
+            if (achievementCounters.stickerClicks >= 100) {
+                unlockAchievement('click_sticker_100');
+            }
+            if (achievementCounters.stickerClicks >= 1000) {
+                 unlockAchievement('click_sticker_1000');
+             }
+
+            const randomUrl = stickerUrls[Math.floor(Math.random() * stickerUrls.length)];
+            const stickerImg = document.createElement('img');
+            stickerImg.src = randomUrl;
+            stickerImg.alt = "Sticker Decorativo";
+            stickerImg.className = 'sticker-image';
+            const randomTop = Math.random() * 70 + 15;
+            const randomLeft = Math.random() * 80 + 10;
+            const randomRotate = Math.random() * 60 - 30;
+            stickerImg.style.top = `${randomTop}vh`;
+            stickerImg.style.left = `${randomLeft}vw`;
+            stickerImg.style.transform = `rotate(${randomRotate}deg)`;
+            stickerArea.appendChild(stickerImg);
+             setTimeout(() => {
+                 stickerImg.style.transition = 'opacity 0.5s ease-out';
+                 stickerImg.style.opacity = '0';
+                 setTimeout(() => stickerImg.remove(), 500);
+             }, 5000);
+        }
+
+        // *** FUNCIONES PARA LOGROS (Actualizadas) ***
+        function loadAchievementStatus() {
+            const savedStatus = localStorage.getItem('blogLogrosStatus');
+            const savedCounters = localStorage.getItem('blogLogrosCounters');
+
+            if (savedStatus) {
+                achievementStatus = JSON.parse(savedStatus);
+            } else {
+                // Inicializar estado si no hay nada guardado
+                Object.values(achievementsData).flat().forEach(ach => {
+                    achievementStatus[ach.id] = false;
+                });
+            }
+
+            if (savedCounters) {
+                achievementCounters = JSON.parse(savedCounters);
+            } else {
+                achievementCounters = {
+                    stickerClicks: 0,
+                    visitedPosts: [],
+                    podcastTime: 0,
+                    // Inicializar otros contadores si son necesarios
+                };
+            }
+             // Comprobar si hay logros pendientes al cargar (antes de desbloquear visita)
+             checkPendingAchievementsOnLoad();
+        }
+
+        function saveAchievementStatus() {
+            localStorage.setItem('blogLogrosStatus', JSON.stringify(achievementStatus));
+        }
+        function saveAchievementCounters() {
+             localStorage.setItem('blogLogrosCounters', JSON.stringify(achievementCounters));
+        }
+
+         // Función para reproducir sonido de logro (si está disponible)
+         function playAchievementSound() {
+             if (achievementAudioContext && achievementSoundBuffer && !hasPendingAchievement) {
+                 const source = achievementAudioContext.createBufferSource();
+                 source.buffer = achievementSoundBuffer;
+                 source.connect(achievementAudioContext.destination);
+                 source.start(0);
+             } else if (!hasPendingAchievement) {
+                 console.log("Sonido de logro (placeholder) - AudioContext no listo o pendiente");
+             }
+         }
+
+
+         function unlockAchievement(id) {
+             if (!achievementStatus[id]) {
+                 console.log(`Logro desbloqueado: ${id}`);
+                 achievementStatus[id] = true;
+                 saveAchievementStatus();
+
+                 // Activar indicador visual de pendiente ANTES de reproducir sonido
+                 setPendingAchievement(true);
+                 playAchievementSound(); // Intentar reproducir sonido
+
+                 // Animar el logro en el modal si está abierto
+                 const achievementItem = document.querySelector(`#achievements-list li[data-achievement-id="${id}"]`);
+                 if (achievementItem) {
+                     achievementItem.classList.add('unlocked', 'newly-unlocked');
+                     setTimeout(() => {
+                         achievementItem.classList.remove('newly-unlocked');
+                     }, 800);
+                 }
+             }
+         }
+
+         // Comprueba si hay logros desbloqueados pero no vistos al cargar
+         function checkPendingAchievementsOnLoad() {
+             let pending = false;
+             for (const id in achievementStatus) {
+                 if (achievementStatus[id]) { // Si está desbloqueado
+                     // Aquí necesitaríamos una forma de saber si ya se 'vio'
+                     // Por simplicidad, asumimos que si está desbloqueado y no se ha abierto el modal
+                     // esta sesión, está pendiente.
+                     pending = true;
+                     break;
+                 }
+             }
+             setPendingAchievement(pending);
+         }
+
+
+         // Función para actualizar el indicador visual de pendiente
+         function setPendingAchievement(isPending) {
+             hasPendingAchievement = isPending; // Actualizar el flag global
+             if (isPending) {
+                 topRightButtonsContainer.classList.add('has-pending');
+             } else {
+                 topRightButtonsContainer.classList.remove('has-pending');
+             }
+         }
+
+        function renderAchievements() {
+            const explorationTab = document.getElementById('exploration-tab');
+            const interactionTab = document.getElementById('interaction-tab');
+
+            explorationTab.innerHTML = '';
+            interactionTab.innerHTML = '';
+
+            achievementsData['Exploración'].forEach(ach => {
+                const li = document.createElement('li');
+                li.className = 'achievement-item';
+                li.dataset.achievementId = ach.id;
+                if (achievementStatus[ach.id]) {
+                    li.classList.add('unlocked');
+                }
+                li.innerHTML = `
+                    <div class="achievement-details">
+                        <h4>${ach.name}</h4>
+                        <p>${ach.description}</p>
+                    </div>
+                `;
+                explorationTab.appendChild(li);
+            });
+
+            achievementsData['Interacción'].forEach(ach => {
+                const li = document.createElement('li');
+                li.className = 'achievement-item';
+                li.dataset.achievementId = ach.id;
+                if (achievementStatus[ach.id]) {
+                    li.classList.add('unlocked');
+                }
+                li.innerHTML = `
+                    <div class="achievement-details">
+                        <h4>${ach.name}</h4>
+                        <p>${ach.description}</p>
+                    </div>
+                `;
+                interactionTab.appendChild(li);
+            });
+        }
+
+        // Lógica para cambiar entre pestañas
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const targetTab = button.dataset.tab;
+
+                // Cambiar la pestaña activa
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                // Mostrar el contenido de la pestaña activa
+                document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+                document.getElementById(targetTab).classList.add('active');
+            });
         });
-        imageModal.addEventListener('click', function(e) {
-            if (e.target === imageModal) {
-                imageModal.classList.remove('active');
-                modalImage.src = '';
+
+        function openAchievementsModal() {
+            renderAchievements();
+            achievementsModal.classList.add('active');
+            setPendingAchievement(false); // Limpiar indicador al abrir el modal
+        }
+
+        function closeAchievementsModalFunc() {
+            achievementsModal.classList.remove('active');
+        }
+
+        // --- INICIALIZACIÓN DE AUDIO CONTEXT (para sonido de logro) ---
+        function initAudio() {
+            try {
+                window.AudioContext = window.AudioContext || window.webkitAudioContext;
+                achievementAudioContext = new AudioContext();
+
+                // Cargar el sonido (reemplaza con tu ruta)
+                // fetch('audio/achievement-sound.wav') // Ejemplo con wav
+                //     .then(response => response.arrayBuffer())
+                //     .then(arrayBuffer => achievementAudioContext.decodeAudioData(arrayBuffer))
+                //     .then(audioBuffer => {
+                //         achievementSoundBuffer = audioBuffer;
+                //         console.log("Sonido de logro cargado.");
+                //     })
+                //     .catch(e => console.error("Error loading achievement sound:", e));
+
+            } catch(e) {
+                console.warn('Web Audio API is not supported in this browser');
+            }
+        }
+
+
+        // --- EVENT LISTENERS ---
+        window.addEventListener('scroll', () => {
+            toggleBackToTopButton();
+             if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
+                 unlockAchievement('scroll_bottom');
+             }
+        });
+        backToTopButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        sortArrow.addEventListener('click', cambiarOrden);
+
+        const allNavLinks = [...navLinks, ...footerNavLinks];
+        allNavLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetSectionId = link.dataset.section;
+                if (targetSectionId) {
+                    cambiarSeccion(targetSectionId);
+                    if (targetSectionId !== 'single-post') {
+                         searchInput.value = '';
+                    }
+                }
+            });
+        });
+
+
+        backToPostsButton.addEventListener('click', volverAPublicaciones);
+        subscribeForm.addEventListener('submit', handleSubscribeFormSubmit);
+        searchInput.addEventListener('input', handleSearch);
+        searchIcon.addEventListener('click', () => {
+            if (window.innerWidth <= 600) {
+                mobileSectionNav.classList.add('searching');
+                mobileSectionNav.querySelector('span').textContent = 'Buscar';
+            }
+            navLinks.forEach(link => link.style.display = 'none');
+            searchInput.style.display = 'block';
+            searchInput.focus();
+        });
+        searchInput.addEventListener('blur', () => {
+            if (window.innerWidth <= 600 && searchInput.value.trim() === '') {
+                mobileSectionNav.classList.remove('searching');
+                const activeSection = document.querySelector('.content-section.active').id;
+                mobileSectionNav.querySelector('span').textContent = activeSection.charAt(0).toUpperCase() + activeSection.slice(1);
+            }
+            if (searchInput.value.trim() === '') {
+                navLinks.forEach(link => link.style.display = 'block');
+                searchInput.style.display = 'none';
             }
         });
 
-        // --- MOSTRAR EL TÍTULO AL CARGAR ---
-        animateTitle();
-
-        // --- ENLACE "Todos los derechos reservados" lleva a estadísticas ---
-        document.getElementById('footer-stats-link').addEventListener('click', function(e) {
-            e.preventDefault();
-            cambiarSeccion('estadisticas');
+        closeImageModal.addEventListener('click', closeImageModalFunc);
+        imageModal.addEventListener('click', (e) => {
+            if (e.target === imageModal) {
+                closeImageModalFunc();
+            }
         });
+
+        stickerButton.addEventListener('click', addSticker);
+
+        achievementsButton.addEventListener('click', openAchievementsModal);
+        closeAchievementsModal.addEventListener('click', closeAchievementsModalFunc);
+        achievementsModal.addEventListener('click', (e) => {
+            if (e.target === achievementsModal) {
+                closeAchievementsModalFunc();
+            }
+        });
+
+        document.addEventListener('copy', () => {
+            unlockAchievement('copy_text');
+        });
+
+        document.addEventListener('paste', (event) => {
+            unlockAchievement('paste_text');
+        });
+
+
+        document.querySelectorAll('#podcast audio').forEach(audio => {
+            audio.addEventListener('play', () => {
+                unlockAchievement('play_podcast');
+                // Reiniciar contexto de audio si estaba suspendido (navegadores modernos)
+                if (achievementAudioContext && achievementAudioContext.state === 'suspended') {
+                    achievementAudioContext.resume();
+                }
+            });
+             audio.addEventListener('ended', () => {
+                 unlockAchievement('finish_podcast');
+             });
+            // Lógica básica para tiempo (simplificada)
+            let accumulatedTime = 0;
+            let intervalId = null;
+            audio.addEventListener('play', () => {
+                intervalId = setInterval(() => {
+                    accumulatedTime++;
+                    achievementCounters.podcastTime = (achievementCounters.podcastTime || 0) + 1;
+                    if(achievementCounters.podcastTime % 10 === 0) { // Guardar cada 10s
+                       saveAchievementCounters();
+                    }
+                    if (achievementCounters.podcastTime >= 6000) { // 100 minutos = 6000 segundos
+                        unlockAchievement('listen_100_min');
+                        clearInterval(intervalId); // Detener contador una vez alcanzado
+                    }
+                }, 1000); // Contar cada segundo
+            });
+            audio.addEventListener('pause', () => clearInterval(intervalId));
+            audio.addEventListener('ended', () => clearInterval(intervalId));
+
+        });
+
+
+        // --- INICIALIZACIÓN ---
+        window.addEventListener('DOMContentLoaded', () => {
+            initAudio(); // Intentar inicializar AudioContext
+            loadAchievementStatus();
+            unlockAchievement('visit');
+            currentYearSpan.textContent = new Date().getFullYear();
+            animateTitle();
+            renderizarGaleria(galeriaImagenes);
+            ordenarPublicaciones();
+            cambiarSeccion('publicaciones');
+        });
+
+
     </script>
 </body>
 </html>
