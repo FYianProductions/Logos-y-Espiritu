@@ -2319,9 +2319,13 @@
         animateTitle();
 
         // --- ENLACE "Todos los derechos reservados" lleva a estadísticas ---
-        document.getElementById('footer-stats-link').addEventListener('click', function() {
-            cambiarSeccion('estadisticas');
-        });
+        // document.getElementById('footer-stats-link').addEventListener('click', function() {
+//     cambiarSeccion('estadisticas');
+// });
+document.getElementById('footer-stats-link').addEventListener('dblclick', function(e) {
+    e.preventDefault();
+    cambiarSeccion('estadisticas');
+});
 
         // --- OCULTAR OTRAS SECCIONES AL ENTRAR A ESTADÍSTICAS (ya lo hace cambiarSeccion) ---
 
