@@ -2274,6 +2274,13 @@
         // --- EVENTO PARA BOTÓN VOLVER A PUBLICACIONES ---
         backToPostsButton.addEventListener('click', volverAPublicaciones);
 
+        // --- EVENTO PARA BOTÓN VOLVER AL INICIO DESDE ESTADÍSTICAS ---
+        if (backToMainFromStatsButton) {
+            backToMainFromStatsButton.addEventListener('click', function() {
+                cambiarSeccion('publicaciones');
+            });
+        }
+
         // --- EVENTO PARA FORMULARIO DE SUSCRIPCIÓN ---
         subscribeForm.addEventListener('submit', handleSubscribeFormSubmit);
 
