@@ -1218,37 +1218,3 @@ footer {
         display: none;
     }
 }
-
-/* Estilos para la nueva sección de estadísticas */
-#estadisticas {
-    display: none; /* Oculta por defecto */
-    padding: 40px 0;
-}
-#estadisticas.active {
-    display: block; /* Muestra cuando está activa */
-}
-.publication-statistics {
-    background-color: var(--color-light);
-    border-radius: var(--radius);
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: var(--shadow);
-}
-.publication-statistics h3 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    color: var(--color-dark);
-}
-.publication-statistics p {
-    margin-bottom: 10px;
-    color: #555;
-}
-.publication-statistics ul {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 10px 0;
-}
-.publication-statistics ul li {
-    margin-bottom: 5px;
-    color: var(--color-primary);
-}
