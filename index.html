@@ -1529,7 +1529,7 @@
                 </div>
             </div>
             <div class="copyright">
-                <p>© <span id="current-year"></span> Logos y Espíritu. Todos los derechos reservados.</p>
+                <p>© <span id="current-year"></span> Logos y Espíritu. <span id="footer-stats-link" style="cursor:pointer;text-decoration:underline;">Todos los derechos reservados.</span></p>
             </div>
         </div>
     </footer>
@@ -2198,6 +2198,11 @@
         document.getElementById('back-to-main-from-stats').addEventListener('click', function() {
             cambiarSeccion('publicaciones');
         });
+
+        // --- ACCESO A ESTADÍSTICAS DESDE EL FOOTER ---
+    document.getElementById('footer-stats-link').addEventListener('click', function() {
+        cambiarSeccion('estadisticas');
+    });
 
         // --- MODIFICA mostrarPostIndividual para comentarios y botón de like ---
         function mostrarPostIndividual(id) {
