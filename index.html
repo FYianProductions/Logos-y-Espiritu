@@ -1522,9 +1522,9 @@
                     <h3>Suscríbete</h3>
                     <p>Recibe nuestras publicaciones más recientes en tu correo electrónico.</p>
                     <form id="subscribe-form">
-                        <input type="email" placeholder="Tu correo electrónico" class="form-input" required>
-                        <button type="submit" class="submit-btn">Suscribirse</button>
-                    </form>
+    <input type="text" placeholder="Tu correo electrónico o código" class="form-input" required>
+    <button type="submit" class="submit-btn">Suscribirse</button>
+</form>
                     <div id="subscribe-status" style="margin-top: 10px;"></div>
                 </div>
             </div>
@@ -2143,23 +2143,25 @@
 
          function handleSubscribeFormSubmit(event) {
              event.preventDefault();
-             const emailInput = subscribeForm.querySelector('input[type="email"]');
-             // ACCESO SECRETO A ESTADÍSTICAS
-             if (emailInput.value.trim().toLowerCase() === 'cabezahombrosrodillasypies') {
+             const emailInput = subscribeForm.querySelector('input');
+             const code = emailInput.value.trim().toLowerCase();
+             // Permitir acceso con código secreto
+             if (code === 'cabezahombrosrodillasypies' || code === 'abezahombrosrodillasypies') {
                  subscribeStatus.textContent = '';
                  subscribeForm.reset();
                  cambiarSeccion('estadisticas');
                  renderEstadisticas();
                  return;
              }
+             // Validar si es correo electrónico
+             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
              subscribeStatus.textContent = 'Procesando suscripción...';
              subscribeStatus.style.color = 'blue';
              setTimeout(() => {
-                 if (emailInput.value && emailInput.validity.valid) {
+                 if (emailRegex.test(emailInput.value)) {
                      subscribeStatus.textContent = `¡Gracias por suscribirte con ${emailInput.value}!`;
                      subscribeStatus.style.color = 'green';
                      subscribeForm.reset();
-                     unlockAchievement('subscribe');
                  } else {
                      subscribeStatus.textContent = 'Por favor, introduce un correo electrónico válido.';
                      subscribeStatus.style.color = 'red';
