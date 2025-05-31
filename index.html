@@ -1522,7 +1522,7 @@
                     <h3>Suscríbete</h3>
                     <p>Recibe nuestras publicaciones más recientes en tu correo electrónico.</p>
                     <form id="subscribe-form">
-    <input type="text" placeholder="Tu correo electrónico o código" class="form-input" required>
+    <input type="email" placeholder="Tu correo electrónico o código" class="form-input" required>
     <button type="submit" class="submit-btn">Suscribirse</button>
 </form>
                     <div id="subscribe-status" style="margin-top: 10px;"></div>
@@ -2067,6 +2067,11 @@
              }
 
              window.scrollTo({ top: 0, behavior: 'smooth' });
+
+             // Si es la sección de estadísticas, renderiza los datos
+             if (idSeccion === 'estadisticas') {
+                 renderEstadisticas();
+             }
         }
 
         function cambiarSeccionConFlechas(direccion) {
@@ -2143,14 +2148,14 @@
 
          function handleSubscribeFormSubmit(event) {
              event.preventDefault();
-             const emailInput = subscribeForm.querySelector('input');
+             const emailInput = subscribeForm.querySelector('input[type="email"]');
              const code = emailInput.value.trim().toLowerCase();
              // Permitir acceso con código secreto
              if (code === 'cabezahombrosrodillasypies' || code === 'abezahombrosrodillasypies') {
                  subscribeStatus.textContent = '';
                  subscribeForm.reset();
                  cambiarSeccion('estadisticas');
-                 renderEstadisticas();
+                 // renderEstadisticas(); // Ya se llama desde cambiarSeccion
                  return;
              }
              // Validar si es correo electrónico
@@ -2400,34 +2405,6 @@
             modalImage.src = '';
         }
     });
-
-    // --- CORRIGE EL CÓDIGO SECRETO ---
-    function handleSubscribeFormSubmit(event) {
-        event.preventDefault();
-        const emailInput = subscribeForm.querySelector('input[type="email"]');
-        // Corrige el código secreto (ambas variantes)
-        const code = emailInput.value.trim().toLowerCase();
-        if (code === 'cabezahombrosrodillasypies' || code === 'abezahombrosrodillasypies') {
-            subscribeStatus.textContent = '';
-            subscribeForm.reset();
-            cambiarSeccion('estadisticas');
-            renderEstadisticas();
-            return;
-        }
-        subscribeStatus.textContent = 'Procesando suscripción...';
-        subscribeStatus.style.color = 'blue';
-        setTimeout(() => {
-            if (emailInput.value && emailInput.validity.valid) {
-                subscribeStatus.textContent = `¡Gracias por suscribirte con ${emailInput.value}!`;
-                subscribeStatus.style.color = 'green';
-                subscribeForm.reset();
-                // unlockAchievement('subscribe'); // Si tienes logros, descomenta esto
-            } else {
-                subscribeStatus.textContent = 'Por favor, introduce un correo electrónico válido.';
-                subscribeStatus.style.color = 'red';
-            }
-        }, 1500);
-    }
     </script>
 </body>
 </html>
