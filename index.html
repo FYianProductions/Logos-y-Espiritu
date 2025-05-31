@@ -2093,6 +2093,21 @@
             }
         }
 
+        // --- NUEVO: Mostrar post individual ---
+        function mostrarPostIndividual(postId) {
+            const post = publicaciones.find(p => p.id === postId);
+            if (!post) return;
+            singlePostTitle.textContent = post.titulo;
+            singlePostDate.textContent = formatearFecha(post.fecha);
+            singlePostCategory.textContent = post.categoria || '';
+            singlePostContent.innerHTML = post.contenido;
+            cambiarSeccion('single-post');
+        }
+
+        function volverAPublicaciones() {
+            cambiarSeccion('publicaciones');
+        }
+
         function renderizarGaleria(imagesToRender) {
             imageGalleryGrid.innerHTML = '';
             if (imagesToRender.length === 0) {
@@ -2240,57 +2255,74 @@
 
         // --- EVENTOS DE NAVEGACIÓN ---
         navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            cambiarSeccion(this.dataset.section);
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                cambiarSeccion(this.dataset.section);
+            });
         });
-    });
-    footerNavLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            cambiarSeccion(this.dataset.section);
+        footerNavLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                cambiarSeccion(this.dataset.section);
+            });
         });
-    });
 
-    // --- EVENTO PARA FLECHA DE ORDEN ---
-    sortArrow.addEventListener('click', cambiarOrden);
+        // --- EVENTO PARA FLECHA DE ORDEN ---
+        sortArrow.addEventListener('click', cambiarOrden);
 
-    // --- EVENTO PARA BOTÓN VOLVER A PUBLICACIONES ---
-    backToPostsButton.addEventListener('click', volverAPublicaciones);
+        // --- EVENTO PARA BOTÓN VOLVER A PUBLICACIONES ---
+        backToPostsButton.addEventListener('click', volverAPublicaciones);
 
-    // --- EVENTO PARA FORMULARIO DE SUSCRIPCIÓN ---
-    subscribeForm.addEventListener('submit', handleSubscribeFormSubmit);
+        // --- EVENTO PARA FORMULARIO DE SUSCRIPCIÓN ---
+        subscribeForm.addEventListener('submit', handleSubscribeFormSubmit);
 
-    // --- EVENTO PARA BÚSQUEDA ---
-    searchInput.addEventListener('input', function() {
-        handleSearch();
-    });
+        // --- EVENTO PARA BÚSQUEDA ---
+        searchInput.addEventListener('input', function() {
+            handleSearch();
+        });
 
-    // --- BOTÓN VOLVER ARRIBA ---
-    window.addEventListener('scroll', toggleBackToTopButton);
-    backToTopButton.addEventListener('click', function(e) {
-        e.preventDefault();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+        // --- BOTÓN VOLVER ARRIBA ---
+        window.addEventListener('scroll', toggleBackToTopButton);
+        backToTopButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
 
-    // --- FLECHAS DE NAVEGACIÓN MÓVIL ---
-    window.cambiarSeccionConFlechas = cambiarSeccionConFlechas;
+        // --- FLECHAS DE NAVEGACIÓN MÓVIL ---
+        window.cambiarSeccionConFlechas = cambiarSeccionConFlechas;
 
-    // --- MODAL DE IMÁGENES ---
-    function openImageModal(src) {
-        modalImage.src = src;
-        imageModal.classList.add('active');
-    }
-    closeImageModal.addEventListener('click', function() {
-        imageModal.classList.remove('active');
-        modalImage.src = '';
-    });
-    imageModal.addEventListener('click', function(e) {
-        if (e.target === imageModal) {
+        // --- MODAL DE IMÁGENES ---
+        function openImageModal(src) {
+            modalImage.src = src;
+            imageModal.classList.add('active');
+        }
+        closeImageModal.addEventListener('click', function() {
             imageModal.classList.remove('active');
             modalImage.src = '';
-        }
-    });
+        });
+        imageModal.addEventListener('click', function(e) {
+            if (e.target === imageModal) {
+                imageModal.classList.remove('active');
+                modalImage.src = '';
+            }
+        });
+
+        // --- MOSTRAR EL TÍTULO AL CARGAR ---
+        animateTitle();
+
+        // --- ENLACE "Todos los derechos reservados" lleva a estadísticas ---
+        document.getElementById('footer-stats-link').addEventListener('click', function() {
+            cambiarSeccion('estadisticas');
+        });
+
+        // --- OCULTAR OTRAS SECCIONES AL ENTRAR A ESTADÍSTICAS (ya lo hace cambiarSeccion) ---
+
+        // --- NO RENDERIZAR ESTADÍSTICAS DINÁMICAS, SOLO EL HTML DADO ---
+
+        // --- INICIALIZAR VISTA PRINCIPAL ---
+        renderizarPublicaciones(currentPosts);
+        renderizarGaleria(currentImages);
+
     </script>
 </body>
 </html>
