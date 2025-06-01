@@ -699,24 +699,43 @@ nav ul li a:hover, nav ul li a.active {
 }
 
 .top-right-btn#sticker-button {
-    background-image: url('path/to/sticker-icon.svg'); /* Replace with actual icon path */
-    background-size: 60%;
-    background-repeat: no-repeat;
-    background-position: center;
-    text-indent: -9999px; /* Hide text */
+    width: 40px;
+    height: 40px;
+    border-radius: 8px; /* Make it cubic */
+    background-color: var(--color-light);
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow);
+    cursor: pointer;
 }
 
+.top-right-btn#sticker-button::before {
+    content: '🎨'; /* Emoji for sticker */
+    display: block;
+}
+
+/* Fix achievements button to display "Logros" text */
 .top-right-btn#achievements-button {
     padding: 0 10px;
     font-size: 0.9rem;
     font-weight: bold;
     color: var(--color-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-light);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    cursor: pointer;
 }
 
+/* Adjust search container alignment */
 .search-container {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 10px;
 }
 
 /* Desktop layout for posts */
