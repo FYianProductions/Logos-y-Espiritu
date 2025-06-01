@@ -281,9 +281,9 @@ nav ul li a:hover, nav ul li a.active {
 
 /* Grid de Publicaciones */
 .posts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Add spacing between posts */
 }
 #no-results-message {
     text-align: center;
@@ -681,7 +681,7 @@ nav ul li a:hover, nav ul li a.active {
     right: 20px;
     z-index: 999;
     display: flex;
-    gap: 10px;
+    gap: 10px; /* Add spacing between buttons */
     align-items: center;
 }
 
@@ -1083,24 +1083,24 @@ footer {
     .top-right-buttons { right: 15px; }
 }
 @media (max-width: 768px) {
-    header h1#main-title { font-size: 2.8rem; }
-    header p { font-size: 1rem; }
-    nav { max-width: 95%; }
-    .section-title { font-size: 1.8rem; }
-    .single-post-title { font-size: 1.8rem; }
-    .footer-content { grid-template-columns: 1fr; gap: 30px; }
-    .footer-section { text-align: center; }
-    .footer-section h3::after { margin: 0 auto; }
-    .social-links { justify-content: center; }
-    #subscribe-form { flex-direction: column; }
-    #subscribe-form button { width: 100%; }
-    .gallery-item { max-width: 45%; }
-    .top-right-btn { font-size: 0.8rem; padding: 6px 12px; }
-    #achievements-button { width: 35px; height: 35px; }
-    #achievements-button svg { width: 18px; height: 18px; }
-    .sticker-image { max-width: 60px; border-radius: 4px; }
-    .achievements-modal-content { padding: 20px; }
-    .achievements-modal-content h2 { font-size: 1.5rem; }
+    header {
+        padding: 40px 15px 20px;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .posts-grid .post {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .posts-grid .post-thumbnail {
+        width: 100%;
+        height: auto;
+    }
 }
 @media (max-width: 600px) {
     header h1#main-title { font-size: 2.2rem; }
