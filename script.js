@@ -258,9 +258,12 @@ function crearTarjetaPost(post) {
                 <h3 class="post-title">${post.titulo}</h3>
                 <div class="post-meta">
                     <span class="post-date">${formatearFecha(post.fecha)}</span>
-                     <span class="post-category-badge">${post.categoria}</span>
+                    <span class="post-category-badge">${post.categoria}</span>
                 </div>
                 <p class="post-excerpt">${post.resumen}</p>
+                <button class="like-button" data-post-id="${post.id}" onclick="handleLikeClick(event)">
+                    <span class="like-count">0</span> Likes
+                </button>
             </div>
         </article>
     `;
@@ -558,6 +561,74 @@ function addSticker() {
      }, 5000);
 }
 
+// --- Lógica de Likes con Supabase ---
+
+async function getLikes(postId) {
+    try {
+        const { data, error } = await supabase
+            .from('post_likes')
+            .select('likes')
+            .eq('post_id', postId)
+            .single(); // Esperamos un solo resultado
+
+        if (error && error.code === 'PGRST116') { // No rows found
+            // Si no existe la entrada para el post, la creamos con 0 likes
+            const { data: newData, error: newError } = await supabase
+                .from('post_likes')
+                .insert([{ post_id: postId, likes: 0 }])
+                .select()
+                .single();
+            if (newError) throw newError;
+            return newData.likes;
+        }
+        if (error) throw error;
+        return data.likes;
+    } catch (error) {
+        console.error('Error al obtener likes para el post', postId, ':', error.message);
+        return 0; // Devolver 0 en caso de error
+    }
+}
+
+async function incrementLikes(postId) {
+    try {
+        // Obtenemos el valor actual para asegurarnos de que existe o para crearlo si no
+        let currentLikes = await getLikes(postId);
+
+        // Incrementamos en 1
+        const { data, error } = await supabase
+            .from('post_likes')
+            .update({ likes: currentLikes + 1 })
+            .eq('post_id', postId)
+            .select()
+            .single();
+
+        if (error) throw error;
+        return data.likes;
+    } catch (error) {
+        console.error('Error al incrementar likes para el post', postId, ':', error.message);
+        return null;
+    }
+}
+
+// Función para manejar el clic en el botón de like
+async function handleLikeClick(event) {
+    const button = event.currentTarget;
+    const postId = button.dataset.postId;
+    if (!postId) {
+        console.error('No se encontró post_id en el botón de like.');
+        return;
+    }
+
+    const newLikes = await incrementLikes(postId);
+    if (newLikes !== null) {
+        // Actualizar el texto del contador de likes en la UI
+        const likeCountSpan = button.querySelector('.like-count');
+        if (likeCountSpan) {
+            likeCountSpan.textContent = newLikes;
+        }
+    }
+}
+
 // *** FUNCIONES PARA LOGROS (Actualizadas) ***
 function loadAchievementStatus() {
     const savedStatus = localStorage.getItem('blogLogrosStatus');
@@ -717,6 +788,12 @@ function openAchievementsModal() {
 function closeAchievementsModalFunc() {
     achievementsModal.classList.remove('active');
 }
+
+// --- CONSTANTES DE SUPABASE ---
+const SUPABASE_URL = 'https://hxeugrxmehmvzxcmbodd.supabase.co'; // Reemplaza con tu Project URL
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4ZXVncnhtZWhtdnp4Y21ib2RkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4MTQwMDYsImV4cCI6MjA2NDM5MDAwNn0.xqo5Jai56bTpNu9Rjo45fcbCtuUjx1IfLmtid8HKalk'; // Reemplaza con tu anon public key
+
+const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // --- INICIALIZACIÓN DE AUDIO CONTEXT (para sonido de logro) ---
 function initAudio() {
