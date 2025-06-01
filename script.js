@@ -561,6 +561,10 @@ function addSticker() {
      }, 5000);
 }
 
+const SUPABASE_URL = 'https://hxeugrxmehmvzxcmbodd.supabase.co'; // Reemplaza con tu Project URL
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4ZXVncnhtZWhtdnp4Y21ib2RkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4MTQwMDYsImV4cCI6MjA2NDM5MDAwNn0.xqo5Jai56bTpNu9Rjo45fcbCtuUjx1IfLmtid8HKalk'; // Reemplaza con tu anon public key
+
+const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 // --- Lógica de Likes con Supabase ---
 
 async function getLikes(postId) {
@@ -790,10 +794,6 @@ function closeAchievementsModalFunc() {
 }
 
 // --- CONSTANTES DE SUPABASE ---
-const SUPABASE_URL = 'https://hxeugrxmehmvzxcmbodd.supabase.co'; // Reemplaza con tu Project URL
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4ZXVncnhtZWhtdnp4Y21ib2RkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4MTQwMDYsImV4cCI6MjA2NDM5MDAwNn0.xqo5Jai56bTpNu9Rjo45fcbCtuUjx1IfLmtid8HKalk'; // Reemplaza con tu anon public key
-
-const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // --- INICIALIZACIÓN DE AUDIO CONTEXT (para sonido de logro) ---
 function initAudio() {
@@ -937,23 +937,6 @@ window.addEventListener('DOMContentLoaded', () => {
     currentYearSpan.textContent = new Date().getFullYear();
     animateTitle();
     renderizarGaleria(galeriaImagenes);
-
-    // --- NUEVA LÓGICA DEL CONTADOR DE VISITAS CON COUNTAPI-JS ---
-    const visitCounterElement = document.getElementById('visit-counter');
-    if (visitCounterElement) {
-        // Usa tu namespace (logosyespiritu) y una clave (website_visits) para tu contador.
-        // El método .visits() de countapi-js hará el "hit" y devolverá el valor.
-        countapi.visits('logosyespiritu', 'website_visits').then((result) => {
-            visitCounterElement.textContent = result.value;
-            console.log(`Visitas totales (countapi-js): ${result.value}`);
-        }).catch((error) => {
-            console.error('No se pudo actualizar el contador de visitas (countapi-js):', error);
-            visitCounterElement.textContent = 'Error al cargar';
-        });
-    } else {
-        console.warn('Elemento #visit-counter no encontrado en el DOM.');
-    }
-    // --- FIN NUEVA LÓGICA DEL CONTADOR ---
 
     cambiarSeccion('home'); // Asegúrate de que la sección home se muestre al cargar
     renderAchievements(); // Renderizar los logros al cargar la página
