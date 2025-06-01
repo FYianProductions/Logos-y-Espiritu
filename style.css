@@ -1227,6 +1227,44 @@ footer {
     font-weight: 600;
     color: var(--color-primary);
 }
+/* Estilos para la sección de likes */
+.post-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.like-button {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    color: var(--color-text);
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: var(--radius);
+    transition: background-color 0.3s ease;
+}
+
+.like-button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.like-button svg {
+    margin-right: 5px;
+    fill: #e74c3c; /* Color del corazón, puedes cambiarlo */
+    transition: transform 0.2s ease-in-out;
+}
+
+.like-button:hover svg {
+    transform: scale(1.1);
+}
+
+.like-count {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
 }
 @media (min-width: 601px) {
     .mobile-section-nav {
