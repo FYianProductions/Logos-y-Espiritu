@@ -561,10 +561,10 @@ function addSticker() {
      }, 5000);
 }
 
-const SUPABASE_URL = 'https://hxeugrxmehmvzxcmbodd.supabase.co'; // Reemplaza con tu Project URL
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4ZXVncnhtZWhtdnp4Y21ib2RkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4MTQwMDYsImV4cCI6MjA2NDM5MDAwNn0.xqo5Jai56bTpNu9Rjo45fcbCtuUjx1IfLmtid8HKalk'; // Reemplaza con tu anon public key
+//const SUPABASE_URL = 'https://hxeugrxmehmvzxcmbodd.supabase.co'; // Reemplaza con tu Project URL
+//const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4ZXVncnhtZWhtdnp4Y21ib2RkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4MTQwMDYsImV4cCI6MjA2NDM5MDAwNn0.xqo5Jai56bTpNu9Rjo45fcbCtuUjx1IfLmtid8HKalk'; // Reemplaza con tu anon public key
 
-const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+//const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 // --- Lógica de Likes con Supabase ---
 
 async function getLikes(postId) {
