@@ -14,168 +14,167 @@
         <button id="sticker-button" class="top-right-btn">Stickers</button>
         <div class="search-container">
             <svg id="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px">
-                <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-                <path d="M0 0h24v24H0z" fill="none"/>
+                <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27-.28zM9.5 14C7.57 14 6 12.43 6 10.5S7.57 7 9.5 7 13 8.57 13 10.5 11.43 14 9.5 14z"/>
             </svg>
-            <input type="search" id="search-input" placeholder="Buscar...">
+            <input type="text" id="search-input" placeholder="Buscar...">
         </div>
-        <button id="achievements-button" class="top-right-btn" aria-label="Ver Logros">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                <path d="M400 0H176c-26.5 0-48.1 21.8-47.4 48.2C131.1 82.3 144 116.6 144 152V296.6c-38.6 8.8-64 44.1-64 85.4v16c0 17.7 14.3 32 32 32H464c17.7 0 32-14.3 32-32v-16c0-41.3-25.4-76.6-64-85.4V152c0-35.4 12.9-69.7 15.4-103.8C448.1 21.8 426.5 0 400 0zM48 448c-26.5 0-48-21.5-48-48V192c0-26.5 21.5-48 48-48H96V448H48zM528 448H480V144h48c26.5 0 48 21.5 48 48V400c0 26.5-21.5 48-48 48z"/>
-            </svg>
+        <button id="achievements-button" class="top-right-btn" aria-label="Logros">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor"><path d="M256 0c-11.8 0-21.4 8.7-22.9 20.4L188.7 133.5c-3.1 9.4-12 15.1-21.7 15.1H32c-12.7 0-23.7 9.1-25.5 21.6s-1.1 24.6 6.3 34.4l91.6 114.5c6.3 7.9 8.3 18.2 5.3 27.8l-37.5 113.1c-3.7 11.2 1.4 23.6 12.7 27.7s24.6-1.4 30.6-11.1L247.3 429.3c8.1-13 24.3-13 32.4 0l90.3 145.4c6 9.7 17.3 14.8 28.5 11.1s20.1-16.5 16.4-27.7l-37.5-113.1c-3-9.6-1-19.9 5.3-27.8l91.6-114.5c7.4-9.8 8.1-22.1 6.3-34.4s-12.8-21.6-25.5-21.6H345c-9.7 0-18.6-5.7-21.7-15.1L278.9 20.4C277.4 8.7 268.2 0 256 0zm0 160a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 128a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"/></svg>
         </button>
     </div>
-    <div id="sticker-area"></div>
 
     <header>
-        <div class="container">
-            <h1 id="main-title"></h1>
-            <p>Bienvenidos a Logos y Espíritu, un espacio donde exploramos temas sobre la fe y sobre la razón, además de la obra del Siervo de Dios Rafael García Herreros.</p>
+        <div class="header-overlay"></div>
+        <div class="header-content">
+            <h1 id="main-title">Logos y Espíritu</h1>
+            <nav id="main-nav">
+                <ul>
+                    <li><a href="#" data-section="home">Inicio</a></li>
+                    <li><a href="#" data-section="blog">Blog</a></li>
+                    <li><a href="#" data-section="podcast">Podcast</a></li>
+                    <li><a href="#" data-section="galeria">Galería</a></li>
+                    <li><a href="#" data-section="about">Acerca de</a></li>
+                    <li><a href="#" data-section="contacto">Contacto</a></li>
+                </ul>
+            </nav>
         </div>
-        <div id="logo-uniminuto">
-             </div>
     </header>
 
-    <div class="container">
-        <nav>
-            <ul id="main-nav">
-                <li><a href="#" data-section="publicaciones" class="active">Publicaciones</a></li>
-                <li><a href="#" data-section="imagenes">Imagenes</a></li>
-                <li><a href="#" data-section="podcast">Podcast</a></li>
-            </ul>
-            <div class="mobile-section-nav">
-                <button class="mobile-nav-arrow" onclick="cambiarSeccionConFlechas('izquierda')">←</button>
-                <span>Publicaciones</span>
-                <button class="mobile-nav-arrow" onclick="cambiarSeccionConFlechas('derecha')">→</button>
-            </div>
-        </nav>
+    <main>
+        <section id="home" class="content-section active">
+            <h2>Bienvenido a Logos y Espíritu</h2>
+            <p>Explora la intersección de la razón y la fe.</p>
+            <p class="visit-counter-display">Visitas al sitio: <span id="visit-counter">Cargando...</span></p>
+        </section>
 
-        <section class="content-section active" id="publicaciones">
-            <div class="section-title-container">
-                <h2 class="section-title">Publicaciones Recientes</h2>
-                <svg id="sort-arrow" class="arrow-up" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                    <path d="M7 14l5-5 5 5z"/>
-                    <path d="M0 0h24v24H0z" fill="none"/>
+        <section id="blog" class="content-section">
+            <h2>Blog</h2>
+            <div class="filter-controls">
+                <select id="category-filter">
+                    <option value="all">Todas las Categorías</option>
+                    <option value="filosofia">Filosofía</option>
+                    <option value="teologia">Teología</option>
+                    <option value="historia">Historia</option>
+                </select>
+                <div class="sort-control">
+                    <span>Ordenar por Fecha:</span>
+                    <button id="sort-button" aria-label="Ordenar publicaciones">
+                        <svg id="sort-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" fill="currentColor">
+                            <path d="M41 288h238c21.4 0 32.1 25.9 17 41L177 448c-9.4 9.4-24.6 9.4-33.9 0L24 329c-15.1-15.1-4.4-41 17-41zm255-105L177 64c-9.4-9.4-24.6-9.4-33.9 0L24 183c-15.1 15.1-4.4 41 17 41h238c21.4 0 32.1-25.9 17-41z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="posts-grid" class="grid-container">
+                </div>
+            <p id="no-results-message" style="display: none; text-align: center; margin-top: 20px;">No se encontraron resultados que coincidan con la búsqueda.</p>
+        </section>
+
+        <section id="single-post" class="content-section single-post-container">
+            <button id="back-to-posts" class="back-button">&larr; Volver al Blog</button>
+            <h2 id="single-post-title"></h2>
+            <div class="post-meta">
+                <span id="single-post-date"></span>
+                <span class="post-category" id="single-post-category"></span>
+            </div>
+            <div id="single-post-content">
+                </div>
+        </section>
+
+        <section id="podcast" class="content-section">
+            <h2>Podcast</h2>
+            <div class="podcast-player">
+                <audio controls id="podcast-audio" src="audio/podcast_sample.mp3"></audio>
+                <div class="podcast-info">
+                    <h3>Filosofía y Espiritualidad</h3>
+                    <p>Una exploración profunda de cómo la filosofía puede enriquecer nuestra vida espiritual.</p>
+                </div>
+            </div>
+            <div class="transcription">
+                <h3>Transcripción</h3>
+                <p>
+                    [INTRO MÚSICA]
+                    <br><br>
+                    **Narrador:** Bienvenidos a "Logos y Espíritu", el podcast donde exploramos la fascinante intersección entre la razón y la fe, la filosofía y la espiritualidad. En el episodio de hoy, nos adentraremos en la idea de cómo el pensamiento filosófico, a menudo percibido como árido y abstracto, puede en realidad ser una herramienta poderosa para profundizar nuestra comprensión y experiencia de lo trascendente.
+                    <br><br>
+                    **Voz 1 (Filósofo):** La filosofía, desde sus orígenes, siempre ha estado ligada a las grandes preguntas existenciales. ¿Quiénes somos? ¿De dónde venimos? ¿Cuál es el propósito de nuestra existencia? Estas no son solo cuestiones académicas, sino que resuenan con nuestra búsqueda innata de significado. Y es precisamente en esa búsqueda donde la filosofía se entrelaza con la espiritualidad. No se trata de reemplazar la fe, sino de complementarla, de ofrecer un marco conceptual que permita articular y comprender nuestras creencias de una manera más robusta.
+                    <br><br>
+                    **Voz 2 (Teólogo):** Exacto. La teología, por su parte, se nutre de la revelación, pero la razón y la filosofía son las herramientas que nos permiten reflexionar sobre esa revelación, analizarla, contextualizarla y, en última instancia, defenderla y vivirla de manera más consciente. Pensemos en los grandes pensadores medievales: Tomás de Aquino, Agustín de Hipona... Ellos no veían una dicotomía entre la fe y la razón, sino una sinergia. La razón iluminando la fe, y la fe, a su vez, expandiendo los horizontes de la razón.
+                    <br><br>
+                    **Narrador:** Un punto clave aquí es que la filosofía nos enseña a pensar críticamente, a cuestionar suposiciones, a construir argumentos sólidos. Estas habilidades son invaluable para cualquier persona que busque una fe más madura y reflexiva, una fe que no tema al escrutinio intelectual.
+                    <br><br>
+                    **Voz 1 (Filósofo):** Totalmente. Una fe que no se examina es una fe frágil. La filosofía nos ayuda a identificar falacias, a distinguir entre dogma y superstición, y a apreciar la complejidad de las verdades espirituales. Nos anima a ir más allá de la superficie, a buscar la profundidad y la coherencia en nuestras convicciones.
+                    <br><br>
+                    **Voz 2 (Teólogo):** Y también nos permite comunicarnos con aquellos que no comparten nuestras mismas premisas. Si podemos articular nuestras creencias de una manera racional y argumentada, abrimos un puente para el diálogo, para el entendimiento mutuo, incluso si no llegamos a un acuerdo total. Es un acto de respeto intelectual.
+                    <br><br>
+                    **Narrador:** En resumen, la filosofía y la espiritualidad no son caminos paralelos, sino sendas que pueden cruzarse y enriquecerse mutuamente. La una proporciona las herramientas para el pensamiento crítico y la articulación, mientras que la otra ofrece el horizonte de significado y trascendencia. Juntas, nos permiten construir una vida más plena y una fe más profunda.
+                    <br><br>
+                    [OUTRO MÚSICA]
+                </p>
+            </div>
+        </section>
+
+        <section id="galeria" class="content-section">
+            <h2>Galería de Imágenes</h2>
+            <div class="gallery-search-container">
+                <input type="text" id="gallery-search-input" placeholder="Buscar imágenes...">
+                <svg id="gallery-search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px">
+                    <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27-.28zM9.5 14C7.57 14 6 12.43 6 10.5S7.57 7 9.5 7 13 8.57 13 10.5 11.43 14 9.5 14z"/>
                 </svg>
             </div>
-            <div class="posts-grid" id="posts-grid">
+            <div id="image-gallery-grid" class="image-gallery-grid">
                 </div>
-            <p id="no-results-message" style="display: none;">No se encontraron publicaciones que coincidan con tu búsqueda.</p>
+            <p id="no-image-results-message" style="display: none; text-align: center; margin-top: 20px;">No se encontraron imágenes que coincidan con la búsqueda.</p>
         </section>
 
-        <section class="content-section" id="single-post">
-             <button id="back-to-posts" class="submit-btn" style="margin-bottom: 20px; background: var(--color-dark);">← Volver a Publicaciones</button>
-            <h1 class="single-post-title" id="single-post-title"></h1>
-            <div class="single-post-info">
-                <span class="single-post-date" id="single-post-date"></span>
-                <span class="single-post-category" id="single-post-category"></span>
-            </div>
-            <div class="single-post-content" id="single-post-content">
-                </div>
+        <section id="about" class="content-section">
+            <h2>Acerca de Logos y Espíritu</h2>
+            <p>Somos un espacio dedicado a la exploración profunda de temas que conectan la filosofía, la teología y la espiritualidad. Nuestro objetivo es ofrecer una perspectiva reflexiva y enriquecedora para aquellos que buscan respuestas a las grandes preguntas de la vida.</p>
         </section>
 
-        <section class="content-section" id="imagenes">
-            <h2 class="section-title">Galería de Imágenes</h2>
-            <p style="text-align: center; margin-bottom: 20px;">Explora nuestra colección de imágenes inspiradoras (haz clic para ampliar).</p>
-            <div class="image-gallery" id="image-gallery-grid">
+        <section id="contacto" class="content-section">
+            <h2>Contacto</h2>
+            <p>¿Tienes preguntas o comentarios? ¡Nos encantaría escucharte!</p>
+            <form id="contact-form">
+                <div class="form-group">
+                    <label for="name">Nombre:</label>
+                    <input type="text" id="name" name="name" required>
                 </div>
-             <p id="no-image-results-message" style="display: none; text-align: center; margin-top: 20px; color: #777;">No se encontraron imágenes que coincidan con tu búsqueda.</p>
+                <div class="form-group">
+                    <label for="email">Correo Electrónico:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Mensaje:</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="button-primary">Enviar Mensaje</button>
+                <p id="form-status"></p>
+            </form>
         </section>
 
-        <section class="content-section" id="podcast">
-            <h2 class="section-title">Podcast Logos y Espíritu</h2>
-            <p style="text-align: center; margin-bottom: 20px;">Escucha nuestros episodios más recientes.</p>
-             <div class="podcast-grid">
-                 <div class="podcast-item">
-                    <h4>Episodio 1: La Vida de San Juan Eudes</h4>
-                    <p>Fecha: 24 de abril de 2025</p>
-                    <audio id="podcast-sje" controls style="width: 100%; max-width: 300px; margin-top: 10px;">
-                        <source src="audio/La Vida de San Juan Eudes.mp3" type="audio/mpeg">
-                        Tu navegador no soporta el elemento de audio.
-                    </audio>
-                </div>
-                <div class="podcast-item">
-                    <h4>Episodio 2: La predicación de San Juan Eudes</h4>
-                    <p>Fecha: 01 de mayo de 2025</p>
-                    <audio id="podcast-sje2" controls style="width: 100%; max-width: 300px; margin-top: 10px;">
-                        <source src="audio/La predicación de San Juan Eudes.mp3" type="audio/mpeg">
-                        Tu navegador no soporta el elemento de audio.
-                    </audio>
-                </div>
-                <div class="podcast-item">
-                    <h4>Episodio 3: Un hogar para las que nadie miraba</h4>
-                    <p>Fecha: 08 de mayo de 2025</p>
-                    <audio id="podcast-uhplqnm" controls style="width: 100%; max-width: 300px; margin-top: 10px;">
-                        <source src="audio/Un hogar para las que nadie miraba.mp3" type="audio/mpeg">
-                        Tu navegador no soporta el elemento de audio.
-                    </audio>
-                </div>
-                <!-- Episodio 4 -->
-                <div class="podcast-item">
-                    <h4>Episodio 4: Un corazón para formar corazones</h4>
-                    <p>Fecha: 15 de mayo de 2025</p>
-                    <audio id="podcast-ep4" controls style="width: 100%; max-width: 300px; margin-top: 10px;">
-                        <source src="audio/Ep4 - Un corazón para formar corazones.mp3" type="audio/mpeg">
-                        Tu navegador no soporta el elemento de audio.
-                    </audio>
-                </div>
-                <!-- Episodio 5 -->
-                <div class="podcast-item">
-                    <h4>Episodio 5: Fundaciones con propósito</h4>
-                    <p>Fecha: 22 de mayo de 2025</p>
-                    <audio id="podcast-ep5" controls style="width: 100%; max-width: 300px; margin-top: 10px;">
-                        <source src="audio/Ep5 - Fundaciones con propósito.mp3" type="audio/mpeg">
-                        Tu navegador no soporta el elemento de audio.
-                    </audio>
-                </div>
-            </div>
-        </section>
-
-    </div> <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Logos y Espíritu</h3>
-                    <p>Bienvenidos a Logos y Espíritu, un espacio donde exploramos temas sobre la fe y sobre la razón, además de la obra del Siervo de Dios Rafael García Herreros.</p>
-                    <div class="social-links">
-                        <a href="#" aria-label="Facebook">
-                            <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"/></svg>
-                        </a>
-                        <a href="#" aria-label="Twitter">
-                            <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
-                        </a>
-                        <a href="#" aria-label="Instagram">
-                           <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 224.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
-                        </a>
-                        <a href="#" aria-label="YouTube">
-                            <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
-                        </a>
+        <div id="sticker-modal" class="sticker-modal">
+            <div class="sticker-modal-content">
+                <span class="close-sticker-modal" id="close-sticker-modal">&times;</span>
+                <div class="sticker-options" id="sticker-options">
                     </div>
-                </div>
-                <div class="footer-section">
-                    <h3>Enlaces Rápidos</h3>
-                     <ul>
-                        <li><a href="#" data-section="publicaciones">Publicaciones</a></li>
-                        <li><a href="#" data-section="imagenes">Imagenes</a></li>
-                        <li><a href="#" data-section="podcast">Podcast</a></li>
-                        <li><a href="#" data-section="estadisticas">Estadísticas</a></li>
-                     </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Suscríbete</h3>
-                    <p>Recibe nuestras publicaciones más recientes en tu correo electrónico.</p>
-                    <form id="subscribe-form">
-                        <input type="email" placeholder="Tu correo electrónico" class="form-input" required>
-                        <button type="submit" class="submit-btn">Suscribirse</button>
-                    </form>
-                    <div id="subscribe-status" style="margin-top: 10px;"></div>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>© <span id="current-year"></span> Logos y Espíritu. Todos los derechos reservados.</p>
-                <p>Número de visitas a esta página: <span id="visit-counter">0</span></p>
             </div>
         </div>
+
+    </main>
+
+    <footer>
+        <nav>
+            <ul>
+                <li><a href="#" data-section="home">Inicio</a></li>
+                <li><a href="#" data-section="blog">Blog</a></li>
+                <li><a href="#" data-section="podcast">Podcast</a></li>
+                <li><a href="#" data-section="galeria">Galería</a></li>
+                <li><a href="#" data-section="about">Acerca de</a></li>
+                <li><a href="#" data-section="contacto">Contacto</a></li>
+            </ul>
+        </nav>
+        <p>&copy; <span id="current-year"></span> Logos y Espíritu. Todos los derechos reservados.</p>
     </footer>
 
     <div id="imageModal" class="image-zoom-modal">
@@ -201,9 +200,10 @@
 
 
     <a href="#" class="back-to-top" id="backToTop" aria-label="Volver arriba">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.455 101.255 381.118c-9.375 9.335-24.54-.02-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.029 130.524c9.373-9.372 24.569-9.372 33.942 0z"/></svg>
     </a>
 
+    <script src="https://unpkg.com/countapi-js"></script>
     <script src="script.js"></script>
 </body>
 </html>
