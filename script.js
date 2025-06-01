@@ -266,6 +266,41 @@ function crearTarjetaPost(post) {
     `;
 }
 
+// Update the rendering logic for posts to match the new list format
+function renderPosts(posts) {
+    postsGrid.innerHTML = '';
+    posts.forEach(post => {
+        const postElement = document.createElement('div');
+        postElement.classList.add('post');
+
+        const thumbnail = document.createElement('img');
+        thumbnail.src = post.imagen;
+        thumbnail.alt = post.titulo;
+        thumbnail.classList.add('post-thumbnail');
+
+        const content = document.createElement('div');
+        content.classList.add('post-content');
+
+        const title = document.createElement('h3');
+        title.textContent = post.titulo;
+        title.classList.add('post-title');
+
+        const summary = document.createElement('p');
+        summary.textContent = post.resumen;
+        summary.classList.add('post-summary');
+
+        content.appendChild(title);
+        content.appendChild(summary);
+        postElement.appendChild(thumbnail);
+        postElement.appendChild(content);
+
+        postsGrid.appendChild(postElement);
+    });
+}
+
+// Call renderPosts with the existing publicaciones array
+renderPosts(publicaciones);
+
 function renderizarPublicaciones(postsToRender) {
     postsGrid.innerHTML = '';
     if (postsToRender.length === 0) {
@@ -852,7 +887,6 @@ document.querySelectorAll('#podcast audio').forEach(audio => {
 
 
 // --- INICIALIZACIÓN ---
-// --- INICIALIZACIÓN ---
 window.addEventListener('DOMContentLoaded', () => {
     initAudio(); // Intentar inicializar AudioContext
     loadAchievementStatus();
@@ -864,8 +898,6 @@ window.addEventListener('DOMContentLoaded', () => {
     // --- NUEVA LÓGICA DEL CONTADOR DE VISITAS CON COUNTAPI-JS ---
     const visitCounterElement = document.getElementById('visit-counter');
     if (visitCounterElement) {
-        // Usa tu namespace (logosyespiritu) y una clave (website_visits) para tu contador.
-        // El método .visits() de countapi-js hará el "hit" y devolverá el valor.
         countapi.visits('logosyespiritu', 'website_visits').then((result) => {
             visitCounterElement.textContent = result.value;
             console.log(`Visitas totales (countapi-js): ${result.value}`);
