@@ -32,7 +32,11 @@ const achievementsList = document.getElementById('achievements-list');
 const topRightButtonsContainer = document.querySelector('.top-right-buttons');
 const mobileSectionNav = document.querySelector('.mobile-section-nav');
 const visitCounterElement = document.getElementById('visit-counter');
+// --- CONSTANTES DE SUPABASE (Decláralas aquí, pero NO las inicialices todavía) ---
+const SUPABASE_URL = 'https://hxeugrxmehmvzxcmbodd.supabase.co'; // Reemplaza con tu Project URL real
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4ZXVncnhtZWhtdnp4Y21ib2RkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4MTQwMDYsImV4cCI6MjA2NDM5MDAwNn0.xqo5Jai56bTpNu9Rjo45fcbCtuUjx1IfLmtid8HKalk'; // Reemplaza con tu anon public key real
 
+let supabase;
 // --- DATOS DE PUBLICACIONES (Contenido placeholder) ---
 const publicaciones = [
      {
@@ -561,10 +565,6 @@ function addSticker() {
      }, 5000);
 }
 
-//const SUPABASE_URL = 'https://hxeugrxmehmvzxcmbodd.supabase.co'; // Reemplaza con tu Project URL
-//const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4ZXVncnhtZWhtdnp4Y21ib2RkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4MTQwMDYsImV4cCI6MjA2NDM5MDAwNn0.xqo5Jai56bTpNu9Rjo45fcbCtuUjx1IfLmtid8HKalk'; // Reemplaza con tu anon public key
-
-//const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 // --- Lógica de Likes con Supabase ---
 
 async function getLikes(postId) {
@@ -931,13 +931,28 @@ document.querySelectorAll('#podcast audio').forEach(audio => {
 // --- INICIALIZACIÓN ---
 // --- INICIALIZACIÓN ---
 window.addEventListener('DOMContentLoaded', () => {
-    initAudio(); // Intentar inicializar AudioContext
+    // AHORA inicializamos Supabase aquí, dentro del DOMContentLoaded
+    // Esto asegura que la librería de Supabase (cargada por el CDN)
+    // esté disponible antes de que intentemos usarla.
+    try {
+        supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        console.log('Supabase cliente inicializado con éxito.');
+    } catch (error) {
+        console.error('Error al inicializar Supabase:', error);
+        // Opcional: Podrías deshabilitar las funciones de likes
+        // si la inicialización de Supabase falla.
+        // document.querySelectorAll('.like-button').forEach(button => button.disabled = true);
+    }
+    // --- Lógica de inicialización existente ---
+    initAudio();
     loadAchievementStatus();
     unlockAchievement('visit');
     currentYearSpan.textContent = new Date().getFullYear();
     animateTitle();
     renderizarGaleria(galeriaImagenes);
 
-    cambiarSeccion('home'); // Asegúrate de que la sección home se muestre al cargar
+    // Asegúrate de que las publicaciones se rendericen y que los likes se carguen
+    cambiarSeccion('home'); // Esto debería llamar a renderPosts que a su vez llama a getLikes
+
     renderAchievements(); // Renderizar los logros al cargar la página
 });
