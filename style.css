@@ -281,9 +281,9 @@ nav ul li a:hover, nav ul li a.active {
 
 /* Grid de Publicaciones */
 .posts-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 20px; /* Add spacing between posts */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
 }
 #no-results-message {
     text-align: center;
@@ -681,181 +681,263 @@ nav ul li a:hover, nav ul li a.active {
     right: 20px;
     z-index: 999;
     display: flex;
-    gap: 10px; /* Add spacing between buttons */
+    gap: 10px;
     align-items: center;
 }
 
 .top-right-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: var(--color-light);
-    box-shadow: var(--shadow);
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.top-right-btn#sticker-button {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px; /* Make it cubic */
-    background-color: var(--color-light);
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: var(--shadow);
-    cursor: pointer;
-}
-
-.top-right-btn#sticker-button::before {
-    content: '😊'; /* Happy face emoji */
-    display: block;
-}
-
-/* Fix achievements button to display "Logros" text */
-.top-right-btn#achievements-button {
-    padding: 0 10px;
+    padding: 8px 15px;
+    background: linear-gradient(45deg, var(--color-primary), var(--color-secondary));
+    color: var(--color-light);
+    border: none;
+    border-radius: var(--radius); /* Bordes redondeados */
+    font-family: 'Poppins', sans-serif; /* Fuente actualizada */
     font-size: 0.9rem;
-    font-weight: bold;
-    color: var(--color-dark);
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--color-light);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    cursor: pointer;
+    height: 40px; /* Altura fija */
+}
+.top-right-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+.top-right-btn:active {
+    transform: scale(0.98);
 }
 
-/* Restore achievements modal design */
-#achievements-modal {
+#achievements-button {
+    width: 40px;
+    padding: 0;
+}
+#achievements-button svg {
+    width: 22px;
+    height: 22px;
+    fill: var(--color-light);
+}
+
+/* INDICADOR DE LOGRO PENDIENTE */
+.top-right-buttons::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    right: 5px;
+    width: 25px;
+    height: 4px;
+    background-color: var(--color-secondary);
+    border-radius: 2px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+.top-right-buttons.has-pending::after {
+    opacity: 1;
+}
+
+/* ESTILOS ACTUALIZADOS PARA CONTENEDOR Y STICKERS */
+#sticker-area {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    max-width: 600px;
-    background: var(--color-light);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    z-index: 1000;
-    padding: 20px;
-    overflow-y: auto;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 990;
 }
 
-#achievements-modal h2 {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
+.sticker-image {
+    position: absolute;
+    max-width: 80px;
+    height: auto;
+    border-radius: 5px;
+    /* box-shadow: 0 3px 6px rgba(0,0,0,0.3); */ /* Sombra eliminada */
+    pointer-events: auto;
+    animation: fadeInSticker 0.5s ease-out;
+    /* filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.2)); */
+}
+
+@keyframes fadeInSticker {
+    from { opacity: 0; transform: scale(0.5) rotate(0deg); }
+    to { opacity: 1; /* La escala y rotación se aplican inline */ }
+}
+
+/* *** ESTILOS PARA MODAL DE LOGROS (Mejorado) *** */
+#achievements-modal {
+    display: none;
+    position: fixed;
+    z-index: 1050;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+#achievements-modal.active {
+    display: flex;
+}
+.achievements-modal-content {
+    background-color: var(--color-bg);
+    padding: 25px 35px;
+    border-radius: var(--radius);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    width: 90%;
+    max-width: 650px;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slideIn 0.4s ease-out;
+    font-family: 'Poppins', sans-serif;
+}
+ @keyframes slideIn {
+    from {transform: translateY(-30px); opacity: 0;}
+    to {transform: translateY(0); opacity: 1;}
+}
+
+.achievements-modal-content h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--color-primary);
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.8rem;
+}
+#close-achievements-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 32px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+    line-height: 1;
+}
+#close-achievements-modal:hover {
     color: var(--color-dark);
 }
+#achievements-list {
+    list-style: none;
+    padding: 0;
+}
+.achievement-section-title {
+    margin-top: 25px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: var(--color-secondary);
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+    font-size: 1.2rem;
+ }
+ .achievement-section-title:first-of-type {
+     margin-top: 0;
+ }
 
-#achievements-modal .tabs-header {
+.achievement-item {
     display: flex;
+    align-items: center;
+    padding: 15px 5px;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s ease, opacity 0.3s ease;
+}
+.achievement-item:not(.unlocked) .achievement-details p {
+    display: none; /* Ocultar descripción si no está desbloqueado */
+}
+ .achievement-item.unlocked {
+    opacity: 1;
+ }
+ .achievement-item:not(.unlocked) {
+     opacity: 0.6;
+ }
+
+.achievement-item:last-child {
+    border-bottom: none;
+}
+.achievement-icon {
+    width: 45px;
+    height: 45px;
+    margin-right: 20px;
+    object-fit: contain;
+    filter: grayscale(100%) brightness(1.5);
+    border-radius: var(--radius); /* Bordes cuadrados redondeados */
+    background-color: var(--color-achievement-locked); /* Fondo gris claro */
+    padding: 5px;
+    transition: filter 0.3s ease, background-color 0.3s ease;
+    flex-shrink: 0; /* Evitar que el icono se encoja */
+}
+.achievement-item.unlocked .achievement-icon {
+    filter: none;
+    background-color: var(--color-accent); /* Fondo verde al desbloquear */
+}
+.achievement-details h4 {
+    margin: 0 0 3px 0;
+    font-size: 1.05rem;
+    color: var(--color-dark);
+    font-weight: 600;
+}
+.achievement-details p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #666;
+    line-height: 1.4;
+}
+.achievement-item.unlocked .achievement-details h4 {
+     color: var(--color-primary);
+}
+/* Animación de desbloqueo */
+.achievement-item.newly-unlocked {
+    animation: achievementPulse 0.8s ease-out;
+}
+@keyframes achievementPulse {
+    0% { background-color: transparent; }
+    50% { background-color: var(--color-achievement-unlocked-bg); }
+    100% { background-color: transparent; }
+}
+
+/* Estilos para pestañas de logros */
+.achievements-tabs {
+    margin-top: 20px;
+}
+
+.tabs-header {
+    display: flex;
+    justify-content: center;
     gap: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
-#achievements-modal .tab-button {
-    flex: 1;
-    padding: 10px;
-    text-align: center;
-    background: var(--color-light);
-    border: 1px solid var(--color-dark);
-    border-radius: var(--radius);
+.tab-button {
+    padding: 10px 20px;
+    background-color: var(--color-light);
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-nav);
+    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-#achievements-modal .tab-button.active {
-    background: var(--color-primary);
+.tab-button.active {
+    background-color: var(--color-primary);
     color: var(--color-light);
 }
 
-#achievements-modal .tabs-content {
+.tab-content {
     display: none;
+    list-style: none;
+    padding: 0;
 }
 
-#achievements-modal .tabs-content.active {
+.tab-content.active {
     display: block;
 }
 
-/* Adjust search container alignment */
-.search-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-/* Desktop layout for posts */
-@media (min-width: 769px) {
-    .posts-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-    }
-
-    .posts-grid .post {
-        display: block;
-        padding: 0;
-        box-shadow: none;
-    }
-
-    .posts-grid .post-thumbnail {
-        width: 100%;
-        height: auto;
-        border-radius: var(--radius);
-    }
-
-    .posts-grid .post-content {
-        margin-top: 10px;
-    }
-}
-
-/* Mobile layout for posts */
-@media (max-width: 768px) {
-    .posts-grid {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .posts-grid .post {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 10px;
-        background: var(--color-light);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow);
-    }
-
-    .posts-grid .post-thumbnail {
-        width: 80px;
-        height: 80px;
-        border-radius: var(--radius);
-        object-fit: cover;
-    }
-
-    .posts-grid .post-content {
-        flex: 1;
-    }
-
-    .posts-grid .post-title {
-        font-size: 1rem;
-        font-weight: bold;
-        color: var(--color-dark);
-    }
-
-    .posts-grid .post-summary {
-        font-size: 0.85rem;
-        color: var(--color-text);
-        opacity: 0.8;
-    }
-}
 /* Footer */
 footer {
     background: linear-gradient(135deg, var(--color-dark), #444);
@@ -1001,24 +1083,24 @@ footer {
     .top-right-buttons { right: 15px; }
 }
 @media (max-width: 768px) {
-    header {
-        padding: 40px 15px 20px;
-    }
-
-    nav ul {
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    .posts-grid .post {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .posts-grid .post-thumbnail {
-        width: 100%;
-        height: auto;
-    }
+    header h1#main-title { font-size: 2.8rem; }
+    header p { font-size: 1rem; }
+    nav { max-width: 95%; }
+    .section-title { font-size: 1.8rem; }
+    .single-post-title { font-size: 1.8rem; }
+    .footer-content { grid-template-columns: 1fr; gap: 30px; }
+    .footer-section { text-align: center; }
+    .footer-section h3::after { margin: 0 auto; }
+    .social-links { justify-content: center; }
+    #subscribe-form { flex-direction: column; }
+    #subscribe-form button { width: 100%; }
+    .gallery-item { max-width: 45%; }
+    .top-right-btn { font-size: 0.8rem; padding: 6px 12px; }
+    #achievements-button { width: 35px; height: 35px; }
+    #achievements-button svg { width: 18px; height: 18px; }
+    .sticker-image { max-width: 60px; border-radius: 4px; }
+    .achievements-modal-content { padding: 20px; }
+    .achievements-modal-content h2 { font-size: 1.5rem; }
 }
 @media (max-width: 600px) {
     header h1#main-title { font-size: 2.2rem; }
