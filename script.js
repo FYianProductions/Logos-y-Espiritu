@@ -266,41 +266,6 @@ function crearTarjetaPost(post) {
     `;
 }
 
-// Update the rendering logic for posts to support both desktop and mobile layouts
-function renderPosts(posts) {
-    postsGrid.innerHTML = '';
-    posts.forEach(post => {
-        const postElement = document.createElement('div');
-        postElement.classList.add('post');
-
-        const thumbnail = document.createElement('img');
-        thumbnail.src = post.imagen;
-        thumbnail.alt = post.titulo;
-        thumbnail.classList.add('post-thumbnail');
-
-        const content = document.createElement('div');
-        content.classList.add('post-content');
-
-        const title = document.createElement('h3');
-        title.textContent = post.titulo;
-        title.classList.add('post-title');
-
-        const summary = document.createElement('p');
-        summary.textContent = post.resumen;
-        summary.classList.add('post-summary');
-
-        content.appendChild(title);
-        content.appendChild(summary);
-        postElement.appendChild(thumbnail);
-        postElement.appendChild(content);
-
-        postsGrid.appendChild(postElement);
-    });
-}
-
-// Call renderPosts with the existing publicaciones array
-renderPosts(publicaciones);
-
 function renderizarPublicaciones(postsToRender) {
     postsGrid.innerHTML = '';
     if (postsToRender.length === 0) {
@@ -834,34 +799,14 @@ imageModal.addEventListener('click', (e) => {
     }
 });
 
-// Ensure stickers button functionality is correct
-stickerButton.addEventListener('click', () => {
-    const randomUrl = stickerUrls[Math.floor(Math.random() * stickerUrls.length)];
-    const stickerImg = document.createElement('img');
-    stickerImg.src = randomUrl;
-    stickerImg.alt = "Sticker Decorativo";
-    stickerImg.className = 'sticker-image';
-    const randomTop = Math.random() * 70 + 15;
-    const randomLeft = Math.random() * 80 + 10;
-    const randomRotate = Math.random() * 60 - 30;
-    stickerImg.style.top = `${randomTop}vh`;
-    stickerImg.style.left = `${randomLeft}vw`;
-    stickerImg.style.transform = `rotate(${randomRotate}deg)`;
-    stickerArea.appendChild(stickerImg);
-    setTimeout(() => {
-        stickerImg.remove();
-    }, 5000);
-});
+stickerButton.addEventListener('click', addSticker);
 
-// Restore achievements modal functionality
-achievementsButton.addEventListener('click', () => {
-    renderAchievements();
-    achievementsModal.classList.add('active');
-    setPendingAchievement(false); // Clear pending indicator when opening modal
-});
-
-closeAchievementsModal.addEventListener('click', () => {
-    achievementsModal.classList.remove('active');
+achievementsButton.addEventListener('click', openAchievementsModal);
+closeAchievementsModal.addEventListener('click', closeAchievementsModalFunc);
+achievementsModal.addEventListener('click', (e) => {
+    if (e.target === achievementsModal) {
+        closeAchievementsModalFunc();
+    }
 });
 
 document.addEventListener('copy', () => {
@@ -907,6 +852,7 @@ document.querySelectorAll('#podcast audio').forEach(audio => {
 
 
 // --- INICIALIZACIÓN ---
+// --- INICIALIZACIÓN ---
 window.addEventListener('DOMContentLoaded', () => {
     initAudio(); // Intentar inicializar AudioContext
     loadAchievementStatus();
@@ -918,6 +864,8 @@ window.addEventListener('DOMContentLoaded', () => {
     // --- NUEVA LÓGICA DEL CONTADOR DE VISITAS CON COUNTAPI-JS ---
     const visitCounterElement = document.getElementById('visit-counter');
     if (visitCounterElement) {
+        // Usa tu namespace (logosyespiritu) y una clave (website_visits) para tu contador.
+        // El método .visits() de countapi-js hará el "hit" y devolverá el valor.
         countapi.visits('logosyespiritu', 'website_visits').then((result) => {
             visitCounterElement.textContent = result.value;
             console.log(`Visitas totales (countapi-js): ${result.value}`);
