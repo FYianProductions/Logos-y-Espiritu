@@ -266,7 +266,7 @@ function crearTarjetaPost(post) {
     `;
 }
 
-// Update the rendering logic for posts to match the new list format
+// Update the rendering logic for posts to support both desktop and mobile layouts
 function renderPosts(posts) {
     postsGrid.innerHTML = '';
     posts.forEach(post => {
@@ -834,14 +834,34 @@ imageModal.addEventListener('click', (e) => {
     }
 });
 
-stickerButton.addEventListener('click', addSticker);
+// Ensure stickers button functionality is correct
+stickerButton.addEventListener('click', () => {
+    const randomUrl = stickerUrls[Math.floor(Math.random() * stickerUrls.length)];
+    const stickerImg = document.createElement('img');
+    stickerImg.src = randomUrl;
+    stickerImg.alt = "Sticker Decorativo";
+    stickerImg.className = 'sticker-image';
+    const randomTop = Math.random() * 70 + 15;
+    const randomLeft = Math.random() * 80 + 10;
+    const randomRotate = Math.random() * 60 - 30;
+    stickerImg.style.top = `${randomTop}vh`;
+    stickerImg.style.left = `${randomLeft}vw`;
+    stickerImg.style.transform = `rotate(${randomRotate}deg)`;
+    stickerArea.appendChild(stickerImg);
+    setTimeout(() => {
+        stickerImg.remove();
+    }, 5000);
+});
 
-achievementsButton.addEventListener('click', openAchievementsModal);
-closeAchievementsModal.addEventListener('click', closeAchievementsModalFunc);
-achievementsModal.addEventListener('click', (e) => {
-    if (e.target === achievementsModal) {
-        closeAchievementsModalFunc();
-    }
+// Restore achievements modal functionality
+achievementsButton.addEventListener('click', () => {
+    renderAchievements();
+    achievementsModal.classList.add('active');
+    setPendingAchievement(false); // Clear pending indicator when opening modal
+});
+
+closeAchievementsModal.addEventListener('click', () => {
+    achievementsModal.classList.remove('active');
 });
 
 document.addEventListener('copy', () => {
