@@ -32,11 +32,7 @@ const achievementsList = document.getElementById('achievements-list');
 const topRightButtonsContainer = document.querySelector('.top-right-buttons');
 const mobileSectionNav = document.querySelector('.mobile-section-nav');
 const visitCounterElement = document.getElementById('visit-counter');
-// --- CONSTANTES DE SUPABASE (Decláralas aquí, pero NO las inicialices todavía) ---
-const SUPABASE_URL = 'https://hxeugrxmehmvzxcmbodd.supabase.co'; // Reemplaza con tu Project URL real
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4ZXVncnhtZWhtdnp4Y21ib2RkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4MTQwMDYsImV4cCI6MjA2NDM5MDAwNn0.xqo5Jai56bTpNu9Rjo45fcbCtuUjx1IfLmtid8HKalk'; // Reemplaza con tu anon public key real
 
-let supabase;
 // --- DATOS DE PUBLICACIONES (Contenido placeholder) ---
 const publicaciones = [
      {
@@ -157,7 +153,9 @@ const publicaciones = [
             
             <p>En sus primeras apariciones, el Papa León XIV ha enfatizado la paz, "una paz desarmada y desarmante, humilde y perseverante", y la necesidad de que la Iglesia sea un "faro que ilumina las noches oscuras de este mundo". Estos mensajes iniciales resuenan con la misión de "Logos y Espíritu" de explorar las intersecciones entre la fe, el pensamiento crítico y el servicio a la humanidad.</p>
             
-            <p class="text-right italic mt-4">Redacción Logos y Espíritu</p>
+            <p>La comunidad de "Logos y Espíritu" se une en oración por el nuevo Santo Padre, pidiendo al Espíritu Santo que lo ilumine en su ministerio petrino, para guiar a la Iglesia con sabiduría y caridad, fomentando el encuentro, el diálogo y la esperanza en un mundo sediento de verdad y trascendencia.</p>
+            
+            <p style="text-align: right; font-style: italic; margin-top: 1.5em;">Redacción Logos y Espíritu</p>
         `,
         video: null, // Puedes añadir un ID de YouTube si encuentras un video relevante de su primer saludo, por ejemplo.
         categoria: 'Actualidad Eclesial'
@@ -247,476 +245,41 @@ function animateTitle() {
 }
 
 
-// Inicializar Supabase con manejo de errores
-try {
-    supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-} catch (error) {
-    console.error('Error al inicializar Supabase:', error);
-}
-
-function renderPosts(postsToRender = publicaciones) {
-    postsGrid.innerHTML = ''; // Limpiar el contenedor antes de renderizar
-
-    postsToRender.forEach((post) => {
-        const postElement = document.createElement('div');
-        postElement.className = 'post-card'; // Clase para estilo uniforme
-        postElement.innerHTML = `
-            <div class="post-header">
-                <h3>${post.titulo}</h3>
-                <button class="like-button" data-post-id="${post.id}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 21.35l-1.84-1.68C4.61 15.16 2 12.03 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.53-2.61 6.66-8.16 11.17L12 21.35z"/>
-                    </svg>
-                    <span class="likes-count">0</span>
-                </button>
+function crearTarjetaPost(post) {
+    const thumbnailSrc = post.video ? `https://i.ytimg.com/vi/${post.video}/hqdefault.jpg` : post.imagen;
+    const videoOverlay = post.video ? `<div class="play-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px"><path d="M8 5v14l11-7z"/><path d="M0 0h24v24H0z" fill="none"/></svg></div>` : '';
+    return `
+        <article class="post-card" data-id="${post.id}">
+            <div class="video-thumbnail-container">
+                <img src="${thumbnailSrc}" alt="${post.titulo}" class="post-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/cccccc/ffffff?text=Imagen+no+disponible';">
+                ${videoOverlay}
             </div>
-            <img src="${post.imagen}" alt="${post.titulo}" class="post-thumbnail" />
-            <p class="post-summary">${post.resumen}</p>
-            <button class="read-more-button" onclick="viewPost('${post.id}')">Leer más</button>
-        `;
-        postsGrid.appendChild(postElement);
-
-        // Cargar los likes para cada publicación
-        getLikes(post.id).then((likes) => {
-            const likeCountSpan = postElement.querySelector('.likes-count');
-            if (likeCountSpan) likeCountSpan.textContent = likes;
-        });
-
-        // Añadir evento al botón de likes
-        const likeButton = postElement.querySelector('.like-button');
-        if (likeButton) likeButton.addEventListener('click', handleLikeClick);
-    });
-}
-
-// Corrige el estilo del botón de likes en publicaciones individuales
-async function viewPost(postId) {
-    const post = publicaciones.find((p) => p.id === postId);
-    if (!post) {
-        console.error('Post no encontrado:', postId);
-        return;
-    }
-
-    singlePostTitle.innerText = post.titulo;
-    singlePostDate.innerText = post.fecha;
-    singlePostCategory.innerText = post.categoria;
-    singlePostContent.innerHTML = post.contenido;
-
-    const likesContainer = document.getElementById('single-post-likes-container');
-    likesContainer.innerHTML = `
-        <button class="like-button" data-post-id="${post.id}">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 21.35l-1.84-1.68C4.61 15.16 2 12.03 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.53-2.61 6.66-8.16 11.17L12 21.35z"/>
-            </svg>
-            <span class="likes-count">0</span>
-        </button>
+            <div class="post-content">
+                <h3 class="post-title">${post.titulo}</h3>
+                <div class="post-meta">
+                    <span class="post-date">${formatearFecha(post.fecha)}</span>
+                     <span class="post-category-badge">${post.categoria}</span>
+                </div>
+                <p class="post-excerpt">${post.resumen}</p>
+            </div>
+        </article>
     `;
-
-    const likeButton = likesContainer.querySelector('.like-button');
-    if (likeButton) {
-        likeButton.addEventListener('click', handleLikeClick);
-        await getLikes(post.id); // Actualiza el contador de likes
-    }
-
-    contentSections.forEach((section) => section.classList.remove('active'));
-    singlePostSection.classList.add('active');
 }
 
-// Corrige errores en la función getLikes
-async function getLikes(postId) {
-    try {
-        const { data, error } = await supabase
-            .from('post_likes')
-            .select('likes')
-            .eq('post_id', postId)
-            .single();
-
-        if (error && error.code === 'PGRST116') {
-            const { data: newData, error: newError } = await supabase
-                .from('post_likes')
-                .insert([{ post_id: postId, likes: 0 }])
-                .select()
-                .single();
-            if (newError) throw newError;
-            return newData.likes;
-        }
-        if (error) throw error;
-        return data.likes;
-    } catch (error) {
-        console.error('Error al obtener likes para el post', postId, ':', error.message);
-        return 0;
-    }
-}
-
-// Corrige errores en la función incrementLikes
-async function incrementLikes(postId) {
-    try {
-        let currentLikes = await getLikes(postId);
-        const { data, error } = await supabase
-            .from('post_likes')
-            .update({ likes: currentLikes + 1 })
-            .eq('post_id', postId)
-            .select()
-            .single();
-
-        if (error) throw error;
-        return data.likes;
-    } catch (error) {
-        console.error('Error al incrementar likes para el post', postId, ':', error.message);
-        return null;
-    }
-}
-
-// Renderiza las publicaciones al cargar la página
-renderPosts();
-
-// Función para crear una tarjeta de publicación (sin el botón de like aquí)
-function createPostCard(post) {
-    const card = document.createElement('div');
-    card.className = 'post-card';
-
-    const title = document.createElement('h3');
-    title.textContent = post.title;
-
-    const meta = document.createElement('p');
-    meta.className = 'post-meta';
-    meta.textContent = `${post.date} - ${post.category}`;
-
-    const excerpt = document.createElement('p');
-    excerpt.className = 'post-excerpt';
-    excerpt.textContent = post.excerpt;
-
-    const readMore = document.createElement('a');
-    readMore.href = `#post-${post.id}`;
-    readMore.className = 'read-more';
-    readMore.textContent = 'Leer más';
-    readMore.addEventListener('click', (e) => {
-        e.preventDefault();
-        mostrarPublicacion(post.id);
-        unlockAchievement('first_post_view'); // Logro al abrir la primera publicación
-    });
-
-    card.appendChild(title);
-    card.appendChild(meta);
-    card.appendChild(excerpt);
-    card.appendChild(readMore);
-
-    return card;
-}
-
-// Función para mostrar una publicación individual
-async function mostrarPublicacion(postId) {
-    const post = blogPosts.find(p => p.id === postId);
-
-    if (post) {
-        cambiarSeccion('single-post'); // Cambia a la sección de publicación individual
-
-        singlePostTitle.textContent = post.title;
-        singlePostDate.textContent = post.date;
-        singlePostCategory.textContent = post.category;
-        singlePostContent.innerHTML = post.content; // Renderiza el contenido HTML
-
-        // Lógica para el audio (si existe)
-        const singlePostAudioContainer = document.getElementById('single-post-audio-container');
-        if (post.audio && singlePostAudioContainer) {
-            singlePostAudioContainer.innerHTML = `<audio controls src="${post.audio}"></audio>`;
-            singlePostAudioContainer.style.display = 'block';
-
-            const audioPlayer = singlePostAudioContainer.querySelector('audio');
-            if (audioPlayer) {
-                // Desbloquear logro cuando el audio empiece a reproducirse
-                audioPlayer.addEventListener('play', () => {
-                    unlockAchievement('audio_play');
-                }, { once: true }); // Para que solo se desbloquee una vez por reproducción
-            }
-
-        } else if (singlePostAudioContainer) {
-            singlePostAudioContainer.innerHTML = ''; // Limpia si no hay audio
-            singlePostAudioContainer.style.display = 'none';
-        }
-
-        // --- Lógica del botón de likes dentro de la publicación ---
-        let likesContainer = document.getElementById('single-post-likes-container');
-        if (!likesContainer) { // Esto crea el contenedor si por alguna razón no se ha creado en el HTML
-            likesContainer = document.createElement('div');
-            likesContainer.id = 'single-post-likes-container';
-            singlePostTitle.parentNode.insertBefore(likesContainer, singlePostTitle.nextSibling); // Inserta después del título
-        }
-        likesContainer.innerHTML = `
-            <button class="like-button" data-post-id="${post.id}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 21.35l-1.84-1.68C4.61 15.16 2 12.03 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.53-2.61 6.66-8.16 11.17L12 21.35z"/>
-                </svg>
-                <span class="likes-count">0</span> likes
-            </button>
-        `;
-
-        const likeButton = likesContainer.querySelector('.like-button');
-        if (likeButton) {
-            likeButton.addEventListener('click', handleLikeClick);
-            // Carga los likes para esta publicación específica
-            await getLikes(post.id); // Asegúrate de que getLikes actualice el span correcto
-        }
-        // --- FIN Lógica del botón de likes ---
-
+function renderizarPublicaciones(postsToRender) {
+    postsGrid.innerHTML = '';
+    if (postsToRender.length === 0) {
+        noResultsMessage.style.display = 'block';
     } else {
-        console.error('Publicación no encontrada:', postId);
-        cambiarSeccion('home'); // Redirigir a home si no se encuentra
-    }
-}
-
-// Función de búsqueda (posts)
-searchInput.addEventListener('input', () => {
-    unlockAchievement('search_post'); // Logro al usar la búsqueda
-    const query = searchInput.value.toLowerCase();
-    const filteredPosts = blogPosts.filter(post =>
-        post.title.toLowerCase().includes(query) ||
-        post.excerpt.toLowerCase().includes(query) ||
-        post.content.toLowerCase().includes(query) ||
-        post.category.toLowerCase().includes(query)
-    );
-    renderPosts(filteredPosts);
-});
-
-// Icono de búsqueda - activa/desactiva la barra de búsqueda
-searchIcon.addEventListener('click', () => {
-    const searchContainer = document.querySelector('.search-container');
-    searchContainer.classList.toggle('active');
-    if (searchContainer.classList.contains('active')) {
-        searchInput.focus();
-    } else {
-        searchInput.value = '';
-        renderPosts(blogPosts); // Restablecer publicaciones si se cierra la búsqueda
-    }
-});
-
-
-// --- Lógica del Contador de Visitas (CountAPI) ---
-const visitCountSpan = document.getElementById('visit-count');
-
-async function loadVisitCount() {
-    try {
-        if (!supabase) {
-            console.warn('Supabase no está inicializado. No se cargará el contador de visitas.');
-            visitCountSpan.textContent = 'N/A';
-            return;
-        }
-
-        // Obtener el conteo actual para la página 'website_visits'
-        let { data, error } = await supabase
-            .from('visits')
-            .select('count')
-            .eq('page_id', 'website_visits')
-            .single();
-
-        if (error && error.code === 'PGRST116') { // No rows found
-            // Si no hay conteo, inicializarlo en 0 y luego incrementarlo
-            const { error: insertError } = await supabase
-                .from('visits')
-                .insert({ page_id: 'website_visits', count: 0 });
-            if (insertError) throw insertError;
-            data = { count: 0 };
-        } else if (error) {
-            throw error;
-        }
-
-        let currentCount = data ? data.count : 0;
-        visitCountSpan.textContent = currentCount;
-
-        // Incrementar el conteo cada vez que la página se carga
-        await incrementVisitCount(currentCount + 1);
-
-    } catch (err) {
-        console.error('Error al cargar o incrementar el contador de visitas:', err.message);
-        visitCountSpan.textContent = 'Error';
-    }
-}
-
-async function incrementVisitCount(newCount) {
-    try {
-        if (!supabase) {
-            console.error('Error al actualizar el contador de visitas: supabase is undefined');
-            return;
-        }
-
-        const { data, error } = await supabase
-            .from('visits')
-            .update({ count: newCount })
-            .eq('page_id', 'website_visits');
-
-        if (error) throw error;
-        console.log('Contador de visitas incrementado a:', newCount);
-    } catch (err) {
-        console.error('Error al actualizar el contador de visitas:', err.message);
-    }
-}
-
-
-// --- Lógica de Likes (Supabase) ---
-
-async function getLikes(postId) {
-    try {
-        if (!supabase) {
-            console.error('Error al obtener likes para el post ' + postId + ' : supabase is undefined');
-            return;
-        }
-
-        // Consulta para obtener el conteo de likes para el post_id
-        let { data, error } = await supabase
-            .from('likes') // Asegúrate de que tu tabla se llama 'likes'
-            .select('likes_count')
-            .eq('post_id', postId)
-            .single();
-
-        if (error && error.code === 'PGRST116') { // No rows found
-            // Si no hay entrada para este post, inicializar a 0 y guardarlo
-            const { error: insertError } = await supabase
-                .from('likes')
-                .insert({ post_id: postId, likes_count: 0 });
-            if (insertError) throw insertError;
-            data = { likes_count: 0 }; // Establecer data para que el flujo continúe
-        } else if (error) {
-            throw error;
-        }
-
-        const likesCount = data ? data.likes_count : 0;
-        // Actualiza el span de likes en la publicación individual
-        const likesCountSpan = document.querySelector('#single-post-likes-container .likes-count');
-        if (likesCountSpan) {
-            likesCountSpan.textContent = likesCount;
-        }
-
-    } catch (error) {
-        console.error('Error al obtener likes para el post ' + postId + ' :', error.message);
-    }
-}
-
-async function incrementLikes(postId) {
-    try {
-        if (!supabase) {
-            console.error('Error al incrementar likes para el post ' + postId + ' : supabase is undefined');
-            return;
-        }
-
-        // Llama a una función RPC en Supabase para incrementar el like
-        // Asume que tienes una función SQL llamada 'increment_likes' en Supabase
-        const { data, error } = await supabase.rpc('increment_likes', { post_id_param: postId });
-
-        if (error) throw error;
-
-        // data[0] contendrá el nuevo conteo de likes si tu función RPC lo devuelve
-        const newLikesCount = data[0].new_likes_count; // Ajusta según lo que devuelva tu función RPC
-
-        // Actualiza el span de likes en la publicación individual
-        const likesCountSpan = document.querySelector('#single-post-likes-container .likes-count');
-        if (likesCountSpan) {
-            likesCountSpan.textContent = newLikesCount;
-        }
-        unlockAchievement('like_post'); // Desbloquear logro
-        console.log(`Likes para ${postId} incrementados a ${newLikesCount}`);
-
-    } catch (error) {
-        console.error('Error al incrementar likes para el post ' + postId + ' :', error.message);
-    }
-}
-
-function handleLikeClick(event) {
-    const postId = event.currentTarget.dataset.postId;
-    incrementLikes(postId);
-}
-
-function toggleLike(event, postId) {
-    event.preventDefault();
-    if (!supabase) {
-        console.error('Supabase is not initialized. Cannot toggle like.');
-        return;
-    }
-
-    // Example logic for toggling like
-    supabase
-        .from('likes')
-        .select('*')
-        .eq('post_id', postId)
-        .then(({ data, error }) => {
-            if (error) {
-                console.error('Error fetching likes:', error);
-                return;
-            }
-
-            if (data.length > 0) {
-                // Unlike
-                supabase
-                    .from('likes')
-                    .delete()
-                    .eq('post_id', postId)
-                    .then(({ error }) => {
-                        if (error) {
-                            console.error('Error unliking post:', error);
-                        } else {
-                            console.log('Post unliked successfully');
-                        }
-                    });
-            } else {
-                // Like
-                supabase
-                    .from('likes')
-                    .insert({ post_id: postId })
-                    .then(({ error }) => {
-                        if (error) {
-                            console.error('Error liking post:', error);
-                        } else {
-                            console.log('Post liked successfully');
-                        }
-                    });
-            }
+        noResultsMessage.style.display = 'none';
+        postsToRender.forEach(post => {
+            postsGrid.innerHTML += crearTarjetaPost(post);
         });
+        document.querySelectorAll('.post-card').forEach(card => {
+            card.addEventListener('click', () => mostrarPostIndividual(card.dataset.id));
+        });
+    }
 }
-
-
-// --- Lógica de Suscripción (Supabase) ---
-subscribeForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = document.getElementById('email').value;
-
-    if (!supabase) {
-        subscribeStatus.textContent = 'Error: Supabase no está inicializado.';
-        subscribeStatus.style.color = 'red';
-        return;
-    }
-
-    try {
-        // Primero, verificar si el correo ya existe
-        const { data: existingUser, error: fetchError } = await supabase
-            .from('subscribers') // Asegúrate de que tu tabla se llama 'subscribers'
-            .select('email')
-            .eq('email', email)
-            .single();
-
-        if (fetchError && fetchError.code !== 'PGRST116') { // PGRST116 = no rows found
-            throw fetchError;
-        }
-
-        if (existingUser) {
-            subscribeStatus.textContent = '¡Ya estás suscrito con este correo!';
-            subscribeStatus.style.color = 'orange';
-        } else {
-            // Si no existe, insertarlo
-            const { error: insertError } = await supabase
-                .from('subscribers')
-                .insert([{ email: email }]);
-
-            if (insertError) throw insertError;
-
-            subscribeStatus.textContent = '¡Gracias por suscribirte!';
-            subscribeStatus.style.color = 'green';
-            subscribeForm.reset();
-        }
-    } catch (error) {
-        console.error('Error al manejar la suscripción:', error.message);
-        subscribeStatus.textContent = `Error: ${error.message}`;
-        subscribeStatus.style.color = 'red';
-    }
-});
-
 
 function renderizarGaleria(imagesToRender) {
     imageGalleryGrid.innerHTML = '';
@@ -746,7 +309,7 @@ function ordenarPublicaciones() {
             const dateB = new Date(b.fecha);
             return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
         });
-        renderPosts(postsToSort);
+        renderizarPublicaciones(postsToSort);
         sortArrow.classList.toggle('arrow-up', sortOrder === 'asc');
         sortArrow.classList.toggle('arrow-down', sortOrder === 'desc');
     }
@@ -995,74 +558,6 @@ function addSticker() {
      }, 5000);
 }
 
-// --- Lógica de Likes con Supabase ---
-
-async function getLikes(postId) {
-    try {
-        const { data, error } = await supabase
-            .from('post_likes')
-            .select('likes')
-            .eq('post_id', postId)
-            .single(); // Esperamos un solo resultado
-
-        if (error && error.code === 'PGRST116') { // No rows found
-            // Si no existe la entrada para el post, la creamos con 0 likes
-            const { data: newData, error: newError } = await supabase
-                .from('post_likes')
-                .insert([{ post_id: postId, likes: 0 }])
-                .select()
-                .single();
-            if (newError) throw newError;
-            return newData.likes;
-        }
-        if (error) throw error;
-        return data.likes;
-    } catch (error) {
-        console.error('Error al obtener likes para el post', postId, ':', error.message);
-        return 0; // Devolver 0 en caso de error
-    }
-}
-
-async function incrementLikes(postId) {
-    try {
-        // Obtenemos el valor actual para asegurarnos de que existe o para crearlo si no
-        let currentLikes = await getLikes(postId);
-
-        // Incrementamos en 1
-        const { data, error } = await supabase
-            .from('post_likes')
-            .update({ likes: currentLikes + 1 })
-            .eq('post_id', postId)
-            .select()
-            .single();
-
-        if (error) throw error;
-        return data.likes;
-    } catch (error) {
-        console.error('Error al incrementar likes para el post', postId, ':', error.message);
-        return null;
-    }
-}
-
-// Función para manejar el clic en el botón de like
-async function handleLikeClick(event) {
-    const button = event.currentTarget;
-    const postId = button.dataset.postId;
-    if (!postId) {
-        console.error('No se encontró post_id en el botón de like.');
-        return;
-    }
-
-    const newLikes = await incrementLikes(postId);
-    if (newLikes !== null) {
-        // Actualizar el texto del contador de likes en la UI
-        const likeCountSpan = button.querySelector('.like-count');
-        if (likeCountSpan) {
-            likeCountSpan.textContent = newLikes;
-        }
-    }
-}
-
 // *** FUNCIONES PARA LOGROS (Actualizadas) ***
 function loadAchievementStatus() {
     const savedStatus = localStorage.getItem('blogLogrosStatus');
@@ -1223,8 +718,6 @@ function closeAchievementsModalFunc() {
     achievementsModal.classList.remove('active');
 }
 
-// --- CONSTANTES DE SUPABASE ---
-
 // --- INICIALIZACIÓN DE AUDIO CONTEXT (para sonido de logro) ---
 function initAudio() {
     try {
@@ -1360,47 +853,31 @@ document.querySelectorAll('#podcast audio').forEach(audio => {
 
 // --- INICIALIZACIÓN ---
 // --- INICIALIZACIÓN ---
-function initAudio() {
-    // Esta función actualmente no hace nada para iniciar el audio.
-    // La reproducción automática de audio sin un gesto del usuario está bloqueada por los navegadores.
-    // El atributo 'controls' en la etiqueta <audio> permite al usuario iniciar la reproducción.
-    // El logro 'audio_play' se desbloquea en mostrarPublicacion cuando el usuario inicia la reproducción.
-    console.log("Audio inicializado. La reproducción requiere interacción del usuario.");
-}
-
-
-// --- INICIALIZACIÓN PRINCIPAL ---
 window.addEventListener('DOMContentLoaded', () => {
-    // AHORA inicializamos Supabase aquí, dentro del DOMContentLoaded
-    // Esto asegura que la librería de Supabase (cargada por el CDN)
-    // esté disponible antes de que intentemos usarla.
-    try {
-        // Verificación de credenciales de Supabase
-        if (SUPABASE_URL === 'https://bwnjpsgchcwnxoyxkhyf.supabase.co' || SUPABASE_ANON_KEY === 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYxODg3NjgwMCwiZXhwIjoxOTMzMTcwNDAwfQ.pP92i67y0gN2jS_w-Jc5-jX_F8Jv_C6Xp_z7n4z_V5Y') {
-             console.error('ERROR: Las credenciales de Supabase no han sido reemplazadas o son las predeterminadas. Los likes y el contador de visitas no funcionarán correctamente.');
-             // Opcional: Podrías deshabilitar los botones de likes y el contador de visitas aquí
-             // document.querySelectorAll('.like-button').forEach(btn => btn.disabled = true);
-        } else {
-            try {
-                supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            } catch (error) {
-                console.error('Error al inicializar Supabase:', error);
-            }
-        } // Fin del bloque try-catch para Supabase
+    initAudio(); // Intentar inicializar AudioContext
+    loadAchievementStatus();
+    unlockAchievement('visit');
+    currentYearSpan.textContent = new Date().getFullYear();
+    animateTitle();
+    renderizarGaleria(galeriaImagenes);
 
-
-        // --- Lógica de inicialización existente ---
-        // --- Lógica de inicialización existente ---
-        initAudio(); // Solo inicializa, no reproduce
-        loadAchievementStatus();
-        unlockAchievement('visit'); // Logro al visitar el sitio
-        currentYearSpan.textContent = new Date().getFullYear();
-        animateTitle();
-        renderizarGaleria(galeriaImagenes); // Renderizar galería al cargar la página
-
-        // Asegúrate de que las publicaciones se rendericen y que los likes se carguen
-        cambiarSeccion('home'); // Esto debería llamar a renderPosts que a su vez llama a getLikes
-    } catch (e) {
-        console.error('Error en la inicialización principal:', e);
+    // --- NUEVA LÓGICA DEL CONTADOR DE VISITAS CON COUNTAPI-JS ---
+    const visitCounterElement = document.getElementById('visit-counter');
+    if (visitCounterElement) {
+        // Usa tu namespace (logosyespiritu) y una clave (website_visits) para tu contador.
+        // El método .visits() de countapi-js hará el "hit" y devolverá el valor.
+        countapi.visits('logosyespiritu', 'website_visits').then((result) => {
+            visitCounterElement.textContent = result.value;
+            console.log(`Visitas totales (countapi-js): ${result.value}`);
+        }).catch((error) => {
+            console.error('No se pudo actualizar el contador de visitas (countapi-js):', error);
+            visitCounterElement.textContent = 'Error al cargar';
+        });
+    } else {
+        console.warn('Elemento #visit-counter no encontrado en el DOM.');
     }
+    // --- FIN NUEVA LÓGICA DEL CONTADOR ---
+
+    cambiarSeccion('home'); // Asegúrate de que la sección home se muestre al cargar
+    renderAchievements(); // Renderizar los logros al cargar la página
 });
