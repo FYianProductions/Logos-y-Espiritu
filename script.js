@@ -157,9 +157,7 @@ const publicaciones = [
             
             <p>En sus primeras apariciones, el Papa León XIV ha enfatizado la paz, "una paz desarmada y desarmante, humilde y perseverante", y la necesidad de que la Iglesia sea un "faro que ilumina las noches oscuras de este mundo". Estos mensajes iniciales resuenan con la misión de "Logos y Espíritu" de explorar las intersecciones entre la fe, el pensamiento crítico y el servicio a la humanidad.</p>
             
-            <p>La comunidad de "Logos y Espíritu" se une en oración por el nuevo Santo Padre, pidiendo al Espíritu Santo que lo ilumine en su ministerio petrino, para guiar a la Iglesia con sabiduría y caridad, fomentando el encuentro, el diálogo y la esperanza en un mundo sediento de verdad y trascendencia.</p>
-            
-            <p style="text-align: right; font-style: italic; margin-top: 1.5em;">Redacción Logos y Espíritu</p>
+            <p class="text-right italic mt-4">Redacción Logos y Espíritu</p>
         `,
         video: null, // Puedes añadir un ID de YouTube si encuentras un video relevante de su primer saludo, por ejemplo.
         categoria: 'Actualidad Eclesial'
@@ -249,6 +247,50 @@ function animateTitle() {
 }
 
 
+// Inicializar Supabase con manejo de errores
+try {
+    supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+} catch (error) {
+    console.error('Error al inicializar Supabase:', error);
+}
+
+function renderPosts() {
+    postsGrid.innerHTML = ''; // Limpiar el contenedor antes de renderizar
+
+    publicaciones.forEach((post) => {
+        const postElement = document.createElement('div');
+        postElement.className = 'post';
+        postElement.innerHTML = `
+            <h3>${post.titulo}</h3>
+            <p>${post.resumen}</p>
+            <img src="${post.imagen}" alt="${post.titulo}" />
+            <button onclick="viewPost('${post.id}')">Leer más</button>
+        `;
+        postsGrid.appendChild(postElement);
+    });
+}
+
+function viewPost(postId) {
+    const post = publicaciones.find((p) => p.id === postId);
+    if (!post) {
+        console.error('Post no encontrado:', postId);
+        return;
+    }
+
+    singlePostTitle.innerText = post.titulo;
+    singlePostDate.innerText = post.fecha;
+    singlePostCategory.innerText = post.categoria;
+    singlePostContent.innerHTML = post.contenido;
+
+    // Mostrar la sección de post individual y ocultar las demás
+    contentSections.forEach((section) => section.classList.remove('active'));
+    singlePostSection.classList.add('active');
+}
+
+// Renderizar publicaciones al cargar la página
+renderPosts();
+
+
 // Función para crear una tarjeta de publicación (sin el botón de like aquí)
 function createPostCard(post) {
     const card = document.createElement('div');
@@ -282,31 +324,6 @@ function createPostCard(post) {
 
     return card;
 }
-
-// Función para renderizar posts
-function renderPosts() {
-    if (!publicaciones || publicaciones.length === 0) {
-        console.error('No hay publicaciones disponibles.');
-        return;
-    }
-
-    publicaciones.forEach((post) => {
-        if (!post.id || !post.titulo || !post.resumen) {
-            console.error('Datos de publicación incompletos:', post);
-            return;
-        }
-
-        const postElement = document.createElement('div');
-        postElement.className = 'post';
-        postElement.innerHTML = `
-            <h3>${post.titulo}</h3>
-            <p>${post.resumen}</p>
-            <img src="${post.imagen || ''}" alt="${post.titulo}" />
-        `;
-        postsGrid.appendChild(postElement);
-    });
-}
-renderPosts();
 
 // Función para mostrar una publicación individual
 async function mostrarPublicacion(postId) {
@@ -1286,24 +1303,25 @@ window.addEventListener('DOMContentLoaded', () => {
              // Opcional: Podrías deshabilitar los botones de likes y el contador de visitas aquí
              // document.querySelectorAll('.like-button').forEach(btn => btn.disabled = true);
         } else {
-            supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            console.log('Supabase cliente inicializado con éxito.');
-        }
-    } catch (error) {
-        console.error('Error FATAL al crear el cliente Supabase:', error);
-        console.error('POSIBLE CAUSA: El CDN de Supabase no se ha cargado correctamente.');
-        console.error('Por favor, revisa tu index.html y asegúrate de que <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> esté ANTES de <script src="script.js"></script> y que la URL del CDN sea correcta.');
+            try {
+                supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            } catch (error) {
+                console.error('Error al inicializar Supabase:', error);
+            }
+        } // Fin del bloque try-catch para Supabase
+
+
+        // --- Lógica de inicialización existente ---
+        initAudio(); // Solo inicializa, no reproduce
+        loadAchievementStatus();
+        unlockAchievement('visit'); // Logro al visitar el sitio
+        currentYearSpan.textContent = new Date().getFullYear();
+        animateTitle();
+        renderizarGaleria(galeriaImagenes); // Renderizar galería al cargar la página
+
+        // Asegúrate de que las publicaciones se rendericen y que los likes se carguen
+        cambiarSeccion('home'); // Esto debería llamar a renderPosts que a su vez llama a getLikes
+    } catch (e) {
+        console.error('Error en la inicialización principal:', e);
     }
-
-
-    // --- Lógica de inicialización existente ---
-    initAudio(); // Solo inicializa, no reproduce
-    loadAchievementStatus();
-    unlockAchievement('visit'); // Logro al visitar el sitio
-    currentYearSpan.textContent = new Date().getFullYear();
-    animateTitle();
-    renderizarGaleria(galeriaImagenes); // Renderizar galería al cargar la página
-
-    // Asegúrate de que las publicaciones se rendericen y que los likes se carguen
-    cambiarSeccion('home'); // Esto debería llamar a renderPosts que a su vez llama a getLikes
 });
