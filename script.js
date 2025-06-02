@@ -285,15 +285,44 @@ function createPostCard(post) {
 
 // Función para renderizar posts
 function renderPosts(postsToRender) {
-    postsGrid.innerHTML = '';
+    postsGrid.innerHTML = ''; // Limpia el grid antes de renderizar
     if (postsToRender.length === 0) {
         noResultsMessage.style.display = 'block';
-    } else {
-        noResultsMessage.style.display = 'none';
-        postsToRender.forEach(post => {
-            postsGrid.appendChild(createPostCard(post));
-        });
+        return;
     }
+    noResultsMessage.style.display = 'none';
+
+    postsToRender.forEach(post => {
+        const postElement = document.createElement('article');
+        postElement.className = 'post-card';
+        postElement.setAttribute('data-id', post.id);
+        postElement.innerHTML = `
+            <div class="post-header">
+                <span class="post-category" data-category="${post.category}">${post.category}</span>
+                <img src="${post.imageUrl}" alt="${post.title}" class="post-image">
+            </div>
+            <div class="post-content">
+                <h3 class="post-title">${post.title}</h3>
+                <p class="post-date">${post.date}</p>
+                <div class="post-actions">
+                    <button class="like-button" data-post-id="${post.id}">
+                        <svg class="like-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M313.4 32.9c26.7-26.8 69.8-26.8 96.5 0s26.8 69.8 0 96.5L256 215.3 102.1 61.4c-26.8-26.8-26.8-69.8 0-96.5s69.8-26.8 96.5 0L256 120.7 313.4 32.9zm220.4 75.3c-2.7-2.7-5.8-4.8-9.1-6.9c-22.3-14.7-50.6-18.7-77.4-12.7c-21.2 4.7-40.8 14.3-56.7 29.5L256 206.5 131.4 89c-16-15.6-35.7-25.2-56.9-29.9c-26.7-5.9-55 2-77.3 16.7c-3.4 2.1-6.4 4.3-9.1 7.1C-9.4 179.9-1.9 254.4 68.2 316.6l176.6 157.9c6.3 5.7 15.6 5.8 22 0l176.6-157.9c70-62.2 77.5-136.6 7.9-208.4z"/></svg>
+                        <span class="like-count" data-post-id="${post.id}">${post.likes || 0}</span>
+                    </button>
+                    <button class="read-more-button" data-id="${post.id}">Leer más</button>
+                </div>
+            </div>
+        `;
+        postsGrid.appendChild(postElement);
+    });
+
+    // Añadir event listeners para los botones de like y leer más
+    document.querySelectorAll('.like-button').forEach(button => {
+        button.onclick = (event) => toggleLike(event, button.dataset.postId);
+    });
+    document.querySelectorAll('.read-more-button').forEach(button => {
+        button.onclick = () => showSinglePost(button.dataset.id);
+    });
 }
 
 // Función para mostrar una publicación individual
@@ -589,7 +618,7 @@ function ordenarPublicaciones() {
             const dateB = new Date(b.fecha);
             return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
         });
-        renderizarPublicaciones(postsToSort);
+        renderPosts(postsToSort);
         sortArrow.classList.toggle('arrow-up', sortOrder === 'asc');
         sortArrow.classList.toggle('arrow-down', sortOrder === 'desc');
     }
