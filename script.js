@@ -254,23 +254,42 @@ try {
     console.error('Error al inicializar Supabase:', error);
 }
 
-function renderPosts() {
+function renderPosts(postsToRender = publicaciones) {
     postsGrid.innerHTML = ''; // Limpiar el contenedor antes de renderizar
 
-    publicaciones.forEach((post) => {
+    postsToRender.forEach((post) => {
         const postElement = document.createElement('div');
-        postElement.className = 'post';
+        postElement.className = 'post-card'; // Clase para estilo uniforme
         postElement.innerHTML = `
-            <h3>${post.titulo}</h3>
-            <p>${post.resumen}</p>
-            <img src="${post.imagen}" alt="${post.titulo}" />
-            <button onclick="viewPost('${post.id}')">Leer más</button>
+            <div class="post-header">
+                <h3>${post.titulo}</h3>
+                <button class="like-button" data-post-id="${post.id}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 21.35l-1.84-1.68C4.61 15.16 2 12.03 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.53-2.61 6.66-8.16 11.17L12 21.35z"/>
+                    </svg>
+                    <span class="likes-count">0</span>
+                </button>
+            </div>
+            <img src="${post.imagen}" alt="${post.titulo}" class="post-thumbnail" />
+            <p class="post-summary">${post.resumen}</p>
+            <button class="read-more-button" onclick="viewPost('${post.id}')">Leer más</button>
         `;
         postsGrid.appendChild(postElement);
+
+        // Cargar los likes para cada publicación
+        getLikes(post.id).then((likes) => {
+            const likeCountSpan = postElement.querySelector('.likes-count');
+            if (likeCountSpan) likeCountSpan.textContent = likes;
+        });
+
+        // Añadir evento al botón de likes
+        const likeButton = postElement.querySelector('.like-button');
+        if (likeButton) likeButton.addEventListener('click', handleLikeClick);
     });
 }
 
-function viewPost(postId) {
+// Corrige el estilo del botón de likes en publicaciones individuales
+async function viewPost(postId) {
     const post = publicaciones.find((p) => p.id === postId);
     if (!post) {
         console.error('Post no encontrado:', postId);
@@ -282,14 +301,73 @@ function viewPost(postId) {
     singlePostCategory.innerText = post.categoria;
     singlePostContent.innerHTML = post.contenido;
 
-    // Mostrar la sección de post individual y ocultar las demás
+    const likesContainer = document.getElementById('single-post-likes-container');
+    likesContainer.innerHTML = `
+        <button class="like-button" data-post-id="${post.id}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 21.35l-1.84-1.68C4.61 15.16 2 12.03 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.53-2.61 6.66-8.16 11.17L12 21.35z"/>
+            </svg>
+            <span class="likes-count">0</span>
+        </button>
+    `;
+
+    const likeButton = likesContainer.querySelector('.like-button');
+    if (likeButton) {
+        likeButton.addEventListener('click', handleLikeClick);
+        await getLikes(post.id); // Actualiza el contador de likes
+    }
+
     contentSections.forEach((section) => section.classList.remove('active'));
     singlePostSection.classList.add('active');
 }
 
-// Renderizar publicaciones al cargar la página
-renderPosts();
+// Corrige errores en la función getLikes
+async function getLikes(postId) {
+    try {
+        const { data, error } = await supabase
+            .from('post_likes')
+            .select('likes')
+            .eq('post_id', postId)
+            .single();
 
+        if (error && error.code === 'PGRST116') {
+            const { data: newData, error: newError } = await supabase
+                .from('post_likes')
+                .insert([{ post_id: postId, likes: 0 }])
+                .select()
+                .single();
+            if (newError) throw newError;
+            return newData.likes;
+        }
+        if (error) throw error;
+        return data.likes;
+    } catch (error) {
+        console.error('Error al obtener likes para el post', postId, ':', error.message);
+        return 0;
+    }
+}
+
+// Corrige errores en la función incrementLikes
+async function incrementLikes(postId) {
+    try {
+        let currentLikes = await getLikes(postId);
+        const { data, error } = await supabase
+            .from('post_likes')
+            .update({ likes: currentLikes + 1 })
+            .eq('post_id', postId)
+            .select()
+            .single();
+
+        if (error) throw error;
+        return data.likes;
+    } catch (error) {
+        console.error('Error al incrementar likes para el post', postId, ':', error.message);
+        return null;
+    }
+}
+
+// Renderiza las publicaciones al cargar la página
+renderPosts();
 
 // Función para crear una tarjeta de publicación (sin el botón de like aquí)
 function createPostCard(post) {
@@ -1311,6 +1389,7 @@ window.addEventListener('DOMContentLoaded', () => {
         } // Fin del bloque try-catch para Supabase
 
 
+        // --- Lógica de inicialización existente ---
         // --- Lógica de inicialización existente ---
         initAudio(); // Solo inicializa, no reproduce
         loadAchievementStatus();
