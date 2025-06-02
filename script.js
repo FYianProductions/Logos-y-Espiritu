@@ -455,7 +455,10 @@ async function loadVisitCount() {
 
 async function incrementVisitCount(newCount) {
     try {
-        if (!supabase) return; // Si supabase no está inicializado, no hacer nada
+        if (!supabase) {
+            console.error('Error al actualizar el contador de visitas: supabase is undefined');
+            return;
+        }
 
         const { data, error } = await supabase
             .from('visits')
@@ -541,6 +544,53 @@ async function incrementLikes(postId) {
 function handleLikeClick(event) {
     const postId = event.currentTarget.dataset.postId;
     incrementLikes(postId);
+}
+
+function toggleLike(event, postId) {
+    event.preventDefault();
+    if (!supabase) {
+        console.error('Supabase is not initialized. Cannot toggle like.');
+        return;
+    }
+
+    // Example logic for toggling like
+    supabase
+        .from('likes')
+        .select('*')
+        .eq('post_id', postId)
+        .then(({ data, error }) => {
+            if (error) {
+                console.error('Error fetching likes:', error);
+                return;
+            }
+
+            if (data.length > 0) {
+                // Unlike
+                supabase
+                    .from('likes')
+                    .delete()
+                    .eq('post_id', postId)
+                    .then(({ error }) => {
+                        if (error) {
+                            console.error('Error unliking post:', error);
+                        } else {
+                            console.log('Post unliked successfully');
+                        }
+                    });
+            } else {
+                // Like
+                supabase
+                    .from('likes')
+                    .insert({ post_id: postId })
+                    .then(({ error }) => {
+                        if (error) {
+                            console.error('Error liking post:', error);
+                        } else {
+                            console.log('Post liked successfully');
+                        }
+                    });
+            }
+        });
 }
 
 
