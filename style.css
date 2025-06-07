@@ -1228,11 +1228,11 @@ footer {
     color: var(--color-primary);
 }
 /* Estilos para la sección de likes */
-.post-actions {
+.post-header-likes {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-top: 10px;
+    gap: 15px; /* Espacio entre el título y el botón de like */
+    margin-bottom: 10px; /* Ajusta según sea necesario */
 }
 
 .like-button {
@@ -1240,30 +1240,65 @@ footer {
     align-items: center;
     background: none;
     border: none;
-    color: var(--color-text);
+    color: var(--color-text); /* Color por defecto del texto y contorno */
     cursor: pointer;
     padding: 5px 10px;
     border-radius: var(--radius);
-    transition: background-color 0.3s ease;
+    transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+    font-size: 1.1rem;
+    font-weight: 600;
 }
 
 .like-button:hover {
     background-color: rgba(0, 0, 0, 0.05);
 }
 
-.like-button svg {
-    margin-right: 5px;
-    fill: #e74c3c; /* Color del corazón, puedes cambiarlo */
+.like-button:active {
+    transform: scale(0.95);
+}
+
+.heart-icon {
+    width: 28px; /* Tamaño del icono */
+    height: 28px;
+    margin-right: 8px;
     transition: transform 0.2s ease-in-out;
 }
 
-.like-button:hover svg {
-    transform: scale(1.1);
+.heart-icon .heart-outline {
+    fill: var(--color-text); /* Color del contorno */
+    transition: fill 0.2s ease-in-out;
+}
+
+.heart-icon .heart-fill {
+    fill: none; /* Inicialmente oculto */
+    transition: fill 0.2s ease-in-out;
+}
+
+/* Estado cuando el post tiene like */
+.like-button.liked .heart-outline {
+    fill: none; /* Oculta el contorno */
+}
+
+.like-button.liked .heart-fill {
+    fill: var(--color-secondary); /* Corazón rojo (o el color que desees) */
+}
+
+/* Animación del corazón */
+.like-button.liked .heart-icon {
+    animation: heartBeat 0.4s ease-out;
+}
+
+@keyframes heartBeat {
+    0% { transform: scale(1); }
+    25% { transform: scale(1.2); }
+    50% { transform: scale(1.1); }
+    75% { transform: scale(1.2); }
+    100% { transform: scale(1); }
 }
 
 .like-count {
     font-weight: 600;
-    font-size: 0.9rem;
+    color: var(--color-text);
 }
 }
 @media (min-width: 601px) {
