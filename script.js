@@ -35,10 +35,11 @@ const visitCounterElement = document.getElementById('visit-counter');
 const likeButton = document.getElementById('like-button');
 const likeCountElement = document.getElementById('like-count');
 
-const SUPABASE_URL = 'https://hxeugrxmehmvzxcmbodd.supabase.co'; // Ejemplo: 'https://abcdefg.supabase.co'
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4ZXVncnhtZWhtdnp4Y21ib2RkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4MTQwMDYsImV4cCI6MjA2NDM5MDAwNn0.xqo5Jai56bTpNu9Rjo45fcbCtuUjx1IfLmtid8HKalk'; // Ejemplo: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+// --- DECLARACIÓN GLOBAL PARA ACCESO DESPUÉS DE LA INICIALIZACIÓN ---
+let supabase = null; // Se inicializará dentro de DOMContentLoaded
+let currentUserIdentifier = null; // Se inicializará dentro de DOMContentLoaded
+let currentPostId = null; // Variable para almacenar el ID de la publicación actual
 
-const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // --- Función para generar un ID de usuario único para likes sin autenticación ---
 function getOrCreateUserIdentifier() {
@@ -48,6 +49,96 @@ function getOrCreateUserIdentifier() {
         localStorage.setItem('user_like_identifier', userIdentifier);
     }
     return userIdentifier;
+}
+
+// --- LÓGICA DE LIKES (Dependientes de Supabase, por lo tanto, deben ser llamadas DESPUÉS de su inicialización) ---
+
+// Función para obtener los likes de una publicación
+async function getLikes(postId) {
+    if (!supabase) {
+        console.error('Supabase no está inicializado.');
+        return 0;
+    }
+    const { count, error } = await supabase
+        .from('likes')
+        .select('*', { count: 'exact', head: true })
+        .eq('post_id', postId);
+
+    if (error) {
+        console.error('Error al obtener los likes:', error.message);
+        return 0;
+    }
+    return count;
+}
+
+// Función para verificar si el usuario actual ha dado like a una publicación
+async function hasUserLiked(postId, userIdentifier) {
+    if (!supabase) {
+        console.error('Supabase no está inicializado.');
+        return false;
+    }
+    const { data, error } = await supabase
+        .from('likes')
+        .select('id')
+        .eq('post_id', postId)
+        .eq('user_identifier', userIdentifier);
+
+    if (error) {
+        console.error('Error al verificar el like del usuario:', error.message);
+        return false;
+    }
+    return data && data.length > 0;
+}
+
+// Función para añadir un like
+async function addLike(postId, userIdentifier) {
+    if (!supabase) {
+        console.error('Supabase no está inicializado.');
+        return false;
+    }
+    const { data, error } = await supabase
+        .from('likes')
+        .insert([{ post_id: postId, user_identifier: userIdentifier }]);
+
+    if (error) {
+        console.error('Error al añadir like:', error.message);
+        return false;
+    }
+    console.log('Like añadido:', data);
+    return true;
+}
+
+// Función para eliminar un like
+async function removeLike(postId, userIdentifier) {
+    if (!supabase) {
+        console.error('Supabase no está inicializado.');
+        return false;
+    }
+    const { error } = await supabase
+        .from('likes')
+        .delete()
+        .eq('post_id', postId)
+        .eq('user_identifier', userIdentifier);
+
+    if (error) {
+        console.error('Error al eliminar like:', error.message);
+        return false;
+    }
+    console.log('Like eliminado.');
+    return true;
+}
+
+// Función para actualizar la UI del botón de like y el contador
+async function updateLikeUI(postId) {
+    const likesCount = await getLikes(postId);
+    likeCountElement.textContent = likesCount;
+
+    const likedByUser = await hasUserLiked(postId, currentUserIdentifier);
+    if (likedByUser) {
+        likeButton.classList.add('liked');
+    } else {
+        likeButton.classList.remove('liked');
+    }
 }
 // --- DATOS DE PUBLICACIONES (Contenido placeholder) ---
 const publicaciones = [
@@ -901,11 +992,6 @@ window.addEventListener('DOMContentLoaded', () => {
     renderAchievements(); // Renderizar los logros al cargar la página
 });
 
-// ¡IMPORTANTE!: Reemplaza estos valores con los de tu proyecto Supabase
-
-
-const currentUserIdentifier = getOrCreateUserIdentifier();
-let currentPostId = null; // Variable para almacenar el ID de la publicación actual
 
 // --- LÓGICA DE LIKES ---
 
@@ -1050,18 +1136,60 @@ function showSinglePost(postId) {
 
 // --- INICIALIZACIÓN ---
 window.addEventListener('DOMContentLoaded', () => {
+    // --- CONFIGURACIÓN DE SUPABASE (MOVIDO AQUÍ) ---
+    // ¡IMPORTANTE!: Reemplaza estos valores con los de tu proyecto Supabase
+    const SUPABASE_URL = 'https://hxeugrxmehmvzxcmbodd.supabase.co'; // Ejemplo: 'https://abcdefg.supabase.co'
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4ZXVncnhtZWhtdnp4Y21ib2RkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4MTQwMDYsImV4cCI6MjA2NDM5MDAwNn0.xqo5Jai56bTpNu9Rjo45fcbCtuUjx1IfLmtid8HKalk'; // Ejemplo: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+
+    supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    currentUserIdentifier = getOrCreateUserIdentifier();
+
+    // Event Listener para el botón de like (MOVIDO AQUÍ)
+    if (likeButton) {
+        likeButton.addEventListener('click', async () => {
+            if (!currentPostId) {
+                console.warn('No hay una publicación activa para dar like.');
+                return;
+            }
+
+            const likedBefore = likeButton.classList.contains('liked');
+
+            if (likedBefore) {
+                // Si ya le dio like, quitarlo
+                const success = await removeLike(currentPostId, currentUserIdentifier);
+                if (success) {
+                    likeButton.classList.remove('liked');
+                    // No aplicar animación al quitar
+                }
+            } else {
+                // Si no le ha dado like, añadirlo
+                const success = await addLike(currentPostId, currentUserIdentifier);
+                if (success) {
+                    likeButton.classList.add('liked');
+                    // Activar animación
+                    likeButton.classList.remove('animated'); // Asegurarse de que la clase se elimine antes de añadirla
+                    void likeButton.offsetWidth; // Truco para forzar reflow y reiniciar la animación
+                    likeButton.classList.add('animated');
+                }
+            }
+            // Actualizar el contador después de la operación
+            await updateLikeUI(currentPostId);
+        });
+    } else {
+        console.warn('Elemento #like-button no encontrado en el DOM.');
+    }
+
+
     initAudio(); // Intentar inicializar AudioContext
     loadAchievementStatus();
     unlockAchievement('visit');
     currentYearSpan.textContent = new Date().getFullYear();
     animateTitle();
-    renderizarGaleria(galeriaImagenes);
+    renderizarGaleria(galeriaImagenes); // Asegúrate de que galeriaImagenes esté definida
 
-    // --- NUEVA LÓGICA DEL CONTADOR DE VISITAS CON COUNTAPI-JS ---
+    // --- Lógica del contador de visitas con COUNTAPI-JS (ya existente) ---
     const visitCounterElement = document.getElementById('visit-counter');
     if (visitCounterElement) {
-        // Usa tu namespace (logosyespiritu) y una clave (website_visits) para tu contador.
-        // El método .visits() de countapi-js hará el "hit" y devolverá el valor.
         countapi.visits('logosyespiritu', 'website_visits').then((result) => {
             visitCounterElement.textContent = result.value;
             console.log(`Visitas totales (countapi-js): ${result.value}`);
