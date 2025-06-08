@@ -1228,77 +1228,29 @@ footer {
     color: var(--color-primary);
 }
 /* Estilos para la sección de likes */
-.post-header-likes {
+#like-button {
     display: flex;
     align-items: center;
-    gap: 15px; /* Espacio entre el título y el botón de like */
-    margin-bottom: 10px; /* Ajusta según sea necesario */
-}
-
-.like-button {
-    display: flex;
-    align-items: center;
+    gap: 5px;
     background: none;
-    border: none;
-    color: var(--color-text); /* Color por defecto del texto y contorno */
-    cursor: pointer;
+    border: 1px solid #ccc;
     padding: 5px 10px;
-    border-radius: var(--radius);
-    transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
-    font-size: 1.1rem;
-    font-weight: 600;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
-.like-button:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+#like-button:hover {
+    background-color: #f0f0f0;
 }
 
-.like-button:active {
-    transform: scale(0.95);
+#like-button.liked {
+    color: #ff4d4d;
+    border-color: #ff4d4d;
 }
 
-.heart-icon {
-    width: 28px; /* Tamaño del icono */
-    height: 28px;
-    margin-right: 8px;
-    transition: transform 0.2s ease-in-out;
-}
-
-.heart-icon .heart-outline {
-    fill: var(--color-text); /* Color del contorno */
-    transition: fill 0.2s ease-in-out;
-}
-
-.heart-icon .heart-fill {
-    fill: none; /* Inicialmente oculto */
-    transition: fill 0.2s ease-in-out;
-}
-
-/* Estado cuando el post tiene like */
-.like-button.liked .heart-outline {
-    fill: none; /* Oculta el contorno */
-}
-
-.like-button.liked .heart-fill {
-    fill: var(--color-secondary); /* Corazón rojo (o el color que desees) */
-}
-
-/* Animación del corazón */
-.like-button.liked .heart-icon {
-    animation: heartBeat 0.4s ease-out;
-}
-
-@keyframes heartBeat {
-    0% { transform: scale(1); }
-    25% { transform: scale(1.2); }
-    50% { transform: scale(1.1); }
-    75% { transform: scale(1.2); }
-    100% { transform: scale(1); }
-}
-
-.like-count {
-    font-weight: 600;
-    color: var(--color-text);
+#like-button.liked i {
+    color: #ff4d4d;
 }
 }
 @media (min-width: 601px) {
