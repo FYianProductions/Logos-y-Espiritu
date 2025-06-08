@@ -1160,32 +1160,38 @@ window.addEventListener('DOMContentLoaded', () => {
 // --- LÓGICA DE LIKES ---
 
 // Función para obtener los likes de una publicación
+// Function to get likes count
 async function getLikes(postId) {
-    const { count, error } = await supabase
-        .from('likes')
-        .select('*', { count: 'exact', head: true })
-        .eq('post_id', postId);
+    try {
+        const { count, error } = await supabase
+            .from('likes')
+            .select('*', { count: 'exact', head: true })
+            .eq('post_id', postId);
 
-    if (error) {
-        console.error('Error al obtener los likes:', error.message);
+        if (error) throw error;
+        return count || 0;
+    } catch (error) {
+        console.error('Error getting likes:', error.message);
         return 0;
     }
-    return count;
 }
 
-// Función para verificar si el usuario actual ha dado like a una publicación
-async function hasUserLiked(postId, userIdentifier) {
-    const { data, error } = await supabase
-        .from('likes')
-        .select('id')
-        .eq('post_id', postId)
-        .eq('user_identifier', userIdentifier);
+// Function to check if user has liked
+async function hasUserLiked(postId, userId) {
+    try {
+        const { data, error } = await supabase
+            .from('likes')
+            .select('id')
+            .eq('post_id', postId)
+            .eq('user_identifier', userId)
+            .single();
 
-    if (error) {
-        console.error('Error al verificar el like del usuario:', error.message);
+        if (error && error.code !== 'PGRST116') throw error; // Ignore "not found" errors
+        return !!data;
+    } catch (error) {
+        console.error('Error checking like:', error.message);
         return false;
     }
-    return data && data.length > 0;
 }
 
 // Función para añadir un like
@@ -1235,48 +1241,56 @@ async function updateLikeUI(postId) {
 if (likeButton) {
     likeButton.addEventListener('click', async () => {
         if (!currentPostId) {
-            console.warn('No hay una publicación activa para dar like.');
+            console.warn('No active post to like');
             return;
         }
 
-        const likedBefore = likeButton.classList.contains('liked');
-
-        if (likedBefore) {
-            // Si ya le dio like, quitarlo
-            const success = await removeLike(currentPostId, currentUserIdentifier);
-            if (success) {
+        try {
+            const hasLiked = await hasUserLiked(currentPostId, currentUserIdentifier);
+            
+            if (hasLiked) {
+                // Remove like
+                const { error } = await supabase
+                    .from('likes')
+                    .delete()
+                    .eq('post_id', currentPostId)
+                    .eq('user_identifier', currentUserIdentifier);
+                
+                if (error) throw error;
                 likeButton.classList.remove('liked');
-                // No aplicar animación al quitar
-            }
-        } else {
-            // Si no le ha dado like, añadirlo
-            const success = await addLike(currentPostId, currentUserIdentifier);
-            if (success) {
+            } else {
+                // Add like
+                const { error } = await supabase
+                    .from('likes')
+                    .insert([{
+                        post_id: currentPostId,
+                        user_identifier: currentUserIdentifier
+                    }]);
+                
+                if (error) throw error;
                 likeButton.classList.add('liked');
-                // Activar animación
-                likeButton.classList.remove('animated'); // Asegurarse de que la clase se elimine antes de añadirla
-                void likeButton.offsetWidth; // Truco para forzar reflow y reiniciar la animación
-                likeButton.classList.add('animated');
             }
+            
+            // Update like count
+            const newCount = await getLikes(currentPostId);
+            likeCountElement.textContent = newCount;
+            
+        } catch (error) {
+            console.error('Error toggling like:', error);
         }
-        // Actualizar el contador después de la operación
-        await updateLikeUI(currentPostId);
     });
-} else {
-    console.warn('Elemento #like-button no encontrado en el DOM.');
 }
 
 
 // --- MODIFICACIÓN DE LA FUNCIÓN showSinglePost PARA INTEGRAR LIKES ---
-function showSinglePost(postId) {
-    const post = posts.find(p => p.id === postId); // Busca la publicación por ID
-
-    if (post) {
+async function showSinglePost(postId) {
+    const post = posts.find(p => p.id === postId);
+    if (!post) return;
         currentPostId = postId; // Establece el ID de la publicación actual
-        singlePostTitle.textContent = post.title;
-        singlePostDate.textContent = post.date;
-        singlePostCategory.textContent = post.category;
-        singlePostContent.innerHTML = post.content;
+        singlePostTitle.textContent = post.titulo;
+        singlePostDate.textContent = post.fecha;
+        singlePostCategory.textContent = post.categoria;
+        singlePostContent.innerHTML = post.contenido;
 
         // Mostrar la sección de la publicación individual y ocultar las otras
         contentSections.forEach(section => {
@@ -1288,23 +1302,13 @@ function showSinglePost(postId) {
         });
 
         // Asegurarse de que el botón de like esté visible y actualizado
-        if (likeButton) { // Asegura que el botón exista antes de intentar manipularlo
-            likeButton.style.display = 'flex'; // O 'inline-flex'
-            // Solo llamar a updateLikeUI si supabase ya está inicializado.
-            // Si DOMContentLoaded aún no terminó, esto se ejecutará de nuevo después.
-            if (supabase) {
-                updateLikeUI(postId); // Cargar y mostrar el estado de likes
-            } else {
-                console.warn('Supabase no está inicializado aún al mostrar post individual. La UI de likes se actualizará después.');
-            }
-        }
-        // Asumiendo que tienes este logro
-        // unlockAchievement('read_post');
-    } else {
-        console.error('Publicación no encontrada:', postId);
-        // Ocultar la sección si la publicación no existe
-        singlePostSection.classList.remove('active');
-        // Quizás redirigir a una página de error o a la lista de publicaciones
+    if (likeButton) {
+        likeButton.style.display = 'flex';
+        const likesCount = await getLikes(postId);
+        likeCountElement.textContent = likesCount;
+            
+        const userLiked = await hasUserLiked(postId, currentUserIdentifier);
+    likeButton.classList.toggle('liked', userLiked);
     }
 }
 
