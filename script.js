@@ -35,10 +35,41 @@ const visitCounterElement = document.getElementById('visit-counter');
 const likeButton = document.getElementById('like-button');
 const likeCountElement = document.getElementById('like-count');
 
+// Configuración de Supabase
+const SUPABASE_URL = 'https://hxeugrxmehmvzxcmbodd.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4ZXVncnhtZWhtdnp4Y21ib2RkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4MTQwMDYsImV4cCI6MjA2NDM5MDAwNn0.xqo5Jai56bTpNu9Rjo45fcbCtuUjx1IfLmtid8HKalk';
+
+// Inicialización de variables globales
+let supabase = null;
+let currentUserIdentifier = null;
+let currentPostId = null;
+
+// Función para inicializar Supabase
+document.addEventListener('DOMContentLoaded', function() {
+    try {
+        // Verificar que la biblioteca esté cargada
+        if (typeof supabase === 'undefined' || !window.supabase) {
+            console.error('Error: La biblioteca de Supabase no está cargada correctamente');
+            return false;
+        }
+        
+        // Inicializar Supabase
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        console.log('Supabase inicializado correctamente');
+        
+        // Inicializar usuario
+        currentUserIdentifier = getOrCreateUserIdentifier();
+        console.log('Usuario identificado:', currentUserIdentifier);
+        
+        return true;
+    } catch (error) {
+        console.error('Error al inicializar Supabase:', error);
+        return false;
+    }
+});
+
 // --- DECLARACIÓN GLOBAL PARA ACCESO DESPUÉS DE LA INICIALIZACIÓN ---
-let supabase = null; // Se inicializará dentro de DOMContentLoaded
-let currentUserIdentifier = null; // Se inicializará dentro de DOMContentLoaded
-let currentPostId = null; // Variable para almacenar el ID de la publicación actual
+// Las variables supabase, currentUserIdentifier y currentPostId ya están declaradas al inicio del archivo
 
 
 function getOrCreateUserIdentifier() {
