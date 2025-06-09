@@ -603,7 +603,11 @@ function mostrarPostIndividual(id) {
         }
     }
 
-    singlePostTitle.textContent = post.titulo;
+    if (singlePostTitle) {
+  singlePostTitle.textContent = post.titulo;
+} else {
+  console.warn('Elemento #single-post-title no encontrado en el DOM.');
+}
     singlePostDate.textContent = `Publicado el ${formatearFecha(post.fecha)}`;
     singlePostCategory.textContent = post.categoria;
     singlePostContent.innerHTML = post.contenido; // Usar placeholder
@@ -1158,7 +1162,11 @@ async function showSinglePost(postId) {
     const post = posts.find(p => p.id === postId);
     if (!post) return;
         currentPostId = postId; // Establece el ID de la publicación actual
-        singlePostTitle.textContent = post.titulo;
+        if (singlePostTitle) {
+  singlePostTitle.textContent = post.titulo;
+} else {
+  console.warn('Elemento #single-post-title no encontrado en el DOM.');
+}
         singlePostDate.textContent = post.fecha;
         singlePostCategory.textContent = post.categoria;
         singlePostContent.innerHTML = post.contenido;
