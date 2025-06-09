@@ -1260,34 +1260,15 @@ async function updateLikeUI(postId) {
 // Event Listener para el botón de like
 if (likeButton) {
     likeButton.addEventListener('click', async () => {
-        if (!currentPostId) {
-            console.warn('No hay una publicación activa para dar like.');
-            return;
-        }
-
-        const likedBefore = likeButton.classList.contains('liked');
-
-        if (likedBefore) {
-            // Si ya le dio like, quitarlo
-            const success = await removeLike(currentPostId, currentUserIdentifier);
-            if (success) {
-                likeButton.classList.remove('liked');
-                // No aplicar animación al quitar
-            }
-        } else {
-            // Si no le ha dado like, añadirlo
-            const success = await addLike(currentPostId, currentUserIdentifier);
-            if (success) {
-                likeButton.classList.add('liked');
-                // Activar animación
-                likeButton.classList.remove('animated'); // Asegurarse de que la clase se elimine antes de añadirla
-                void likeButton.offsetWidth; // Truco para forzar reflow y reiniciar la animación
-                likeButton.classList.add('animated');
-            }
-        }
-        // Actualizar el contador después de la operación
-        await updateLikeUI(currentPostId);
-    });
+    const userIdentifier = getOrCreateUserIdentifier();
+    const userHasLiked = await hasUserLiked(currentPostId, userIdentifier);
+    if (userHasLiked) {
+        await removeLike(currentPostId, userIdentifier);
+    } else {
+        await addLike(currentPostId, userIdentifier);
+    }
+    updateLikeUI(currentPostId);
+});
 } else {
     console.warn('Elemento #like-button no encontrado en el DOM.');
 }
