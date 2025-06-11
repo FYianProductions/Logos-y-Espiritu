@@ -152,7 +152,6 @@ async function updateLikeUI(postId) {
         console.warn('Elemento #like-count no encontrado en el DOM.');
     }
 
-
     const likedByUser = await hasUserLiked(postId, currentUserIdentifier);
     if (likeButton) {
         if (likedByUser) {
@@ -296,7 +295,12 @@ const publicaciones = [
  const galeriaImagenes = [
     { id: 'img1', src: 'https://i.postimg.cc/HkCpKMcH/IMG-7-Que-nadie-se-quede-sin-servir.png', alt: 'Imagen: Que nadie se quede sin servir', fecha: '2025-04-10', descripcion: 'Que nadie se quede sin servir' },
     { id: 'img2', src: 'https://i.postimg.cc/sg9VR27W/IMG-6-Oraci-n-para-la-beatificaci-n.png', alt: 'Imagen: Oración para la beatificación', fecha: '2025-04-05', descripcion: 'Oración beatificación Rafael García Herreros' },
-    { id: 'img3', src: 'https://i.postimg.cc/N0dB5PNf/IMG-9-Frase-San-Juan-Eudes.png', alt: 'Imagen: Frase San Juan Eudes', fecha: '2025-03-30', descripcion: 'Frase San Juan Eudes corazón' }
+    { id: 'img3', src: 'https://i.postimg.cc/N0dB5PNf/IMG-9-Frase-San-Juan-Eudes.png', alt: 'Imagen: Frase San Juan Eudes', fecha: '2025-03-30', descripcion: 'Frase San Juan Eudes corazón' },
+    { id: 'img4', src: 'https://i.postimg.cc/k4FZJzBT/Whats-App-Image-2025-06-10-at-10-29-09-AM.jpg', alt: 'Imagen de WhatsApp', fecha: '2025-06-10', descripcion: 'Imagen de WhatsApp' },
+    { id: 'img5', src: 'https://i.postimg.cc/cJ32jrZy/Whats-App-Image-2025-06-10-at-10-29-09-AM-1.jpg', alt: 'Imagen de WhatsApp', fecha: '2025-06-10', descripcion: 'Imagen de WhatsApp' },
+    { id: 'img6', src: 'https://i.postimg.cc/9MjKjCF4/Whats-App-Image-2025-06-10-at-10-29-09-AM-2.jpg', alt: 'Imagen de WhatsApp', fecha: '2025-06-10', descripcion: 'Imagen de WhatsApp' },
+    { id: 'img7', src: 'https://i.postimg.cc/NjSZpR3k/Whats-App-Image-2025-06-10-at-10-29-09-AM-3.jpg', alt: 'Imagen de WhatsApp', fecha: '2025-06-10', descripcion: 'Imagen de WhatsApp' },
+    { id: 'img8', src: 'https://i.postimg.cc/2SVPQ0K5/Whats-App-Image-2025-06-10-at-10-29-09-AM-4.jpg', alt: 'Imagen de WhatsApp', fecha: '2025-06-10', descripcion: 'Imagen de WhatsApp' }
  ];
 
  // *** URLs PARA LOS STICKERS ***
@@ -333,43 +337,54 @@ const publicaciones = [
  };
 
 function showSinglePost(postId) {
-    const post = posts.find(p => p.id === postId); // Busca la publicación por ID
-
-    if (post) {
-        currentPostId = postId; // Establece el ID de la publicación actual
-        singlePostTitle.textContent = post.title;
-        singlePostDate.textContent = post.date;
-        singlePostCategory.textContent = post.category;
-        singlePostContent.innerHTML = post.content;
-
-        // Mostrar la sección de la publicación individual y ocultar las otras
-        contentSections.forEach(section => {
-            if (section.id === 'single-post') {
-                section.classList.add('active');
-            } else {
-                section.classList.remove('active');
-            }
-        });
-
-        // Asegurarse de que el botón de like esté visible y actualizado
-        if (likeButton) { // Asegura que el botón exista antes de intentar manipularlo
-            likeButton.style.display = 'flex'; // O 'inline-flex'
-            // Solo llamar a updateLikeUI si supabase ya está inicializado.
-            // Si DOMContentLoaded aún no terminó, esto se ejecutará de nuevo después.
-            if (supabase) {
-                updateLikeUI(postId); // Cargar y mostrar el estado de likes
-            } else {
-                console.warn('Supabase no está inicializado aún al mostrar post individual. La UI de likes se actualizará después.');
-            }
-        }
-        // Asumiendo que tienes este logro
-        // unlockAchievement('read_post');
-    } else {
-        console.error('Publicación no encontrada:', postId);
-        // Ocultar la sección si la publicación no existe
-        singlePostSection.classList.remove('active');
-        // Quizás redirigir a una página de error o a la lista de publicaciones
+    const post = publicaciones.find(p => p.id === postId);
+    if (!post) {
+        console.error("Post not found:", postId);
+        cambiarSeccion('publicaciones');
+        return;
     }
+
+    // Lógica para logro de 100 posts diferentes
+    if (!achievementCounters.visitedPosts.includes(postId)) {
+        achievementCounters.visitedPosts.push(postId);
+        saveAchievementCounters();
+        if (achievementCounters.visitedPosts.length >= 100) {
+            unlockAchievement('enter_100_posts');
+        }
+    }
+
+    currentPostId = postId;
+    if (singlePostTitle) {
+        singlePostTitle.textContent = post.titulo;
+    } else {
+        console.warn('Elemento #single-post-title no encontrado en el DOM.');
+    }
+    singlePostDate.textContent = `Publicado el ${formatearFecha(post.fecha)}`;
+    singlePostCategory.textContent = post.categoria;
+    singlePostContent.innerHTML = post.contenido;
+
+    cambiarSeccion('single-post');
+    unlockAchievement('enter_post');
+
+    // Asegurarse de que el botón de like esté visible y actualizado
+    if (likeButton) {
+        likeButton.style.display = 'flex';
+        if (supabase) {
+            updateLikeUI(postId);
+        } else {
+            console.warn('Supabase no está inicializado aún al mostrar post individual. La UI de likes se actualizará después.');
+        }
+    }
+
+    // Listener para scroll dentro del post
+    const postContentElement = document.getElementById('single-post-content');
+    const scrollListener = () => {
+        if (postContentElement.getBoundingClientRect().bottom <= window.innerHeight + 100) {
+            unlockAchievement('scroll_post_bottom');
+            window.removeEventListener('scroll', scrollListener);
+        }
+    };
+    window.addEventListener('scroll', scrollListener);
 }
 
  // Objeto para rastrear el estado y contadores
@@ -446,7 +461,7 @@ function renderizarPublicaciones(postsToRender) {
             postsGrid.innerHTML += crearTarjetaPost(post);
         });
         document.querySelectorAll('.post-card').forEach(card => {
-            card.addEventListener('click', () => mostrarPostIndividual(card.dataset.id));
+            card.addEventListener('click', () => showSinglePost(card.dataset.id));
         });
     }
 }
@@ -586,50 +601,6 @@ function cambiarSeccionConFlechas(direccion) {
     }
 }
 
-function mostrarPostIndividual(id) {
-    const post = publicaciones.find(p => p.id === id);
-    if (!post) {
-        console.error("Post not found:", id);
-        cambiarSeccion('publicaciones');
-        return;
-    };
-
-    // Lógica para logro de 100 posts diferentes
-    if (!achievementCounters.visitedPosts.includes(id)) {
-        achievementCounters.visitedPosts.push(id);
-        saveAchievementCounters();
-        if (achievementCounters.visitedPosts.length >= 100) {
-            unlockAchievement('enter_100_posts');
-        }
-    }
-
-    if (singlePostTitle) {
-  singlePostTitle.textContent = post.titulo;
-} else {
-  console.warn('Elemento #single-post-title no encontrado en el DOM.');
-}
-    singlePostDate.textContent = `Publicado el ${formatearFecha(post.fecha)}`;
-    singlePostCategory.textContent = post.categoria;
-    singlePostContent.innerHTML = post.contenido; // Usar placeholder
-
-    cambiarSeccion('single-post');
-    unlockAchievement('enter_post');
-
-    // Listener para scroll dentro del post (simplificado)
-    const postContentElement = document.getElementById('single-post-content');
-     const scrollListener = () => {
-         if (postContentElement.getBoundingClientRect().bottom <= window.innerHeight + 100) {
-             unlockAchievement('scroll_post_bottom');
-             window.removeEventListener('scroll', scrollListener);
-         }
-     };
-     // Remover listener anterior si existe antes de añadir uno nuevo
-     window.removeEventListener('scroll', scrollListener);
-     window.addEventListener('scroll', scrollListener);
-
-     // Actualizar la UI del botón de like y contador
-     updateLikeUI(post.id);
-}
 
 function volverAPublicaciones() {
     cambiarSeccion('publicaciones');
@@ -1099,229 +1070,15 @@ async function removeLike(postId, userIdentifier) {
     return true;
 }
 
-// Función para actualizar la UI del botón de like y el contador
-async function updateLikeUI(postId) {
-    const likesCount = await getLikes(postId);
-    likeCountElement.textContent = likesCount;
-
-    const likedByUser = await hasUserLiked(postId, currentUserIdentifier);
-    if (likedByUser) {
-        likeButton.classList.add('liked');
-    } else {
-        likeButton.classList.remove('liked');
-    }
-}
-
-// Event Listener para el botón de like
-if (likeButton) {
-    likeButton.addEventListener('click', async () => {
-        if (!currentPostId) {
-            console.warn('No active post to like');
-            return;
-        }
-
-        try {
-            const hasLiked = await hasUserLiked(currentPostId, currentUserIdentifier);
-            
-            if (hasLiked) {
-                // Remove like
-                const { error } = await supabase
-                    .from('likes')
-                    .delete()
-                    .eq('post_id', currentPostId)
-                    .eq('user_identifier', currentUserIdentifier);
-                
-                if (error) throw error;
-                likeButton.classList.remove('liked');
-            } else {
-                // Add like
-                const { error } = await supabase
-                    .from('likes')
-                    .insert([{
-                        post_id: currentPostId,
-                        user_identifier: currentUserIdentifier
-                    }]);
-                
-                if (error) throw error;
-                likeButton.classList.add('liked');
-            }
-            
-            // Update like count
-            const newCount = await getLikes(currentPostId);
-            likeCountElement.textContent = newCount;
-            
-        } catch (error) {
-            console.error('Error toggling like:', error);
-        }
-    });
-}
 
 
-// --- MODIFICACIÓN DE LA FUNCIÓN showSinglePost PARA INTEGRAR LIKES ---
-async function showSinglePost(postId) {
-    const post = posts.find(p => p.id === postId);
-    if (!post) return;
-        currentPostId = postId; // Establece el ID de la publicación actual
-        if (singlePostTitle) {
-  singlePostTitle.textContent = post.titulo;
-} else {
-  console.warn('Elemento #single-post-title no encontrado en el DOM.');
-}
-        singlePostDate.textContent = post.fecha;
-        singlePostCategory.textContent = post.categoria;
-        singlePostContent.innerHTML = post.contenido;
-
-        // Mostrar la sección de la publicación individual y ocultar las otras
-        contentSections.forEach(section => {
-            if (section.id === 'single-post') {
-                section.classList.add('active');
-            } else {
-                section.classList.remove('active');
-            }
-        });
-
-        // Asegurarse de que el botón de like esté visible y actualizado
-    if (likeButton) {
-        likeButton.style.display = 'flex';
-        const likesCount = await getLikes(postId);
-        likeCountElement.textContent = likesCount;
-            
-        const userLiked = await hasUserLiked(postId, currentUserIdentifier);
-    likeButton.classList.toggle('liked', userLiked);
-    }
-}
-
-// --- LÓGICA DE LIKES ---
-
-// Función para obtener los likes de una publicación
-async function getLikes(postId) {
-    const { count, error } = await supabase
-        .from('likes')
-        .select('*', { count: 'exact', head: true })
-        .eq('post_id', postId);
-
-    if (error) {
-        console.error('Error al obtener los likes:', error.message);
-        return 0;
-    }
-    return count;
-}
-
-// Función para verificar si el usuario actual ha dado like a una publicación
-async function hasUserLiked(postId, userIdentifier) {
-    const { data, error } = await supabase
-        .from('likes')
-        .select('id')
-        .eq('post_id', postId)
-        .eq('user_identifier', userIdentifier);
-
-    if (error) {
-        console.error('Error al verificar el like del usuario:', error.message);
-        return false;
-    }
-    return data && data.length > 0;
-}
-
-// Función para añadir un like
-async function addLike(postId, userIdentifier) {
-    const { data, error } = await supabase
-        .from('likes')
-        .insert([{ post_id: postId, user_identifier: userIdentifier }]);
-
-    if (error) {
-        console.error('Error al añadir like:', error.message);
-        return false;
-    }
-    console.log('Like añadido:', data);
-    return true;
-}
-
-// Función para eliminar un like
-async function removeLike(postId, userIdentifier) {
-    const { error } = await supabase
-        .from('likes')
-        .delete()
-        .eq('post_id', postId)
-        .eq('user_identifier', userIdentifier);
-
-    if (error) {
-        console.error('Error al eliminar like:', error.message);
-        return false;
-    }
-    console.log('Like eliminado.');
-    return true;
-}
-
-// Función para actualizar la UI del botón de like y el contador
-async function updateLikeUI(postId) {
-    const likesCount = await getLikes(postId);
-    likeCountElement.textContent = likesCount;
-
-    const likedByUser = await hasUserLiked(postId, currentUserIdentifier);
-    if (likedByUser) {
-        likeButton.classList.add('liked');
-    } else {
-        likeButton.classList.remove('liked');
-    }
-}
-
-// Event Listener para el botón de like
-if (likeButton) {
-    likeButton.addEventListener('click', async () => {
-    const userIdentifier = getOrCreateUserIdentifier();
-    const userHasLiked = await hasUserLiked(currentPostId, userIdentifier);
-    if (userHasLiked) {
-        await removeLike(currentPostId, userIdentifier);
-    } else {
-        await addLike(currentPostId, userIdentifier);
-    }
-    updateLikeUI(currentPostId);
-});
-} else {
-    console.warn('Elemento #like-button no encontrado en el DOM.');
-}
 
 
-// --- MODIFICACIÓN DE LA FUNCIÓN showSinglePost PARA INTEGRAR LIKES ---
-function showSinglePost(postId) {
-    const post = posts.find(p => p.id === postId); // Busca la publicación por ID
 
-    if (post) {
-        currentPostId = postId; // Establece el ID de la publicación actual
-        singlePostTitle.textContent = post.title;
-        singlePostDate.textContent = post.date;
-        singlePostCategory.textContent = post.category;
-        singlePostContent.innerHTML = post.content;
 
-        // Mostrar la sección de la publicación individual y ocultar las otras
-        contentSections.forEach(section => {
-            if (section.id === 'single-post') {
-                section.classList.add('active');
-            } else {
-                section.classList.remove('active');
-            }
-        });
 
-        // Asegurarse de que el botón de like esté visible y actualizado
-        if (likeButton) { // Asegura que el botón exista antes de intentar manipularlo
-            likeButton.style.display = 'flex'; // O 'inline-flex'
-            // Solo llamar a updateLikeUI si supabase ya está inicializado.
-            // Si DOMContentLoaded aún no terminó, esto se ejecutará de nuevo después.
-            if (supabase) {
-                updateLikeUI(postId); // Cargar y mostrar el estado de likes
-            } else {
-                console.warn('Supabase no está inicializado aún al mostrar post individual. La UI de likes se actualizará después.');
-            }
-        }
-        // Asumiendo que tienes este logro
-        // unlockAchievement('read_post');
-    } else {
-        console.error('Publicación no encontrada:', postId);
-        // Ocultar la sección si la publicación no existe
-        singlePostSection.classList.remove('active');
-        // Quizás redirigir a una página de error o a la lista de publicaciones
-    }
-}
+
+
 
 // --- INICIALIZACIÓN ---
 window.addEventListener('DOMContentLoaded', async () => { // Usamos async aquí porque vamos a esperar algunas promesas
@@ -1405,16 +1162,6 @@ window.addEventListener('DOMContentLoaded', async () => { // Usamos async aquí 
     }
 
 
-    cambiarSeccion('publicaciones'); // O la sección que desees que sea la inicial.
-
-    // AHORA LLAMA A LAS FUNCIONES QUE DEPENDEN DE SUPABASE SI ES NECESARIO AL CARGAR LA PÁGINA INICIAL
-    // Por ejemplo, si la sección de publicaciones muestra posts y quieres que tengan likes iniciales:
-    // Aquí puedes llamar a renderizarPublicaciones() o a cualquier otra función que muestre los posts
-    // y que a su vez llama a showSinglePost, la cual ahora verifica si Supabase está inicializado.
-    // Si renderizarPublicaciones muestra los posts y sus likes, asegúrate de que se llame aquí:
-    // renderizarPublicaciones(posts); // Ajusta según tu implementación real
-
-    // Si quieres probar un post específico al cargar, hazlo aquí:
-    // showSinglePost('post-1'); // Descomenta esto para probar un post específico al inicio
-    renderAchievements(); // Renderizar los logros al cargar la página
+    cambiarSeccion('publicaciones');
+    renderAchievements();
 });
