@@ -1015,7 +1015,7 @@ async function getLikes(postId) {
             .eq('post_id', postId);
 
         if (error) throw error;
-        return count || 0;
+        return (count || 0) + 21; // Añadimos 20 likes base a cada publicación
     } catch (error) {
         console.error('Error getting likes:', error.message);
         return 0;
